@@ -1,6 +1,10 @@
 #include "Position.cpp"
 #include <cstdlib>
 #include <iostream>
+#include <GL/glut.h>
+#define standardWidth 300
+#define standardHeight 30
+
 using namespace std;
 
 class LifeBar{
@@ -11,6 +15,8 @@ private:
 	float red;
 	float green;
 	float blue;
+	float width;
+	float height;
 
 public:
 	/*Constructors and destructors*/
@@ -33,6 +39,8 @@ public:
 	void setPosition( float, float );
 	void setLife( int );
 	void setMaxLife( int );
+	void setWidth( float );
+	void setHeight( float );
 
 	/*Class methods*/
 	void draw();
