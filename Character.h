@@ -1,7 +1,6 @@
 #include "LifeBar.cpp"
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
+#inlcude "gLib.h"
+
 using namespace std;
 
 class Character{

@@ -1,5 +1,4 @@
-#include <cstdlib>
-#include <iostream>
+#include "gLib.h"
 using namespace std;
 
 class Position{

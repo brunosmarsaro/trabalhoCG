@@ -1,7 +1,6 @@
 #include "Position.cpp"
-#include <cstdlib>
-#include <iostream>
-#include <GL/glut.h>
+#include "gLib.h"
+
 #define standardWidth 300
 #define standardHeight 30
 
