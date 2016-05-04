@@ -83,10 +83,10 @@ void LifeBar::setHeight( float h ){
 	height = h;
 }
 
-
 /*====================Class methods====================*/
 void LifeBar::draw( void ){
     //draw LifeBar method
+    glPushMatrix();
     int lifeWidth = width*(life/(float)max);
     glLineWidth(2);
     glColor3f( red , green, blue );
@@ -104,4 +104,5 @@ void LifeBar::draw( void ){
         glVertex3f( width, height, 0.0 );
         glVertex3f( 0.0, height, 0.0 );
     glEnd();
+    glPopMatrix();
 }

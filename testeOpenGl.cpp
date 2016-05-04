@@ -24,9 +24,10 @@ void init( void )
 }    
 
 void keyboard(unsigned char tecla, int x, int y){
-	cout << tecla << " - " << (int)tecla << endl;
+	if(tecla == 27) exit(0);
 	if(tecla == 122){
 		int atual = life.getLife();
+		cout << atual << endl;
 		life.setLife(atual - 10);
 	}
 	glutPostRedisplay();
@@ -34,6 +35,8 @@ void keyboard(unsigned char tecla, int x, int y){
 
 int main(int argc, char *argv[])
 {
+	life.setMaxLife(300);
+	life.setLife(300);
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
     glutInitWindowSize( 500, 500 );
