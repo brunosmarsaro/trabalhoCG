@@ -71,12 +71,13 @@ void Character::setLifeBar( LifeBar l ){
 }
 
 /*====================Class methods====================*/
+/*
 void Character::draw( void ){
     //draw Character method
-    /*Lembrar de desenhar a barra de vida*/
+    //Lembrar de desenhar a barra de vida
     cout << "Desenhando o monstro" << endl;
 }
-
+*/
 
 
 

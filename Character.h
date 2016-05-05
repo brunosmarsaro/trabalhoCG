@@ -35,5 +35,5 @@ public:
 	void setLifeBar( LifeBar );
 
 	/*Class methods*/
-	void draw();
+	//void draw();
 };
