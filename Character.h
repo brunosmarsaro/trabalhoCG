@@ -1,5 +1,5 @@
 #include "LifeBar.cpp"
-#inlcude "gLib.h"
+#include "gLib.h"
 
 using namespace std;
 

@@ -37,6 +37,7 @@ public:
 	void setColorAuto();
 	void setPosition( float, float );
 	void setLife( int );
+	void setLife( float );
 	void setMaxLife( int );
 	void setWidth( float );
 	void setHeight( float );

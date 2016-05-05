@@ -29,7 +29,7 @@ LifeBar::LifeBar( int l, int m){
 	setColorAuto();
 }
 
-LifeBar::~LifeBar(void){
+LifeBar::~LifeBar( void ){
 }
 
 
@@ -54,7 +54,7 @@ Position LifeBar::getPosition(){
 }
 
 /*====================Setters====================*/
-void LifeBar::setColor3f( float r, float g, float b){
+void LifeBar::setColor3f( float r, float g, float b ){
     red = r;
     green = g;
     blue = b;
@@ -64,16 +64,25 @@ void LifeBar::setColorAuto(){
 	red = 1.0 - green;
 }
 void LifeBar::setPosition( float x, float y ){
-    position.setX(x);
-    position.setY(y);
+    position.setX( x );
+    position.setY( y );
 }
-void LifeBar::setLife( int l){
+void LifeBar::setLife( int l ){
 	life = l;
-	if(life < 0) life = 0;
-	if(life > max) life = max;
+	if( life < 0 ) life = 0;
+	if( life > max ) life = max;
 	setColorAuto();
 }
-void LifeBar::setMaxLife( int m){
+
+void LifeBar::setLife( float l ){
+	if( l > 0.0 && l < 1.0) life = 1;
+	else life = (int)l;
+	if( life < 0 ) life = 0;
+	if( life > max ) life = max;
+	setColorAuto();
+}
+
+void LifeBar::setMaxLife( int m ){
 	max = m;
 }
 void LifeBar::setWidth( float w ){
@@ -86,23 +95,40 @@ void LifeBar::setHeight( float h ){
 /*====================Class methods====================*/
 void LifeBar::draw( void ){
     //draw LifeBar method
+    float x , y, z;
+    x = position.getX();
+    y = position.getY();
+    z = position.getZ();
+    cout << x << " " << y << " " << z << endl;
+
     glPushMatrix();
-    int lifeWidth = width*(life/(float)max);
-    glLineWidth(2);
-    glColor3f( red , green, blue );
+    glTranslatef(x,y,z);
+
+    glColor3f( 0.0 , 0.0, 0.0 );
     glBegin( GL_POLYGON );
-        glVertex3f( 0.0, 0.0, 0.0 );
-        glVertex3f( lifeWidth, 0.0, 0.0 );
-        glVertex3f( lifeWidth, height, 0.0 );
-        glVertex3f( 0.0, height, 0.0 );
+       glVertex3f( -width/2, 0.0, 0.0 );
+        glVertex3f( width/2, 0.0, 0.0 );
+        glVertex3f( width/2, height, 0.0 );
+        glVertex3f( -width/2, height, 0.0 );
     glEnd();
+
+    int lifeWidth = width*( life/(float)max );
+    glLineWidth( 2 );
+    glColor3f( red , green, blue );    	
+    glBegin( GL_POLYGON );
+        glVertex3f( -width/2, 0.0, 0.0 );
+        glVertex3f( -width/2 + lifeWidth, 0.0, 0.0 );
+        glVertex3f( -width/2 + lifeWidth, height, 0.0 );
+        glVertex3f( -width/2, height, 0.0 );
+    glEnd();
+
 
     glColor3f( 1.0 , 1.0, 1.0 );
     glBegin( GL_LINE_LOOP );
-        glVertex3f( 0.0, 0.0, 0.0 );
-        glVertex3f( width, 0.0, 0.0 );
-        glVertex3f( width, height, 0.0 );
-        glVertex3f( 0.0, height, 0.0 );
+       glVertex3f( -width/2, 0.0, 0.0 );
+        glVertex3f( width/2, 0.0, 0.0 );
+        glVertex3f( width/2, height, 0.0 );
+        glVertex3f( -width/2, height, 0.0 );
     glEnd();
     glPopMatrix();
 }
