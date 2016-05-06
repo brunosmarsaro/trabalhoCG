@@ -1,6 +1,7 @@
 #include "LifeBar.cpp"
 #include "gLib.h"
 
+
 using namespace std;
 
 class Character{
@@ -44,12 +45,13 @@ public:
 	void setLifeBar( LifeBar );
 	void setAtk( int );
 	void setDef( int );
-	void setMaxLife( int );
+	void setCharacterMaxLife( int );
 
 	/*Class methods*/
 	void addLevel( int );
 	void addExperience( int );
 	void heal( float );
 	void toDamage( void* );
+	void takeDamage( int );
 	//void draw();
 };

@@ -37,7 +37,7 @@ LifeBar::~LifeBar( void ){
 int LifeBar::getLife(){
 	return life;
 }
-int LifeBar::getMax(){
+int LifeBar::getMaxLife(){
 	return max;
 }
 float LifeBar::getColorR(){

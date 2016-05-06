@@ -1,9 +1,13 @@
 
 #include <GL/glut.h>
 #include <iostream>
-#include "Character.h"
+#include <cmath>
+#include <cstdlib>
+#include "Character.cpp"
+
 using namespace std;
 LifeBar life;
+Character character;
 
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );

@@ -105,7 +105,7 @@ void Character::setDef( int d ){
     def = d;
 }
 void Character::setCharacterMaxLife( int ml ){
-    characterLife.setMaxLife(ml);
+    characterLife.setMaxLife( ml );
 }
 
 /*====================Class methods====================*/
@@ -136,9 +136,9 @@ void Character::takeDamage ( int opponentAtk ) {
     actualLife = characterLife.getLife();
     characterLife.setLife( actualLife - damage );
 }
-void toDamage( void* target ) {
+void Character::toDamage( void* target ) {
     Character * aux;
-    aux = (Character)target;
+    aux = (Character*)target;
     aux->takeDamage(atk);
 }
 
