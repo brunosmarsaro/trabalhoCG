@@ -141,6 +141,10 @@ void Character::toDamage( void* target ) {
     aux = (Character*)target;
     aux->takeDamage(atk);
 }
+void Character::autoAtk( void* target ){
+    //Implementar auto ataque
+    //causa um dano no adversário, agurada um tempo e causa outro dano
+}
 
 /*
 void Character::draw( void ){

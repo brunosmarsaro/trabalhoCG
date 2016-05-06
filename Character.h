@@ -53,5 +53,6 @@ public:
 	void heal( float );
 	void toDamage( void* );
 	void takeDamage( int );
+	void autoAtk( void* );
 	//void draw();
 };
