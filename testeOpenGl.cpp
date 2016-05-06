@@ -10,6 +10,8 @@ LifeBar life;
 Character character;
 Hero hero;
 
+int dx,dy;
+
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );
     glBegin( GL_LINES );
@@ -28,7 +30,11 @@ void display( void )
     glClear( GL_COLOR_BUFFER_BIT );
     linesBackground();
     //life.draw();
-    hero.draw();
+    glPushMatrix();
+        glTranslatef( dx, dy, 0 );
+        hero.draw();
+    glPopMatrix();
+
     glutSwapBuffers();
 }
 
@@ -49,6 +55,10 @@ void keyboard(unsigned char tecla, int x, int y){
 		cout << atual << endl;
 		hero.takeDamage(10);
 	}
+    if(tecla == 'a') dx-=10;
+    if(tecla == 'd') dx+=10;
+    if(tecla == 'w') dy+=10;
+    if(tecla == 's') dy-=10;
 	glutPostRedisplay();
 }
 
