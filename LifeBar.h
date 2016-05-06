@@ -26,7 +26,7 @@ public:
 
 	/*Getters*/
 	int getLife();
-	int getMax();
+	int getMaxLife();
 	float getColorR();
 	float getColorG();
 	float getColorB();
