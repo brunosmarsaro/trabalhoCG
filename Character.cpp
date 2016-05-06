@@ -107,6 +107,9 @@ void Character::setDef( int d ){
 void Character::setCharacterMaxLife( int ml ){
     characterLife.setMaxLife( ml );
 }
+void Character::setLifeBarPosition( int x, int y ){
+    characterLife.setPosition( x, y );
+}
 
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){

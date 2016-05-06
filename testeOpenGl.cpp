@@ -3,11 +3,12 @@
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
-#include "Character.cpp"
+#include "Hero.cpp"
 
 using namespace std;
 LifeBar life;
 Character character;
+Hero hero;
 
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );
@@ -26,7 +27,8 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT );
     linesBackground();
-    life.draw();
+    //life.draw();
+    hero.draw();
     glutSwapBuffers();
 }
 
@@ -45,7 +47,7 @@ void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 122){
 		float atual = life.getLife();
 		cout << atual << endl;
-		life.setLife((float)(atual - 10.0));
+		hero.takeDamage(10);
 	}
 	glutPostRedisplay();
 }
@@ -58,6 +60,7 @@ int main(int argc, char *argv[])
 	x = 100;
 	y = -50;
 	life.setPosition(x,y);
+    character.setLifeBar(life);
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize( 500, 500 );

@@ -46,6 +46,7 @@ public:
 	void setAtk( int );
 	void setDef( int );
 	void setCharacterMaxLife( int );
+	void setLifeBarPosition( int, int );
 
 	/*Class methods*/
 	void addLevel( int );
