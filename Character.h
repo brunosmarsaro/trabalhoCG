@@ -15,7 +15,9 @@ private:
 	int def;
 	int level;
 	int experience;
+	int vulnerableExperience;
 	LifeBar characterLife;
+	bool visible;
 
 	
 public:
@@ -24,7 +26,7 @@ public:
 	Character( float, float, float );
 	Character( Position );
 	Character( float, float, float, Position );
-	Character( float, float, float, Position , LifeBar);
+	Character( float, float, float, Position , LifeBar );
 	~Character();
 
 	/*Getters*/
@@ -36,24 +38,28 @@ public:
 	int getLevel();
 	int getExperience();
 	int getCharacterMaxLife();
+	int getCharacterLife();
 	Position getPosition();
 	LifeBar getLifeBar();
+	bool isVisible();
 
 	/*Setters*/
-	void setColor3f( float, float,float );
+	void setColor3f( float, float, float );
 	void setPosition( float, float );
 	void setLifeBar( LifeBar );
 	void setAtk( int );
 	void setDef( int );
 	void setCharacterMaxLife( int );
 	void setLifeBarPosition( int, int );
+	void setVulnerableExperience( int );
+	void setVisibility( bool );
 
 	/*Class methods*/
 	void addLevel( int );
 	void addExperience( int );
 	void heal( float );
-	void toDamage( void* );
-	void takeDamage( int );
+	int toDamage( void* );
+	int takeDamage( int );
 	void autoAtk( void* );
 	//void draw();
 };

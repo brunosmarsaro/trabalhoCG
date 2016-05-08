@@ -1,4 +1,3 @@
-
 #include <GL/glut.h>
 #include <iostream>
 #include <cmath>
@@ -6,9 +5,10 @@
 #include "Hero.cpp"
 
 using namespace std;
-LifeBar life;
+//LifeBar life;
 Character character;
 Hero hero;
+Hero atakerHero;
 
 int dx,dy;
 
@@ -29,10 +29,14 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT );
     linesBackground();
-    //life.draw();
     glPushMatrix();
         glTranslatef( dx, dy, 0 );
         hero.draw();
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef( 20.0 , 50.0, 0 );
+        atakerHero.draw();
     glPopMatrix();
 
     glutSwapBuffers();
@@ -50,11 +54,12 @@ void init( void )
 
 void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 27) exit(0);
-	if(tecla == 122){
-		float atual = life.getLife();
-		cout << atual << endl;
-		hero.takeDamage(10);
-	}
+	if(tecla == 122) {
+        int xp = atakerHero.toDamage(&hero);
+        if( xp != 0 ){
+            hero.setVisibility(false);
+        }
+    }
     if(tecla == 'a') dx-=10;
     if(tecla == 'd') dx+=10;
     if(tecla == 'w') dy+=10;
@@ -64,13 +69,11 @@ void keyboard(unsigned char tecla, int x, int y){
 
 int main(int argc, char *argv[])
 {
-	life.setMaxLife(300);
-	life.setLife(300);
-	float x,y;
-	x = 100;
-	y = -50;
-	life.setPosition(x,y);
-    character.setLifeBar(life);
+
+    hero.setCharacterMaxLife( 100 );
+    hero.setDef( 10 );
+    atakerHero.setAtk( 10 );
+
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize( 500, 500 );

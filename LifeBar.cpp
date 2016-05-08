@@ -84,6 +84,7 @@ void LifeBar::setLife( float l ){
 
 void LifeBar::setMaxLife( int m ){
 	max = m;
+    setColorAuto();
 }
 void LifeBar::setWidth( float w ){
 	width = w;
@@ -99,7 +100,6 @@ void LifeBar::draw( void ){
     x = position.getX();
     y = position.getY();
     z = position.getZ();
-    cout << x << " " << y << " " << z << endl;
 
     glPushMatrix();
     glTranslatef(x,y,z);
@@ -121,7 +121,6 @@ void LifeBar::draw( void ){
         glVertex3f( -width/2 + lifeWidth, height, 0.0 );
         glVertex3f( -width/2, height, 0.0 );
     glEnd();
-
 
     glColor3f( 1.0 , 1.0, 1.0 );
     glBegin( GL_LINE_LOOP );
