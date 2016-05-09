@@ -1,9 +1,5 @@
-    #include <GL/glut.h>
-#include <iostream>
-#include <cmath>
-#include <cstdlib>
-#include <cstdio>
-#include "Hero.cpp"
+#include "gLib.h"
+#include "Heroes/Hero.cpp"
 
 
 using namespace std;

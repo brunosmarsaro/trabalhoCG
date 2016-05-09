@@ -15,9 +15,13 @@ ifeq ($(OS),Darwin)
     all:
 	$(CC) -o main $(CODE) $(MACLIBS) -Wno-deprecated-declarations
 	$(EXE)
+	rm main
 else
     all:
 	$(CC) -o main $(CODE) $(LINLIBS)
 	$(EXE)
+	rm main
 endif
+
+
 
