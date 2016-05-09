@@ -1,16 +1,23 @@
-#include <GL/glut.h>
+    #include <GL/glut.h>
 #include <iostream>
 #include <cmath>
 #include <cstdlib>
+#include <cstdio>
 #include "Hero.cpp"
+
 
 using namespace std;
 //LifeBar life;
-Character character;
 Hero hero;
 Hero atakerHero;
 
+FILE * fp;
+int theta;
 int dx,dy;
+
+/*
+rodrigo-silveira.com/opengl-tutorial-parsing-obj-file-blender/#.UoWD4HWJAQM
+*/
 
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );
@@ -39,6 +46,30 @@ void display( void )
         atakerHero.draw();
     glPopMatrix();
 
+    fp = fopen("example.txt", "r");
+
+
+    glPushMatrix();
+        char v;
+        float x, y, z;
+        glTranslatef( -50.0 , -50.0, 0 );
+        glScalef(100,100,100);
+        glRotatef(theta,1,1,1);
+        glBegin(GL_TRIANGLES);
+        float i=0,j=0,k=0;
+        while( fscanf( fp, "%s %f %f %f", &v, &x, &y, &z ) != EOF ){
+            glColor3f( i, j, k );
+            printf("%f %f %f \n",x,y,z);
+            glVertex3f( x, y, z);
+            i+=0.001;
+            j+=0.001;
+            k+=0.001;
+
+        }
+        glEnd();
+    glPopMatrix();
+    fclose ( fp );
+
     glutSwapBuffers();
 }
 
@@ -55,12 +86,12 @@ void init( void )
 void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 27) exit(0);
 	if(tecla == 122) {
-        int xp = atakerHero.toDamage(&hero);
+        int xp = atakerHero.toDamage( &hero );
         if( xp != 0 ){
             hero.setVisibility(false);
         }
     }
-    if(tecla == 'a') dx-=10;
+    if(tecla == 'a') {dx-=10;theta+=10;}
     if(tecla == 'd') dx+=10;
     if(tecla == 'w') dy+=10;
     if(tecla == 's') dy-=10;
@@ -70,8 +101,8 @@ void keyboard(unsigned char tecla, int x, int y){
 int main(int argc, char *argv[])
 {
 
-    hero.setCharacterMaxLife( 100 );
-    hero.setDef( 10 );
+    hero.setCharacterMaxLife( 1000 );
+    hero.setDef( 100 );
     atakerHero.setAtk( 10 );
 
     glutInit( &argc, argv );
