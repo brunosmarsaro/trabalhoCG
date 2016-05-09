@@ -86,11 +86,11 @@ void init( void )
 void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 27) exit(0);
 	if(tecla == 122) {
-        int xp = atakerHero.toDamage( &hero );
-        if( xp != 0 ){
-            hero.setVisibility(false);
-        }
-    }
+		int xp = atakerHero.toDamage( &hero );
+		if( xp != 0 ){
+		    hero.setVisibility(false);
+		}
+	}
     if(tecla == 'a') {dx-=10;theta+=10;}
     if(tecla == 'd') dx+=10;
     if(tecla == 'w') dy+=10;

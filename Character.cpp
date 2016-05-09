@@ -136,10 +136,10 @@ void Character::setVisibility( bool v ){
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
     lvl += lvl;
-    atk += atk*(0.3);
-    def += def*(0.25);
+    atk += atk*(0.3)*lvl;
+    def += def*(0.25)*lvl;
     int maxLife = characterLife.getMaxLife();
-    setCharacterMaxLife( (int)(maxLife + maxLife*(0.183)));
+    setCharacterMaxLife( (int)(maxLife + maxLife*lvl*(0.183)));
 }
 void Character::addExperience( int exp ){
     int interval = 100;
