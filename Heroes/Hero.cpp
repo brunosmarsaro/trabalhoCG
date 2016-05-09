@@ -1,7 +1,8 @@
 #include "Hero.h"
 
 void Hero::draw(){
-	glPushMatrix();
+	if(isVisible()){
+		glPushMatrix();
 		setLifeBarPosition( 0.0, 30.0 );
 		getLifeBar().draw();
 
@@ -30,8 +31,6 @@ void Hero::draw(){
 			glVertex3f( 10.0, -80.0, 0.0 );
 		glEnd();
 	glPopMatrix();
-}
-
-int Hero::get(){
-	return 0;
+	}
+	
 }

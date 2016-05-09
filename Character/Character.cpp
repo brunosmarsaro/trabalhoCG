@@ -12,6 +12,8 @@ Character::Character( void ){
     experience = 0;
     atk = 10;
     def = 10;
+    vulnerableExperience = 10;
+    visible = true;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -24,6 +26,8 @@ Character::Character( float r, float g, float b ){
     experience = 0;
     atk = 10;
     def = 10;
+    vulnerableExperience = 10;
+    visible = true;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -35,6 +39,8 @@ Character::Character( float r, float g, float b, Position p ){
     experience = 0;
     atk = 10;
     def = 10;
+    vulnerableExperience = 10;
+    visible = true;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -48,6 +54,8 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     experience = 0;
     atk = 10;
     def = 10;
+    vulnerableExperience = 10;
+    visible = true;
 }
 Character::~Character( void ){
     //Character destructor
@@ -84,6 +92,12 @@ int Character::getExperience(){
 int Character::getCharacterMaxLife(){
     return characterLife.getMaxLife();
 }
+int Character::getCharacterLife(){
+    return characterLife.getLife();
+}
+bool Character::isVisible(){
+    return visible;
+}
 
 /*====================Setters====================*/
 void Character::setColor3f( float r, float g, float b){
@@ -111,13 +125,21 @@ void Character::setLifeBarPosition( int x, int y ){
     characterLife.setPosition( x, y );
 }
 
+void Character::setVulnerableExperience( int vExp ){
+    vulnerableExperience = vExp;
+}
+
+void Character::setVisibility( bool v ){
+    visible = v;
+}
+
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
     lvl += lvl;
-    atk += atk*(0.3);
-    def += def*(0.25);
+    atk += atk*(0.3)*lvl;
+    def += def*(0.25)*lvl;
     int maxLife = characterLife.getMaxLife();
-    setCharacterMaxLife( (int)(maxLife + maxLife*(0.183)));
+    setCharacterMaxLife( (int)(maxLife + maxLife*lvl*(0.183)));
 }
 void Character::addExperience( int exp ){
     int interval = 100;
@@ -132,17 +154,22 @@ void Character::heal( float perCentHeal ){
     int actualLife = characterLife.getLife();
     characterLife.setLife( ( int )( actualLife + actualLife * ( perCentHeal ) ) );
 }
-void Character::takeDamage ( int opponentAtk ) {
+int Character::takeDamage ( int opponentAtk ) {
     int damage, actualLife;
-    damage = opponentAtk - def*( 0.1 );
-    if( damage == 0 ) damage = 1;
+    damage = (opponentAtk - def*( 0.3 ));
+    if( damage <= 0 ) damage = 1;
     actualLife = characterLife.getLife();
     characterLife.setLife( actualLife - damage );
+
+    if( characterLife.getLife() == 0 ) return vulnerableExperience;
+    else return 0;
 }
-void Character::toDamage( void* target ) {
+int Character::toDamage( void* target ) {
     Character * aux;
     aux = (Character*)target;
-    aux->takeDamage(atk);
+    int ret;
+    ret = aux->takeDamage(atk);
+    return ret;
 }
 void Character::autoAtk( void* target ){
     //Implementar auto ataque

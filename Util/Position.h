@@ -1,4 +1,4 @@
-#include "gLib.h"
+#include "../gLib.h"
 using namespace std;
 
 class Position{

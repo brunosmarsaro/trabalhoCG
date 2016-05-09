@@ -1,16 +1,19 @@
+#include "gLib.h"
+#include "Heroes/Hero.cpp"
 
-#include <GL/glut.h>
-#include <iostream>
-#include <cmath>
-#include <cstdlib>
-#include "Hero.cpp"
 
 using namespace std;
-LifeBar life;
-Character character;
+//LifeBar life;
 Hero hero;
+Hero atakerHero;
 
+FILE * fp;
+int theta;
 int dx,dy;
+
+/*
+rodrigo-silveira.com/opengl-tutorial-parsing-obj-file-blender/#.UoWD4HWJAQM
+*/
 
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );
@@ -29,11 +32,39 @@ void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT );
     linesBackground();
-    //life.draw();
     glPushMatrix();
         glTranslatef( dx, dy, 0 );
         hero.draw();
     glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef( 20.0 , 50.0, 0 );
+        atakerHero.draw();
+    glPopMatrix();
+
+    fp = fopen("example.txt", "r");
+
+
+    glPushMatrix();
+        char v;
+        float x, y, z;
+        glTranslatef( -50.0 , -50.0, 0 );
+        glScalef(100,100,100);
+        glRotatef(theta,1,1,1);
+        glBegin(GL_TRIANGLES);
+        float i=0,j=0,k=0;
+        while( fscanf( fp, "%s %f %f %f", &v, &x, &y, &z ) != EOF ){
+            glColor3f( i, j, k );
+            printf("%f %f %f \n",x,y,z);
+            glVertex3f( x, y, z);
+            i+=0.001;
+            j+=0.001;
+            k+=0.001;
+
+        }
+        glEnd();
+    glPopMatrix();
+    fclose ( fp );
 
     glutSwapBuffers();
 }
@@ -50,12 +81,13 @@ void init( void )
 
 void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 27) exit(0);
-	if(tecla == 122){
-		float atual = life.getLife();
-		cout << atual << endl;
-		hero.takeDamage(10);
+	if(tecla == 122) {
+		int xp = atakerHero.toDamage( &hero );
+		if( xp != 0 ){
+		    hero.setVisibility(false);
+		}
 	}
-    if(tecla == 'a') dx-=10;
+    if(tecla == 'a') {dx-=10;theta+=10;}
     if(tecla == 'd') dx+=10;
     if(tecla == 'w') dy+=10;
     if(tecla == 's') dy-=10;
@@ -64,13 +96,11 @@ void keyboard(unsigned char tecla, int x, int y){
 
 int main(int argc, char *argv[])
 {
-	life.setMaxLife(300);
-	life.setLife(300);
-	float x,y;
-	x = 100;
-	y = -50;
-	life.setPosition(x,y);
-    character.setLifeBar(life);
+
+    hero.setCharacterMaxLife( 1000 );
+    hero.setDef( 100 );
+    atakerHero.setAtk( 10 );
+
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize( 500, 500 );

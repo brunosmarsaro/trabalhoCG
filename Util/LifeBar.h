@@ -1,5 +1,5 @@
 #include "Position.cpp"
-#include "gLib.h"
+#include "../gLib.h"
 
 #define standardWidth 300
 #define standardHeight 30
