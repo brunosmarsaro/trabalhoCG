@@ -15,3 +15,5 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstdio>
+#include <vector>
+#include <cstring>

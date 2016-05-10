@@ -3,17 +3,25 @@
 
 
 using namespace std;
+typedef struct position SPosition;
+struct position
+{
+    float x, y, z;  
+};
+
 //LifeBar life;
 Hero hero;
 Hero atakerHero;
 
 FILE * fp;
+vector<Position> vertices;
 int theta;
 int dx,dy;
 
 /*
 rodrigo-silveira.com/opengl-tutorial-parsing-obj-file-blender/#.UoWD4HWJAQM
 */
+
 
 void linesBackground( void ){
     glColor3f( 0.3, 0.3, 0.3 );
@@ -42,29 +50,59 @@ void display( void )
         atakerHero.draw();
     glPopMatrix();
 
-    fp = fopen("example.txt", "r");
+
+    fp = fopen("example2.txt", "r");
+
+    
 
 
     glPushMatrix();
-        char v;
+        char v[5];
         float x, y, z;
         glTranslatef( -50.0 , -50.0, 0 );
         glScalef(100,100,100);
-        glRotatef(theta,1,1,1);
-        glBegin(GL_TRIANGLES);
+        //glRotatef(theta,1,1,1);
         float i=0,j=0,k=0;
-        while( fscanf( fp, "%s %f %f %f", &v, &x, &y, &z ) != EOF ){
-            glColor3f( i, j, k );
-            printf("%f %f %f \n",x,y,z);
-            glVertex3f( x, y, z);
-            i+=0.001;
-            j+=0.001;
-            k+=0.001;
+         int o = 0;
 
+
+        float r=0.4,g=0.1,b=0.7;
+        while( fscanf( fp, "%s", v) != EOF ){
+            while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0){
+                if(fscanf( fp, "%s", v) == EOF) break;
+            }
+           
+       
+            if(strcmp("v",v) == 0){
+                fscanf(fp,"%f %f %f",&x, &y, &z );
+                Position aux;
+                aux.setX(x);
+                aux.setY(y);
+                aux.setZ(z);
+                vertices.push_back(aux);
+            }else if (strcmp("f",v) == 0){
+                char point[50];
+                int i,j,k,aux;
+                fscanf(fp,"%d %*c %*c %*d",&i);
+                fscanf(fp,"%d %*c %*c %*d",&j);
+                fscanf(fp,"%d %*c %*c %*d",&k);
+				i--;
+				j--;
+				k--;
+
+                glBegin(GL_TRIANGLES);
+                glColor3f(r,g,b);
+                glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
+                glVertex3f( vertices[j].getX(),vertices[j].getY(), vertices[j].getZ());
+                glVertex3f( vertices[k].getX(),vertices[k].getY(), vertices[k].getZ());
+                glEnd();               
+
+            }
         }
-        glEnd();
+        
     glPopMatrix();
-    fclose ( fp );
+    fclose( fp );
+
 
     glutSwapBuffers();
 }
@@ -84,7 +122,7 @@ void keyboard(unsigned char tecla, int x, int y){
 	if(tecla == 122) {
 		int xp = atakerHero.toDamage( &hero );
 		if( xp != 0 ){
-		    hero.setVisibility(false);
+		    hero.setVisibility( false );
 		}
 	}
     if(tecla == 'a') {dx-=10;theta+=10;}
@@ -110,7 +148,7 @@ int main(int argc, char *argv[])
     init();
     
     glutDisplayFunc( display );
-    glutKeyboardFunc ( keyboard );
+    glutKeyboardFunc( keyboard );
     
     glutMainLoop();
     return 0;
