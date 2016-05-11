@@ -18,9 +18,40 @@ vector<Position> vertices;
 int theta;
 int dx,dy;
 
+        int angle;
+        // Inicializa as variáveis usadas para alterar a posição do 
+        // observador virtual
+        int rotX ;
+        int rotY ;
+        int obsZ ; 
+
 /*
 rodrigo-silveira.com/opengl-tutorial-parsing-obj-file-blender/#.UoWD4HWJAQM
 */
+
+
+void DefineIluminacao (void){
+
+	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};          // "cor" 
+	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+	// Capacidade de brilho do material
+
+	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+	GLint especMaterial = 60;
+	// Define a refletância do material 
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+	// Ativa o uso da luz ambiente 
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
+}
 
 
 void linesBackground( void ){
@@ -39,7 +70,7 @@ void linesBackground( void ){
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT );
-    linesBackground();
+    //linesBackground();
     glPushMatrix();
         glTranslatef( dx, dy, 0 );
         hero.draw();
@@ -55,13 +86,13 @@ void display( void )
 
     
 
-
+    DefineIluminacao();
     glPushMatrix();
         char v[5];
         float x, y, z;
         glTranslatef( -50.0 , -50.0, 0 );
         glScalef(100,100,100);
-        //glRotatef(theta,1,1,1);
+        glRotatef(theta,1,1,1);
         float i=0,j=0,k=0;
          int o = 0;
 
@@ -104,8 +135,11 @@ void display( void )
     fclose( fp );
 
 
+
+
     glutSwapBuffers();
 }
+
 
 void init( void )
 {
@@ -114,6 +148,26 @@ void init( void )
     //Inicializar sistema de visualizaçao
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
+    /*
+    // Habilita a definição da cor do material a partir da cor corrente
+        glEnable(GL_COLOR_MATERIAL);
+        //Habilita o uso de iluminação
+        glEnable(GL_LIGHTING);  
+        // Habilita a luz de número 0
+        glEnable(GL_LIGHT0);
+        // Habilita o depth-buffering
+        glEnable(GL_DEPTH_TEST);
+        // Habilita o modelo de colorização de Gouraud
+        glShadeModel(GL_SMOOTH);
+        // Inicializa a variável que especifica o ângulo da projeção
+        // perspectiva
+        angle=50;
+        // Inicializa as variáveis usadas para alterar a posição do 
+        // observador virtual
+        rotX = 30;
+        rotY = 0;
+        obsZ = 180;    
+       */
     glOrtho( -350.0, 350.0, -350.0, 350.0, -350.0, 350.0 );
 }    
 
