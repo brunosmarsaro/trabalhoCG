@@ -91,7 +91,7 @@ void display( void )
         char v[5];
         float x, y, z;
         glTranslatef( -50.0 , -50.0, 0 );
-        glScalef(100,100,100);
+        glScalef(10,10,10);
         glRotatef(theta,1,1,1);
         float i=0,j=0,k=0;
          int o = 0;
@@ -114,9 +114,15 @@ void display( void )
             }else if (strcmp("f",v) == 0){
                 char point[50];
                 int i,j,k,aux;
+                /*
+                Se for ler o macaco
                 fscanf(fp,"%d %*c %*c %*d",&i);
                 fscanf(fp,"%d %*c %*c %*d",&j);
                 fscanf(fp,"%d %*c %*c %*d",&k);
+				*/
+                fscanf(fp,"%d %*c %*d",&i);
+                fscanf(fp,"%d %*c %*d",&j);
+                fscanf(fp,"%d %*c %*d",&k);
 				i--;
 				j--;
 				k--;
