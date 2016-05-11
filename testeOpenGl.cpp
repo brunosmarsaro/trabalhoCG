@@ -15,6 +15,7 @@ Hero atakerHero;
 
 FILE * fp;
 vector<Position> vertices;
+vector<Position> vertices2;
 int theta;
 int dx,dy;
 
@@ -82,11 +83,9 @@ void display( void )
     glPopMatrix();
 
 
+
+
     fp = fopen("example2.txt", "r");
-
-    
-
-    DefineIluminacao();
     glPushMatrix();
         char v[5];
         float x, y, z;
@@ -137,8 +136,59 @@ void display( void )
             }
         }
         
+    
+    fclose( fp );
+
+
+   fp = fopen("example3.txt", "r");
+    
+
+		i=0,j=0,k=0;
+
+
+		r=0.8,g=8,b=8;
+        while( fscanf( fp, "%s", v) != EOF ){
+            while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0){
+                if(fscanf( fp, "%s", v) == EOF) break;
+            }
+           
+       
+            if(strcmp("v",v) == 0){
+                fscanf(fp,"%f %f %f",&x, &y, &z );
+                Position aux;
+                aux.setX(x);
+                aux.setY(y);
+                aux.setZ(z);
+                vertices2.push_back(aux);
+            }else if (strcmp("f",v) == 0){
+                char point[50];
+                int i,j,k,aux;
+                /*
+                Se for ler o macaco
+                fscanf(fp,"%d %*c %*c %*d",&i);
+                fscanf(fp,"%d %*c %*c %*d",&j);
+                fscanf(fp,"%d %*c %*c %*d",&k);
+				*/
+                fscanf(fp,"%d %*c %*d",&i);
+                fscanf(fp,"%d %*c %*d",&j);
+                fscanf(fp,"%d %*c %*d",&k);
+				i--;
+				j--;
+				k--;
+
+                glBegin(GL_TRIANGLES);
+                glColor3f(r,g,b);
+                glVertex3f( vertices2[i].getX(),vertices2[i].getY(), vertices2[i].getZ());
+                glVertex3f( vertices2[j].getX(),vertices2[j].getY(), vertices2[j].getZ());
+                glVertex3f( vertices2[k].getX(),vertices2[k].getY(), vertices2[k].getZ());
+                glEnd();               
+
+            }
+        }
+        
     glPopMatrix();
     fclose( fp );
+
 
 
 
