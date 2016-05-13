@@ -78,7 +78,7 @@ void display( void )
     glClear( GL_COLOR_BUFFER_BIT );
     //linesBackground();
     glPushMatrix();
-        glTranslatef( dx, dy, 0 );
+        glTranslatef( dx, 0, -dy );
         hero.draw();
     glPopMatrix();
 
@@ -167,7 +167,7 @@ void init( void )
 {
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    angle=90;
+    angle=45;
     //glEnable(GL_LIGHTING);
 	//glEnable(GL_COLOR_MATERIAL); 
 //	glEnable(GL_DEPTH_TEST);
@@ -245,7 +245,8 @@ void EspecificaParametrosVisualizacao(void)
 	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
-	gluLookAt(0,80,100, 0,0,0, 0,1,0);
+	gluLookAt(0,100,100, 0,0,0, 0,1,0);
+	//gluLookAt(camerax,cameray,cameraz, focox,focoy,focoz, 0,1,0);
 }
 
 
@@ -266,7 +267,7 @@ int main(int argc, char *argv[])
     hero.setCharacterMaxLife( 1000 );
     hero.setDef( 100 );
     atakerHero.setAtk( 10 );
-
+    //EspecificaParametrosVisualizacao(); 
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize( 500, 500 );

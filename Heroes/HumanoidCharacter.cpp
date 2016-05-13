@@ -1,6 +1,6 @@
-#include "Hero.h"
+#include "HumanoidCharacter.h"
 
-void Hero::drawBody(){
+void HumanoidCharacter::drawBody(){
 	glBegin(GL_TRIANGLES);
 		glVertex3f( 0.068929, -1.907493, 0.341887);
 		glVertex3f( 0.068929, -2.707493, 0.041887);
@@ -854,7 +854,7 @@ void Hero::drawBody(){
 	glEnd();
 }
 
-void Hero::drawArm(){
+void HumanoidCharacter::drawArm(){
 	glBegin(GL_TRIANGLES);
 		glVertex3f( 0.864160, -2.627635, 0.931565);
 		glVertex3f( 0.870006, -2.613621, 0.955160);
@@ -10456,7 +10456,7 @@ void Hero::drawArm(){
 	glEnd();
 }
 
-void Hero::drawThigh(){
+void HumanoidCharacter::drawThigh(){
 	glBegin(GL_TRIANGLES);
 		glVertex3f( 0.505340, -2.103470, -0.043196);
 		glVertex3f( 0.511771, -2.168769, -0.043196);
@@ -16698,7 +16698,7 @@ void Hero::drawThigh(){
 	glEnd();
 }
 
-void Hero::drawCalf(){
+void HumanoidCharacter::drawCalf(){
 glBegin(GL_TRIANGLES);
 		glVertex3f( -0.035024, -2.331634, 0.370079);
 		glVertex3f( 0.082647, -2.317467, 0.587681);
@@ -17660,109 +17660,76 @@ glBegin(GL_TRIANGLES);
 	glEnd();
 }
 
-void Hero::draw(){
+void HumanoidCharacter::draw(){
 
-	glPushMatrix();
-		glPushMatrix();
-			setLifeBarPosition( 0.0, 100.0 );
-			glScalef( 0.1 ,0.1 ,0.1 );
-			getLifeBar().draw();
-		glPopMatrix();
-		glPushMatrix();
-			glColor3f( 0.2, 1.0, 1.0 );
-			glScalef( 4.0 ,4.0 ,4.0 );
-			drawBody();
-		glPopMatrix();
-
-		//Left Arm
-		glPushMatrix();
-			glTranslatef( 4.0 , -2.0 , 0.00 );
-			glScalef( 4.0 ,4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			drawArm();
-		glPopMatrix();
-
-		//Right Arm (Mirror left)
-		glPushMatrix();
-			glTranslatef( -4.0 , -2.0 , 0.00 );
-			glScalef( 4.0 ,-4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			glRotatef( 180.0, 0,1,1);
-			glRotatef( -90.0, 1,0,0);
-			drawArm();
-		glPopMatrix();
-
-		//Left Thigh
-		glPushMatrix();
-			glTranslatef( 2.0 , -9.5 , 0.00 );
-			glScalef( 4.0 ,4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			drawThigh();
-		glPopMatrix();
-
-		//Right Thigh (Mirror left)
-		glPushMatrix();
-			glTranslatef( -2.0 , -9.5 , 0.00 );
-			glScalef( 4.0 ,-4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			glRotatef( 180.0, 0,1,1);
-			glRotatef( -90.0, 1,0,0);
-			drawThigh();
-		glPopMatrix();
-
-		//Left Calf
-		glPushMatrix();
-			glTranslatef( 2.5 , -18.0 , 0.00 );
-			glScalef( 4.0 ,4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			drawCalf();
-		glPopMatrix();
-
-		//Right Calf (Mirror left)
-		glPushMatrix();
-			glTranslatef( -2.5 , -18.0 , 0.00 );
-			glScalef( 4.0 ,-4.0 ,4.0 );
-			glColor3f( 0.2, 0.3, 0.2 );
-			glRotatef( 180.0, 0,1,1);
-			glRotatef( -90.0, 1,0,0);
-			drawCalf();
-		glPopMatrix();
-		
-
-
-	glPopMatrix();
-	/*
 	if(isVisible()){
 		glPushMatrix();
-		setLifeBarPosition( 0.0, 30.0 );
-		getLifeBar().draw();
+			glPushMatrix();
+				setLifeBarPosition( 0.0, 100.0 );
+				glScalef( 0.1 ,0.1 ,0.1 );
+				getLifeBar().draw();
+			glPopMatrix();
+			
+			glPushMatrix();
+				glColor3f( 0.2, 1.0, 1.0 );
+				glScalef( 4.0 ,4.0 ,4.0 );
+				drawBody();
+			glPopMatrix();
 
-		glBegin(GL_POLYGON);
-			glVertex3f( -10.0, 0.0, 0.0 );
-			glVertex3f( 10.0, 0.0, 0.0 );
-			glVertex3f( 10.0, 20.0, 0.0 );
-			glVertex3f( -10.0, 20.0, 0.0 );
-		glEnd();
+			//Left Arm
+			glPushMatrix();
+				glTranslatef( 4.0 , -2.0 , 0.00 );
+				glScalef( 4.0 ,4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				drawArm();
+			glPopMatrix();
 
-		glLineWidth( 5.0 );
-		glBegin(GL_LINES);
-			glVertex3f( 0.0, 0.0, 0.0 );
-			glVertex3f( 0.0, -50.0, 0.0 );
+			//Right Arm (Mirror left)
+			glPushMatrix();
+				glTranslatef( -4.0 , -2.0 , 0.00 );
+				glScalef( 4.0 ,-4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				glRotatef( 180.0, 0,1,1);
+				glRotatef( -90.0, 1,0,0);
+				drawArm();
+			glPopMatrix();
 
-			glVertex3f( 0.0, -2.0, 0.0 );
-			glVertex3f( -20.0, 20.0, 0.0 );
+			//Left Thigh
+			glPushMatrix();
+				glTranslatef( 2.0 , -9.5 , 0.00 );
+				glScalef( 4.0 ,4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				drawThigh();
+			glPopMatrix();
 
-			glVertex3f( 0.0, -2.0, 0.0 );
-			glVertex3f( 20.0, -20.0, 0.0 );
+			//Right Thigh (Mirror left)
+			glPushMatrix();
+				glTranslatef( -2.0 , -9.5 , 0.00 );
+				glScalef( 4.0 ,-4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				glRotatef( 180.0, 0,1,1);
+				glRotatef( -90.0, 1,0,0);
+				drawThigh();
+			glPopMatrix();
 
-			glVertex3f( 0.0, -50.0, 0.0 );
-			glVertex3f( -10.0, -80.0, 0.0 );
+			//Left Calf
+			glPushMatrix();
+				glTranslatef( 2.5 , -18.0 , 0.00 );
+				glScalef( 4.0 ,4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				drawCalf();
+			glPopMatrix();
 
-			glVertex3f( 0.0, -50.0, 0.0 );
-			glVertex3f( 10.0, -80.0, 0.0 );
-		glEnd();
-	glPopMatrix();
+			//Right Calf (Mirror left)
+			glPushMatrix();
+				glTranslatef( -2.5 , -18.0 , 0.00 );
+				glScalef( 4.0 ,-4.0 ,4.0 );
+				glColor3f( 0.2, 0.3, 0.2 );
+				glRotatef( 180.0, 0,1,1);
+				glRotatef( -90.0, 1,0,0);
+				drawCalf();
+			glPopMatrix();
+		glPopMatrix();
 	}
-	*/
 	
 }
