@@ -14,6 +14,7 @@ Hero hero;
 Hero atakerHero;
 
 FILE * fp;
+FILE * saida;
 vector<Position> vertices;
 vector<Position> vertices2;
 int theta;
@@ -86,6 +87,7 @@ void display( void )
 
 
     fp = fopen("example2.txt", "r");
+    saida = fopen("teste.cpp","w");
     glPushMatrix();
         char v[5];
         float x, y, z;
@@ -125,6 +127,15 @@ void display( void )
 				i--;
 				j--;
 				k--;
+
+
+				fprintf(saida, "glBegin(GL_TRIANGLES);\n");
+				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
+				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
+				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
+				fprintf(saida, "glEnd();\n\n");
+
+
 
                 glBegin(GL_TRIANGLES);
                 glColor3f(r,g,b);
