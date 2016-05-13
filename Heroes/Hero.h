@@ -10,5 +10,9 @@ class Hero : public Character{
 private:
 
 public:
+	void drawBody();
+	void drawArm();
+	void drawThigh();
+	void drawCalf();
 	void draw();
 };

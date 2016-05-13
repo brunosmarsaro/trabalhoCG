@@ -13,6 +13,10 @@ struct position
 Hero hero;
 Hero atakerHero;
 
+
+GLfloat angle, fAspect;
+
+
 FILE * fp;
 FILE * saida;
 vector<Position> vertices;
@@ -20,7 +24,7 @@ vector<Position> vertices2;
 int theta;
 int dx,dy;
 
-        int angle;
+        //int angle;
         // Inicializa as variáveis usadas para alterar a posição do 
         // observador virtual
         int rotX ;
@@ -79,21 +83,22 @@ void display( void )
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef( 20.0 , 50.0, 0 );
+        glTranslatef( 2.0 , 5.0, 0 );
+        glRotatef(theta,0,1,0);
         atakerHero.draw();
     glPopMatrix();
 
 
 
 
-    fp = fopen("example2.txt", "r");
-    saida = fopen("teste.cpp","w");
+    fp = fopen("objTeste.txt", "r");
+    //saida = fopen("teste.cpp","w");
     glPushMatrix();
         char v[5];
         float x, y, z;
         glTranslatef( -50.0 , -50.0, 0 );
         glScalef(10,10,10);
-        glRotatef(theta,1,1,1);
+        
         float i=0,j=0,k=0;
          int o = 0;
 
@@ -121,21 +126,19 @@ void display( void )
                 fscanf(fp,"%d %*c %*c %*d",&j);
                 fscanf(fp,"%d %*c %*c %*d",&k);
 				*/
-                fscanf(fp,"%d %*c %*d",&i);
-                fscanf(fp,"%d %*c %*d",&j);
-                fscanf(fp,"%d %*c %*d",&k);
+                fscanf(fp,"%d",&i);
+                fscanf(fp,"%d",&j);
+                fscanf(fp,"%d",&k);
 				i--;
 				j--;
 				k--;
-
-
+				/*
 				fprintf(saida, "glBegin(GL_TRIANGLES);\n");
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
 				fprintf(saida, "glEnd();\n\n");
-
-
+				*/
 
                 glBegin(GL_TRIANGLES);
                 glColor3f(r,g,b);
@@ -147,58 +150,10 @@ void display( void )
             }
         }
         
-    
-    fclose( fp );
-
-
-   fp = fopen("example3.txt", "r");
-    
-
-		i=0,j=0,k=0;
-
-
-		r=0.8,g=8,b=8;
-        while( fscanf( fp, "%s", v) != EOF ){
-            while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0){
-                if(fscanf( fp, "%s", v) == EOF) break;
-            }
-           
-       
-            if(strcmp("v",v) == 0){
-                fscanf(fp,"%f %f %f",&x, &y, &z );
-                Position aux;
-                aux.setX(x);
-                aux.setY(y);
-                aux.setZ(z);
-                vertices2.push_back(aux);
-            }else if (strcmp("f",v) == 0){
-                char point[50];
-                int i,j,k,aux;
-                /*
-                Se for ler o macaco
-                fscanf(fp,"%d %*c %*c %*d",&i);
-                fscanf(fp,"%d %*c %*c %*d",&j);
-                fscanf(fp,"%d %*c %*c %*d",&k);
-				*/
-                fscanf(fp,"%d %*c %*d",&i);
-                fscanf(fp,"%d %*c %*d",&j);
-                fscanf(fp,"%d %*c %*d",&k);
-				i--;
-				j--;
-				k--;
-
-                glBegin(GL_TRIANGLES);
-                glColor3f(r,g,b);
-                glVertex3f( vertices2[i].getX(),vertices2[i].getY(), vertices2[i].getZ());
-                glVertex3f( vertices2[j].getX(),vertices2[j].getY(), vertices2[j].getZ());
-                glVertex3f( vertices2[k].getX(),vertices2[k].getY(), vertices2[k].getZ());
-                glEnd();               
-
-            }
-        }
-        
+    	//fclose( saida );
+    	fclose( fp );        
     glPopMatrix();
-    fclose( fp );
+
 
 
 
@@ -210,12 +165,36 @@ void display( void )
 
 void init( void )
 {
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    angle=90;
+    //glEnable(GL_LIGHTING);
+	//glEnable(GL_COLOR_MATERIAL); 
+//	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_LIGHT0);
+	/*
     //Selecionar cor de fundo preto
     glClearColor( 0.13, 0.6, 0.234, 1.0 );
     //Inicializar sistema de visualizaçao
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    /*
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING); 
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+
+    gluPerspective(0,fAspect,0.1,500);
+
+    // Especifica sistema de coordenadas do modelo
+	glMatrixMode(GL_MODELVIEW);
+	// Inicializa sistema de coordenadas do modelo
+	glLoadIdentity();
+
+	// Especifica posição do observador e do alvo
+	gluLookAt(0,0,1000, 0,0,0, 0,1,0);
+
+
+    
     // Habilita a definição da cor do material a partir da cor corrente
         glEnable(GL_COLOR_MATERIAL);
         //Habilita o uso de iluminação
@@ -235,7 +214,7 @@ void init( void )
         rotY = 0;
         obsZ = 180;    
        */
-    glOrtho( -350.0, 350.0, -350.0, 350.0, -350.0, 350.0 );
+    //glOrtho( -350.0, 350.0, -350.0, 350.0, -350.0, 350.0 );
 }    
 
 void keyboard(unsigned char tecla, int x, int y){
@@ -251,6 +230,34 @@ void keyboard(unsigned char tecla, int x, int y){
     if(tecla == 'w') dy+=10;
     if(tecla == 's') dy-=10;
 	glutPostRedisplay();
+}
+
+void EspecificaParametrosVisualizacao(void)
+{
+	// Especifica sistema de coordenadas de projeção
+	glMatrixMode(GL_PROJECTION);
+	// Inicializa sistema de coordenadas de projeção
+	glLoadIdentity();
+	// Especifica a projeção perspectiva
+	gluPerspective(angle,fAspect,0.1,500);
+	// Especifica sistema de coordenadas do modelo
+	glMatrixMode(GL_MODELVIEW);
+	// Inicializa sistema de coordenadas do modelo
+	glLoadIdentity();
+	// Especifica posição do observador e do alvo
+	gluLookAt(0,80,100, 0,0,0, 0,1,0);
+}
+
+
+void AlteraTamanhoJanela(GLsizei w, GLsizei h)
+{
+	// Para previnir uma divisão por zero
+	if ( h == 0 ) h = 1;
+	// Especifica o tamanho da viewport
+	glViewport(0, 0, w, h);
+	// Calcula a correção de aspecto
+	fAspect = (GLfloat)w/(GLfloat)h;
+	EspecificaParametrosVisualizacao();
 }
 
 int main(int argc, char *argv[])
@@ -269,6 +276,7 @@ int main(int argc, char *argv[])
     init();
     
     glutDisplayFunc( display );
+    glutReshapeFunc ( AlteraTamanhoJanela );
     glutKeyboardFunc( keyboard );
     
     glutMainLoop();
