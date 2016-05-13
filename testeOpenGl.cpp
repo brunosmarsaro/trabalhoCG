@@ -1,5 +1,5 @@
 #include "gLib.h"
-#include "Heroes/Hero.cpp"
+#include "Heroes/HumanoidCharacter.cpp"
 
 
 using namespace std;
@@ -10,8 +10,8 @@ struct position
 };
 
 //LifeBar life;
-Hero hero;
-Hero atakerHero;
+HumanoidCharacter hero;
+HumanoidCharacter atakerHero;
 
 
 GLfloat angle, fAspect;

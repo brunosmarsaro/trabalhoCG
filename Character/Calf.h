@@ -1,5 +1,5 @@
 #include "../gLib.h"
-class Arm{
+class Calf{
 
 private:
 	int rotateX;
@@ -15,7 +15,7 @@ private:
 	void privateDraw();
 
 public:
-	Arm(){
+	Calf(){
 		rotateX = 0;
 		rotateY = 0;
 		rotateZ = 0;
@@ -27,9 +27,10 @@ public:
 		posZ = 0;
 		mirror = false;
 	}
+	
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
-	void setArmPosition( float, float, float );
+	void setCalfPosition( float, float, float );
 	void setMirror( bool );
 	void draw();
 };

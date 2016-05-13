@@ -1,5 +1,6 @@
 #include "../gLib.h"
-class Arm{
+
+class Thigh{
 
 private:
 	int rotateX;
@@ -15,7 +16,7 @@ private:
 	void privateDraw();
 
 public:
-	Arm(){
+	Thigh(){
 		rotateX = 0;
 		rotateY = 0;
 		rotateZ = 0;
@@ -27,9 +28,10 @@ public:
 		posZ = 0;
 		mirror = false;
 	}
+	
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
-	void setArmPosition( float, float, float );
+	void setThighPosition( float, float, float );
 	void setMirror( bool );
 	void draw();
 };

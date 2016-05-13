@@ -183,6 +183,3 @@ void Character::draw( void ){
     cout << "Desenhando o monstro" << endl;
 }
 */
-
-
-

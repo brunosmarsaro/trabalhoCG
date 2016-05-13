@@ -3,28 +3,48 @@
 // de objetos 3D.
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
+//#include "Character/Body.cpp"
+
 
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
-HumanoidCharacter testHero;
+//HumanoidCharacter testHero;
+HumanoidCharacter teste;
+
+// Função responsável pela especificação dos parâmetros de iluminação
+
+void DefineIluminacao (void)
+{
+        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
+        GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+        GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+        // Capacidade de brilho do material
+        GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+        GLint especMaterial = 60;
+        // Define a refletância do material 
+        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+        // Define a concentração do brilho
+        glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+        // Ativa o uso da luz ambiente 
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+        // Define os parâmetros da luz de número 0
+        glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+        glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
+}
+
 
 // Função callback chamada para fazer o desenho
 void Desenha(void)
 {
-	// Limpa a janela de visualização com a cor
-	// de fundo definida previamente
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	// Troca cor corrente para azul
-	glColor3f(0.0f, 0.0f, 1.0f);
-
-	// Desenha o teapot com a cor corrente (wire-frame)
-	testHero.draw();
-	//glutWireTeapot(50.0f);
-
-	// Execução dos comandos de desenho
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	DefineIluminacao();
+	teste.draw();
 	glutSwapBuffers();
 }
 
@@ -32,18 +52,50 @@ void Desenha(void)
 // Inicialização
 void Inicializa(void)
 {
-	// Define a cor de fundo da janela de visualização como branca
+
+	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor" 
+	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+
+	// Capacidade de brilho do material
+	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+	GLint especMaterial = 60;
+
+ 	// Especifica que a cor de fundo da janela será preta
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	
+	// Habilita o modelo de colorização de Gouraud
+	glShadeModel(GL_SMOOTH);
 
-	// Inicializa a variável que especifica o ângulo da projeção
-	// perspectiva
-	angle=50;
+	// Define a refletância do material 
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
 
-	// Inicializa as variáveis usadas para alterar a posição do
-	// observador virtual
+	// Ativa o uso da luz ambiente 
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+
+	// Habilita a definição da cor do material a partir da cor corrente
+	glEnable(GL_COLOR_MATERIAL);
+	//Habilita o uso de iluminação
+	glEnable(GL_LIGHTING);  
+	// Habilita a luz de número 0
+	glEnable(GL_LIGHT0);
+	// Habilita o depth-buffering
+	glEnable(GL_DEPTH_TEST);
+
+	angle=45;
 	rotX = 30;
-	rotY = 0;
-	obsZ = 180;
+        rotY = 0;
+        obsZ = 180; 
+        
 }
 
 
@@ -58,6 +110,7 @@ void PosicionaObservador(void)
 	glTranslatef(0,0,-obsZ);
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
+	DefineIluminacao();
 }
 
 
@@ -68,10 +121,8 @@ void EspecificaParametrosVisualizacao(void)
 	glMatrixMode(GL_PROJECTION);
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
-
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
 	gluPerspective(angle,fAspect,0.5,500);
-
 	PosicionaObservador();
 }
 
@@ -147,7 +198,7 @@ int main()
 	glutInit(&argc,argv);
 
 	// Define do modo de operacao da GLUT
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
 
 	// Especifica a posição inicial da janela GLUT
     glutInitWindowPosition(5,5);
