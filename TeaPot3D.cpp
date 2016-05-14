@@ -204,7 +204,7 @@ void TeclasEspeciais (int tecla, int x, int y)
 		case 'b':
 			teste.takeDamage(20);
 	}
-	teste.setRotate( rotX, rotY, 0 );
+	teste.setRotate( rotX, 30 + rotY, 0 );
 	PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -258,10 +258,11 @@ int main()
 	glutKeyboardFunc( keyboard );
 	glutIdleFunc( idle );
 
-	teste.setBodyColor( 1.0, 1.0, 0.0 );
-	teste.setArmColor( 0.0, 1.0, 1.0 );
-	teste.setLegColor( 1.0, 0.0, 1.0 );
-	teste.setScale( 1.15, 1.15, 1.15 );
+	teste.setBodyColor( 1.0, 0.0, 0.0 );
+	teste.setArmColor( 0.0, 1.0, 0.0 );
+	teste.setLegColor( 0.0, 0.0, 1.0 );
+	teste.setScale( 0.5, 0.5, 0.5 );
+	teste.setRotate( 0, 30, 0 );
 	teste.setWalk(true);
 	
 

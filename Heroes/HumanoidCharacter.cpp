@@ -10,12 +10,12 @@ HumanoidCharacter::HumanoidCharacter(){
 	scaleZ = 1;
 	walkCicle = -30;
 	walking = false;
-	leftCalfPosition.setX( 3.0 );
+	leftCalfPosition.setX( 3.15 );
 	leftCalfPosition.setY( -18.5 );
-	leftCalfPosition.setZ( 0.0 );
-	rightCalfPosition.setX( -3.0 );
+	leftCalfPosition.setZ( -0.5 );
+	rightCalfPosition.setX( -3.15 );
 	rightCalfPosition.setY( -18.5 );
-	rightCalfPosition.setZ( 0.0 );
+	rightCalfPosition.setZ( -0.5 );
 }
 void HumanoidCharacter::setRotate( float rx, float ry, float rz){
 	rotateX = rx;
@@ -72,34 +72,36 @@ void HumanoidCharacter::walkAnimation(){
 		if(walkCicle == 60) exit(0);
 		
     	//Movimentar a canela
+    	float x, y, z;
+    	
 		calfBeginZ = (8.5) * sinCos.getSin( walkCicle );
     	calfBeginY = (8.5) * sinCos.getCos( walkCicle );
-    	cout << sin(walkCicle * M_PI / 180) << " - " << sinCos.getSin( walkCicle ) << endl;
-    	float x, y, z;
+    	cout << walkCicle <<"----> "<<sin(walkCicle * M_PI / 180) << " - " << sinCos.getSin( walkCicle ) << endl;
     	y = getPosition().getY() -9.5 - calfBeginY;
     	z =  +calfBeginZ + getPosition().getZ();
     	leftCalfPosition.setY(y);
     	leftCalfPosition.setZ(-z);
     	
 
-    	calfBeginZ = (8.5) * sin(-walkCicle * M_PI / 180);
-    	calfBeginY = (8.5) * cos(-walkCicle * M_PI / 180);
+    	calfBeginZ = (8.5) * sinCos.getSin( -walkCicle );
+    	calfBeginY = (8.5) * sinCos.getCos( -walkCicle );
     	y = getPosition().getY() -9.5 - calfBeginY;
     	z =  -calfBeginZ + getPosition().getZ();
     	rightCalfPosition.setY(y);
     	rightCalfPosition.setZ(z);
    
     
-    	/*
+    	
     	//Inclinar a canela
     	float angle;
     	angle = (-7 - walkCicle);
-    	if(angle < walkCicle) angle = walkCicle;
+    	if(angle > -walkCicle) angle = -walkCicle;
     	if(walkCicle < -10) leftCalf.setRotate(angle, 0, 0);
-    	angle = -(-7 - walkCicle);
+
+    	angle = (-7 - walkCicle);
     	if(angle < walkCicle) angle = walkCicle;
     	if(walkCicle > 10) rightCalf.setRotate(angle, 0, 0);
-		*/
+
 		if(upCicle){ 
 			 walkCicle+=passo;	
 		}

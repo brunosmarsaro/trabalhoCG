@@ -130,5 +130,5 @@ float SinCos::getCos( int a ){
 	return cosVector[ a + 30];
 }
 float SinCos::getSin( int a ){
-	return cosVector[ a + 30];
+	return sinVector[ a + 30];
 }
