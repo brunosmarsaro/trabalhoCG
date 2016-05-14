@@ -18,8 +18,6 @@ private:
 	int vulnerableExperience;
 	LifeBar characterLife;
 	bool visible;
-
-	
 public:
 	/*Constructors and destructors*/
 	Character();
@@ -45,12 +43,12 @@ public:
 
 	/*Setters*/
 	void setColor3f( float, float, float );
-	void setPosition( float, float );
+	void setPosition( float, float, float );
 	void setLifeBar( LifeBar );
 	void setAtk( int );
 	void setDef( int );
 	void setCharacterMaxLife( int );
-	void setLifeBarPosition( int, int );
+	void setLifeBarPosition( int, int, int );
 	void setVulnerableExperience( int );
 	void setVisibility( bool );
 
@@ -60,6 +58,4 @@ public:
 	void heal( float );
 	int toDamage( void* );
 	int takeDamage( int );
-	void autoAtk( void* );
-	//void draw();
 };

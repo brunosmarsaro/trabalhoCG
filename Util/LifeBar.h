@@ -33,9 +33,9 @@ public:
 	Position getPosition();
 
 	/*Setters*/
-	void setColor3f( float, float,float );
+	void setColor3f( float, float, float );
 	void setColorAuto();
-	void setPosition( float, float );
+	void setPosition( float, float, float );
 	void setLife( int );
 	void setLife( float );
 	void setMaxLife( int );

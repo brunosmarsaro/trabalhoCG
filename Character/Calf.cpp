@@ -2,28 +2,30 @@
 
 void Calf::setRotate( float x, float y, float z ){
 	rotateX = x;
-	rotateX = y;
-	rotateX = z;
+	rotateY = y;
+	rotateZ = z;
 }
-
 void Calf::setScale( float x, float y, float z ){
 	scaleX = x;
 	scaleY = y;
 	scaleZ = z;
 }
-
 void Calf::setCalfPosition( float x, float y, float z ){
 	posX = x;
 	posY = y;
 	posZ = z;
 }
-
 void Calf::setMirror( bool m ){
 	mirror = m;
 }
-
+void Calf::setColor( float r, float g, float b){
+	colorR = r;
+	colorG = g;
+	colorB = b;
+}
 void Calf::draw(){
 	glPushMatrix();
+		glColor3f( colorR, colorG, colorB );
 		glTranslatef( posX, posY, posZ );
 		glRotatef( rotateX, 1, 0, 0 );
 		glRotatef( rotateY, 0, 1, 0 );
@@ -34,9 +36,8 @@ void Calf::draw(){
 		privateDraw();
 	glPopMatrix();
 }
-
 void Calf::privateDraw(){
-glBegin(GL_TRIANGLES);
+	glBegin(GL_TRIANGLES);
 		glVertex3f( -0.035024, -2.331634, 0.370079);
 		glVertex3f( 0.082647, -2.317467, 0.587681);
 		glVertex3f( -0.080257, -2.321747, 0.720708);

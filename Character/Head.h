@@ -11,6 +11,9 @@ private:
 	int posX;
 	int posY;
 	int posZ;
+	float colorR;
+	float colorG;
+	float colorB;
 	void privateDraw();
 
 public:
@@ -22,5 +25,6 @@ public:
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
 	void setHeadPosition( float, float, float );
+	void setColor( float, float, float );
 	void draw();
 };

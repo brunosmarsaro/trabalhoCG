@@ -12,6 +12,8 @@ GLdouble obsX, obsY, obsZ;
 
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
+float escala;
+int dx,dy;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 
@@ -43,15 +45,21 @@ void Desenha(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	DefineIluminacao();
+	//DefineIluminacao();
+
 	teste.draw();
 	glutSwapBuffers();
 }
 
+void idle( void ){
+	teste.walk();
+	glutPostRedisplay();
 
+}
 // Inicialização
 void Inicializa(void)
 {
+	escala = 0.15;
 
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
 	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor" 
@@ -63,7 +71,7 @@ void Inicializa(void)
 	GLint especMaterial = 60;
 
  	// Especifica que a cor de fundo da janela será preta
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.7f, 0.7f, 0.7f, 0.7f);
 	
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
@@ -91,10 +99,10 @@ void Inicializa(void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
 
-	angle=45;
-	rotX = 30;
-        rotY = 0;
-        obsZ = 180; 
+	angle=15;
+	rotX = 0;
+    rotY = 0;
+    obsZ = 180; 
         
 }
 
@@ -108,9 +116,9 @@ void PosicionaObservador(void)
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
 	glTranslatef(0,0,-obsZ);
-	glRotatef(rotX,1,0,0);
-	glRotatef(rotY,0,1,0);
-	DefineIluminacao();
+	//glRotatef(rotX,1,0,0);
+	//glRotatef(rotY,0,1,0);
+	//DefineIluminacao();
 }
 
 
@@ -132,13 +140,10 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
-
 	// Especifica as dimensões da viewport
 	glViewport(0, 0, w, h);
-
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
-
 	EspecificaParametrosVisualizacao();
 }
 
@@ -149,14 +154,18 @@ void GerenciaMouse(int button, int state, int x, int y)
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {
 			// Zoom-in
-			if (angle >= 10)
-				angle -= 5;
+			//if (angle >= 10)
+			//	angle -= 5;
+			escala = escala + 0.1;
+			teste.setScale(escala,escala,escala);
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
 			// Zoom-out
-			if (angle <= 130)
-				angle += 5;
+			//if (angle <= 130)
+			//	angle += 5;
+			escala = escala - 0.1;
+			teste.setScale(escala,escala,escala);
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
@@ -168,9 +177,6 @@ void TeclasEspeciais (int tecla, int x, int y)
 {
 	switch (tecla)
 	{
-		case 27: 
-			exit(0);
-			break;
 		case GLUT_KEY_LEFT:	rotY--;
 							break;
 		case GLUT_KEY_RIGHT:rotY++;
@@ -183,11 +189,33 @@ void TeclasEspeciais (int tecla, int x, int y)
 							break;
 		case GLUT_KEY_END:	obsZ--;
 							break;
+		case 'b':
+			teste.takeDamage(20);
 	}
+	teste.setRotate( rotX, rotY, 0 );
 	PosicionaObservador();
 	glutPostRedisplay();
 }
 
+void keyboard(unsigned char tecla, int x, int y){
+    switch (tecla)
+	{	
+		case 'b':
+			teste.takeDamage(20);
+			break;
+		case 27:
+			exit(0);
+			break;
+		case 'a':
+			dx--;
+			break;
+		case 'd':
+			dx++;
+			break;
+	}
+	teste.setPosition(dx,dy,0);
+	glutPostRedisplay();
+}
 
 // Programa Principal
 int main()
@@ -196,18 +224,15 @@ int main()
 	char *argv[] = { (char *)"gl", 0 };
 
 	glutInit(&argc,argv);
-
 	// Define do modo de operacao da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
-
 	// Especifica a posição inicial da janela GLUT
     glutInitWindowPosition(5,5);
-
 	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(400,400);
-
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminação");
+
 
 	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc(Desenha);
@@ -217,6 +242,15 @@ int main()
     glutReshapeFunc(AlteraTamanhoJanela);
 	// Registra a funcao callback para tratamento do mouse
 	glutMouseFunc(GerenciaMouse);
+	// Registra a funcao callback para tratamento do teclado
+	glutKeyboardFunc( keyboard );
+	glutIdleFunc( idle );
+
+	teste.setBodyColor( 1.0, 1.0, 0.0 );
+	teste.setArmColor( 0.0, 1.0, 1.0 );
+	teste.setLegColor( 1.0, 0.0, 1.0 );
+	teste.setScale( 0.15, 0.15, 0.15 );
+	teste.setWalk(true);
 
 	Inicializa();
 	glutMainLoop();

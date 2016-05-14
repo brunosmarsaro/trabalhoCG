@@ -63,9 +63,10 @@ void LifeBar::setColorAuto(){
 	green = ( (float)life / (float) max );
 	red = 1.0 - green;
 }
-void LifeBar::setPosition( float x, float y ){
+void LifeBar::setPosition( float x, float y, float z ){
     position.setX( x );
     position.setY( y );
+    position.setZ( z );
 }
 void LifeBar::setLife( int l ){
 	life = l;
@@ -101,15 +102,19 @@ void LifeBar::draw( void ){
     y = position.getY();
     z = position.getZ();
 
+
     glPushMatrix();
-    glTranslatef(x,y,z);
+    glTranslatef( x, y, z );
+    glRotatef( 180, 1, 0, 0);
+
 
     glColor3f( 0.0 , 0.0, 0.0 );
+    glLineWidth( 2 );
     glBegin( GL_POLYGON );
-       glVertex3f( -width/2, 0.0, 0.0 );
-        glVertex3f( width/2, 0.0, 0.0 );
-        glVertex3f( width/2, height, 0.0 );
-        glVertex3f( -width/2, height, 0.0 );
+       glVertex3f( -width/2, 0.0, 2.001 );
+        glVertex3f( width/2, 0.0, 2.001 );
+        glVertex3f( width/2, height, 2.001 );
+        glVertex3f( -width/2, height, 2.001 );
     glEnd();
 
     int lifeWidth = width*( life/(float)max );
@@ -122,6 +127,7 @@ void LifeBar::draw( void ){
         glVertex3f( -width/2, height, 0.0 );
     glEnd();
 
+    glLineWidth( 2 );
     glColor3f( 1.0 , 1.0, 1.0 );
     glBegin( GL_LINE_LOOP );
        glVertex3f( -width/2, 0.0, 0.0 );
@@ -129,5 +135,6 @@ void LifeBar::draw( void ){
         glVertex3f( width/2, height, 0.0 );
         glVertex3f( -width/2, height, 0.0 );
     glEnd();
+
     glPopMatrix();
 }

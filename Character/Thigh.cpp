@@ -1,29 +1,31 @@
 #include "Thigh.h"
 
-void Thigh::setRotate( float x, float y, float z ){
+void Thigh::setRotate( int x, int y, int z ){
 	rotateX = x;
-	rotateX = y;
-	rotateX = z;
+	rotateY = y;
+	rotateZ = z;
 }
-
 void Thigh::setScale( float x, float y, float z ){
 	scaleX = x;
 	scaleY = y;
 	scaleZ = z;
 }
-
 void Thigh::setThighPosition( float x, float y, float z ){
 	posX = x;
 	posY = y;
 	posZ = z;
 }
-
 void Thigh::setMirror( bool m ){
 	mirror = m;
 }
-
+void Thigh::setColor( float r, float g, float b){
+	colorR = r;
+	colorG = g;
+	colorB = b;
+}
 void Thigh::draw(){
 	glPushMatrix();
+		glColor3f( colorR, colorG, colorB );
 		glTranslatef( posX, posY, posZ );
 		glRotatef( rotateX, 1, 0, 0 );
 		glRotatef( rotateY, 0, 1, 0 );
@@ -34,7 +36,6 @@ void Thigh::draw(){
 		privateDraw();
 	glPopMatrix();
 }
-
 void Thigh::privateDraw(){
 	glBegin(GL_TRIANGLES);
 		glVertex3f( 0.505340, -2.103470, -0.043196);

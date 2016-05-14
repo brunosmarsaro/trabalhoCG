@@ -11,6 +11,9 @@ private:
 	int posX;
 	int posY;
 	int posZ;
+	float colorR;
+	float colorG;
+	float colorB;
 	bool mirror;
 	void privateDraw();
 
@@ -32,5 +35,6 @@ public:
 	void setScale( float, float, float );
 	void setCalfPosition( float, float, float );
 	void setMirror( bool );
+	void setColor( float, float, float );
 	void draw();
 };

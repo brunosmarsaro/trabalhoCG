@@ -105,9 +105,10 @@ void Character::setColor3f( float r, float g, float b){
     green = g;
     blue = b;
 }
-void Character::setPosition( float x, float y ){
+void Character::setPosition( float x, float y, float z ){
     position.setX(x);
     position.setY(y);
+    position.setZ(z);
 }
 void Character::setLifeBar( LifeBar l ){
     characterLife = l;
@@ -121,8 +122,8 @@ void Character::setDef( int d ){
 void Character::setCharacterMaxLife( int ml ){
     characterLife.setMaxLife( ml );
 }
-void Character::setLifeBarPosition( int x, int y ){
-    characterLife.setPosition( x, y );
+void Character::setLifeBarPosition( int x, int y, int z ){
+    characterLife.setPosition( x, y, z );
 }
 
 void Character::setVulnerableExperience( int vExp ){
@@ -171,15 +172,3 @@ int Character::toDamage( void* target ) {
     ret = aux->takeDamage(atk);
     return ret;
 }
-void Character::autoAtk( void* target ){
-    //Implementar auto ataque
-    //causa um dano no adversário, agurada um tempo e causa outro dano
-}
-
-/*
-void Character::draw( void ){
-    //draw Character method
-    //Lembrar de desenhar a barra de vida
-    cout << "Desenhando o monstro" << endl;
-}
-*/

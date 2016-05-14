@@ -6,12 +6,15 @@ private:
 	int rotateX;
 	int rotateY;
 	int rotateZ;
-	int scaleX;
-	int scaleY;
-	int scaleZ;
-	int posX;
-	int posY;
-	int posZ;
+	float scaleX;
+	float scaleY;
+	float scaleZ;
+	float posX;
+	float posY;
+	float posZ;
+	float colorR;
+	float colorG;
+	float colorB;
 	bool mirror;
 	void privateDraw();
 
@@ -29,9 +32,10 @@ public:
 		mirror = false;
 	}
 	
-	void setRotate( float, float, float );
+	void setRotate( int, int, int );
 	void setScale( float, float, float );
 	void setThighPosition( float, float, float );
 	void setMirror( bool );
+	void setColor( float, float, float );
 	void draw();
 };

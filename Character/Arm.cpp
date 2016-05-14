@@ -2,28 +2,30 @@
 
 void Arm::setRotate( float x, float y, float z ){
 	rotateX = x;
-	rotateX = y;
-	rotateX = z;
+	rotateY = y;
+	rotateZ = z;
 }
-
 void Arm::setScale( float x, float y, float z ){
 	scaleX = x;
 	scaleY = y;
 	scaleZ = z;
 }
-
 void Arm::setArmPosition( float x, float y, float z ){
 	posX = x;
 	posY = y;
 	posZ = z;
 }
-
+void Arm::setColor( float r, float g, float b ){
+	colorR = r;
+	colorG = g;
+	colorB = b;
+}
 void Arm::setMirror( bool m ){
 	mirror = m;
 }
-
 void Arm::draw(){
 	glPushMatrix();
+		glColor3f( colorR, colorG, colorB );
 		glTranslatef( posX, posY, posZ );
 		glRotatef( rotateX, 1, 0, 0 );
 		glRotatef( rotateY, 0, 1, 0 );
@@ -34,7 +36,6 @@ void Arm::draw(){
 		privateDraw();
 	glPopMatrix();
 }
-
 void Arm::privateDraw(){
 	glBegin(GL_TRIANGLES);
 		glVertex3f( 0.864160, -2.627635, 0.931565);

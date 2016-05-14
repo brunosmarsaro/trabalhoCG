@@ -2,23 +2,27 @@
 
 void Body::setRotate( float x, float y, float z ){
 	rotateX = x;
-	rotateX = y;
-	rotateX = z;
+	rotateY = y;
+	rotateZ = z;
 }
-
 void Body::setScale( float x, float y, float z ){
 	scaleX = x;
 	scaleY = y;
 	scaleZ = z;
 }
-
 void Body::setBodyPosition( float x, float y, float z ){
 	posX = x;
 	posY = y;
 	posZ = z;
 }
+void Body::setColor( float r, float g, float b){
+	colorR = r;
+	colorG = g;
+	colorB = b;
+}
 void Body::draw(){
 	glPushMatrix();
+		glColor3f( colorR, colorG, colorB );
 		glTranslatef( posX, posY, posZ );
 		glRotatef( rotateX, 1, 0, 0 );
 		glRotatef( rotateY, 0, 1, 0 );
