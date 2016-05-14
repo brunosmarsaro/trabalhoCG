@@ -51,14 +51,26 @@ void Desenha(void)
 	glutSwapBuffers();
 }
 
+GLdouble lastWalkAnimation;
 void idle( void ){
-	teste.walk();
-	glutPostRedisplay();
-
+	GLdouble currentWalkAnimation;
+	GLdouble difference;
+	 glutPostRedisplay();
+	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+	difference = currentWalkAnimation - lastWalkAnimation;
+	//	cout << difference << endl;
+    if(difference >= 10){
+    	teste.walkAnimation();
+    	//cout << "entrou\n";
+    	lastWalkAnimation = currentWalkAnimation;
+    }
+    
+   
 }
 // Inicialização
 void Inicializa(void)
 {
+	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
 
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
@@ -229,7 +241,7 @@ int main()
 	// Especifica a posição inicial da janela GLUT
     glutInitWindowPosition(5,5);
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(400,400);
+	glutInitWindowSize(1024,720);
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminação");
 
@@ -249,8 +261,9 @@ int main()
 	teste.setBodyColor( 1.0, 1.0, 0.0 );
 	teste.setArmColor( 0.0, 1.0, 1.0 );
 	teste.setLegColor( 1.0, 0.0, 1.0 );
-	teste.setScale( 0.15, 0.15, 0.15 );
+	teste.setScale( 1.15, 1.15, 1.15 );
 	teste.setWalk(true);
+	
 
 	Inicializa();
 	glutMainLoop();

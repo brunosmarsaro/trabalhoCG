@@ -1,5 +1,6 @@
 #include "HumanoidCharacter.h"
 
+
 HumanoidCharacter::HumanoidCharacter(){
 	rotateX = 0;
 	rotateY = 0;
@@ -7,7 +8,7 @@ HumanoidCharacter::HumanoidCharacter(){
 	scaleX = 1;
 	scaleY = 1;
 	scaleZ = 1;
-	walkCicle = 0.0;
+	walkCicle = -30;
 	walking = false;
 	leftCalfPosition.setX( 3.0 );
 	leftCalfPosition.setY( -18.5 );
@@ -38,61 +39,74 @@ void HumanoidCharacter::setArmColor( float r, float g, float b ){
 }
 void HumanoidCharacter::setLegColor( float r, float g, float b ){
 	leftThigh.setColor( r, g, b );
-	rightThigh.setColor( r, g, b );
+	rightThigh.setColor( 1 + r, g-0.5, b-0.5 );
 	leftCalf.setColor( r, g, b );
-	rightCalf.setColor( r, g, b );
+	rightCalf.setColor( 1 + r, g-0.5, b-0.5 );
 }
 void HumanoidCharacter::setWalk(bool w){
 	walking = w;
 }
-void HumanoidCharacter::walk(){
-	float max = 45;
+void HumanoidCharacter::walkAnimation(){
+	float max = 30;
 	float passo;
 	float calfBeginY;
 	float calfBeginZ;
 
-	
-	//if(walkCicle != 0) passo = (max)/(walkCicle*2);
-	//else passo = 45;
-	//if(walkCicle < 0) passo = -passo;
-	passo = passo + 4;
-	
+	passo = 1;	
 
 	if(walkCicle >= max) {
 		walkCicle = max;
 		upCicle = false;
 	}
 	if(walkCicle <= -max) {
-		upCicle = -max;
+		walkCicle = -max;
 		upCicle = true;
 	}
-
+	
 	if(walking){
 		leftThigh.setRotate( walkCicle, 0, 0 );
 		rightThigh.setRotate( -walkCicle, 0, 0 );
 		leftArm.setRotate( -walkCicle, 0, 0 );
 		rightArm.setRotate( walkCicle, 0, 0 );
-
-		calfBeginZ = (8.5) * sinl(walkCicle * M_PI / 180);
-    	calfBeginY = (8.5) * cosl(walkCicle * M_PI / 180);
+		
+		if(walkCicle == 60) exit(0);
+		
+    	//Movimentar a canela
+		calfBeginZ = (8.5) * sinCos.getSin( walkCicle );
+    	calfBeginY = (8.5) * sinCos.getCos( walkCicle );
+    	cout << sin(walkCicle * M_PI / 180) << " - " << sinCos.getSin( walkCicle ) << endl;
     	float x, y, z;
     	y = getPosition().getY() -9.5 - calfBeginY;
-    	z =  -calfBeginZ + getPosition().getZ();
+    	z =  +calfBeginZ + getPosition().getZ();
     	leftCalfPosition.setY(y);
-    	leftCalfPosition.setZ(z);
-    	y = getPosition().getY() -9.5 + calfBeginY;
-    	z = calfBeginZ + getPosition().getZ();
-    	rightCalfPosition.setY(y);
-    	leftCalfPosition.setZ(z);
-
-
-    	if(walkCicle > 10) leftCalf.setRotate(-(-10 - walkCicle), 0, 0);
+    	leftCalfPosition.setZ(-z);
     	
 
-
-
-		if(upCicle) walkCicle+=passo;
-		else walkCicle-=passo;
+    	calfBeginZ = (8.5) * sin(-walkCicle * M_PI / 180);
+    	calfBeginY = (8.5) * cos(-walkCicle * M_PI / 180);
+    	y = getPosition().getY() -9.5 - calfBeginY;
+    	z =  -calfBeginZ + getPosition().getZ();
+    	rightCalfPosition.setY(y);
+    	rightCalfPosition.setZ(z);
+   
+    
+    	/*
+    	//Inclinar a canela
+    	float angle;
+    	angle = (-7 - walkCicle);
+    	if(angle < walkCicle) angle = walkCicle;
+    	if(walkCicle < -10) leftCalf.setRotate(angle, 0, 0);
+    	angle = -(-7 - walkCicle);
+    	if(angle < walkCicle) angle = walkCicle;
+    	if(walkCicle > 10) rightCalf.setRotate(angle, 0, 0);
+		*/
+		if(upCicle){ 
+			 walkCicle+=passo;	
+		}
+		else {
+			walkCicle-=passo;	
+		}
+		
 		
 	}else{
 		leftThigh.setRotate( 0, 0, 0 );

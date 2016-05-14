@@ -5,6 +5,7 @@
 #include "../Character/Thigh.cpp"
 #include "../Character/Calf.cpp"
 #include "../Character/Arm.cpp"
+#include "../Util/SinCos.cpp"
 
 class HumanoidCharacter : public Character{
 
@@ -17,7 +18,7 @@ private:
 	float scaleY;
 	float scaleZ;
 
-	float walkCicle;
+	int walkCicle;
 	bool walking;
 	bool upCicle;
 
@@ -33,6 +34,8 @@ private:
 	Position leftCalfPosition;
 	Position rightCalfPosition;
 
+	SinCos sinCos;
+
 
 public:
 	HumanoidCharacter();
@@ -43,6 +46,6 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
-	void walk();
+	void walkAnimation();
 	void draw();
 };
