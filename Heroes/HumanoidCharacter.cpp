@@ -54,6 +54,8 @@ void HumanoidCharacter::walkAnimation(){
 
 	passo = 1;	
 
+	//Ciclo de caminhada de -max até max
+	//O angulo de rotação das pernas e braçõs é o valor do walkCicle
 	if(walkCicle >= max) {
 		walkCicle = max;
 		upCicle = false;
@@ -64,29 +66,29 @@ void HumanoidCharacter::walkAnimation(){
 	}
 	
 	if(walking){
+
+		//Rotacionar coxa
 		leftThigh.setRotate( walkCicle, 0, 0 );
 		rightThigh.setRotate( -walkCicle, 0, 0 );
-		leftArm.setRotate( -walkCicle, 0, 0 );
-		rightArm.setRotate( walkCicle, 0, 0 );
+		leftArm.setRotate( -walkCicle/2.0f, 0, 0 );
+		rightArm.setRotate( walkCicle/2.0f, 0, 0 );
 		
-		if(walkCicle == 60) exit(0);
-		
+
     	//Movimentar a canela
     	float x, y, z;
-    	
+    	//Canela esquerda    	
 		calfBeginZ = (8.5) * sinCos.getSin( walkCicle );
     	calfBeginY = (8.5) * sinCos.getCos( walkCicle );
-    	cout << walkCicle <<"----> "<<sin(walkCicle * M_PI / 180) << " - " << sinCos.getSin( walkCicle ) << endl;
     	y = getPosition().getY() -9.5 - calfBeginY;
     	z =  +calfBeginZ + getPosition().getZ();
     	leftCalfPosition.setY(y);
     	leftCalfPosition.setZ(-z);
     	
-
+    	//Canela direita
     	calfBeginZ = (8.5) * sinCos.getSin( -walkCicle );
     	calfBeginY = (8.5) * sinCos.getCos( -walkCicle );
     	y = getPosition().getY() -9.5 - calfBeginY;
-    	z =  -calfBeginZ + getPosition().getZ();
+    	z = getPosition().getZ() - calfBeginZ;
     	rightCalfPosition.setY(y);
     	rightCalfPosition.setZ(z);
    
@@ -102,6 +104,7 @@ void HumanoidCharacter::walkAnimation(){
     	if(angle < walkCicle) angle = walkCicle;
     	if(walkCicle > 10) rightCalf.setRotate(angle, 0, 0);
 
+    	//Incrementar ciclo de caminhada
 		if(upCicle){ 
 			 walkCicle+=passo;	
 		}
@@ -120,8 +123,8 @@ void HumanoidCharacter::walkAnimation(){
 void HumanoidCharacter::draw(){
 	if(isVisible()){
 		glPushMatrix();
-
-		glTranslatef( getPosition().getX(), getPosition().getY(), getPosition().getZ() );
+		cout << getPosition().getX() << " - "<< getPosition().getY() << " - "<< getPosition().getZ() << " - "<<endl;
+		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*26.0 , getPosition().getZ() );
 		glPushMatrix();
 			setLifeBarPosition( 0.0, 100.0, 0.0 );
 			glScalef( 0.01 ,0.01 ,0.01 );

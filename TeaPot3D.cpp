@@ -13,9 +13,25 @@ GLdouble obsX, obsY, obsZ;
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
 float escala;
-int dx,dy;
+float dx,dy,dz;
 
 // Função responsável pela especificação dos parâmetros de iluminação
+
+
+void linesBackground( void ){
+    glColor3f( 0.7, 0.7, 0.7 );
+    glBegin( GL_LINES );
+        for(float i = -249 ;i < 250; i=i+10){
+            glVertex3f( -250.0, 0.0, i );
+            glVertex3f( 250.0, 0.0, i ); 
+        }
+        for(float i = -249 ;i < 250; i=i+10){
+            glVertex3f( i, 0.0, -250.0 );
+            glVertex3f( i, 0.0, 250 ); 
+        }
+    glEnd();
+}
+
 
 void DefineIluminacao (void)
 {
@@ -46,7 +62,7 @@ void Desenha(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//DefineIluminacao();
-
+	linesBackground();
 	teste.draw();
 	glutSwapBuffers();
 }
@@ -59,11 +75,17 @@ void idle( void ){
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 	//	cout << difference << endl;
+	
     if(difference >= 10){
     	teste.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
+    	dx+= 0.2;
+		dz+= 0.2;
+		teste.setPosition( dx, 0, dz );
     }
+    if(dx > 50) dx = -50;
+    if(dz > 50) dz = -50;
     
    
 }
@@ -112,7 +134,7 @@ void Inicializa(void)
 	glEnable(GL_DEPTH_TEST);
 
 	angle=15;
-	rotX = 0;
+	rotX = 30;
     rotY = 0;
     obsZ = 180; 
         
@@ -128,9 +150,9 @@ void PosicionaObservador(void)
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
 	glTranslatef(0,0,-obsZ);
-	//glRotatef(rotX,1,0,0);
-	//glRotatef(rotY,0,1,0);
-	//DefineIluminacao();
+	glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+	DefineIluminacao();
 }
 
 
@@ -204,7 +226,7 @@ void TeclasEspeciais (int tecla, int x, int y)
 		case 'b':
 			teste.takeDamage(20);
 	}
-	teste.setRotate( rotX, 30 + rotY, 0 );
+	//teste.setRotate( rotX, 30 + rotY, 0 );
 	PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -261,9 +283,10 @@ int main()
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 0.0, 1.0, 0.0 );
 	teste.setLegColor( 0.0, 0.0, 1.0 );
-	teste.setScale( 0.5, 0.5, 0.5 );
-	teste.setRotate( 0, 30, 0 );
+	teste.setScale( 0.3, 0.3, 0.3 );
+	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
+	teste.setPosition( 0.0, 0.0, 0.0 );
 	
 
 	Inicializa();
