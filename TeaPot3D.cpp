@@ -265,7 +265,7 @@ int main()
 	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(1024,720);
 	// Cria a janela passando como argumento o titulo da mesma
-	glutCreateWindow("Desenho de um teapot com iluminação");
+	glutCreateWindow("Desenho de um teapot com iluminacao");
 
 
 	// Registra a funcao callback de redesenho da janela de visualizacao
