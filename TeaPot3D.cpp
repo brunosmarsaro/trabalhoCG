@@ -15,17 +15,19 @@ HumanoidCharacter teste;
 float escala;
 float dx,dy,dz;
 
+int windowsWidth, windowsHeight;
+
 // Função responsável pela especificação dos parâmetros de iluminação
 
 
 void linesBackground( void ){
     glColor3f( 0.7, 0.7, 0.7 );
     glBegin( GL_LINES );
-        for(float i = -249 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+10){
             glVertex3f( -250.0, 0.0, i );
             glVertex3f( 250.0, 0.0, i ); 
         }
-        for(float i = -249 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+10){
             glVertex3f( i, 0.0, -250.0 );
             glVertex3f( i, 0.0, 250 ); 
         }
@@ -69,6 +71,8 @@ void Desenha(void)
 
 GLdouble lastWalkAnimation;
 void idle( void ){
+
+
 	GLdouble currentWalkAnimation;
 	GLdouble difference;
 	 glutPostRedisplay();
@@ -80,15 +84,40 @@ void idle( void ){
     	teste.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
-    	dx+= 0.2;
-		dz+= 0.2;
-		teste.setPosition( dx, 0, dz );
+    	dx+= 0.09;
+		dz+= 0.09;
+		//teste.setPosition( dx, 0, dz );
     }
     if(dx > 50) dx = -50;
     if(dz > 50) dz = -50;
+
+
+    glutPostRedisplay();
     
    
 }
+
+double mouseOriginAngle( int x, int y ){
+    int xa, ya;
+    int x2,y2;
+    x2 = x - windowsWidth;
+    y2 = windowsHeight - y ;
+
+    ya = 0;
+    xa = 0;
+
+    double oposto, adjascente;
+    adjascente = x2 - xa;
+    oposto = y2 - ya;
+
+    double aux =  atan(adjascente/oposto) * 180 / M_PI;
+    if(oposto < 0) aux = aux + 180;
+    aux = -aux;
+
+    return aux;
+}
+
+
 // Inicialização
 void Inicializa(void)
 {
@@ -133,10 +162,10 @@ void Inicializa(void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
 
-	angle=15;
-	rotX = 30;
+	angle = 45;
+	rotX = 45;
     rotY = 0;
-    obsZ = 180; 
+    obsZ = 120; 
         
 }
 
@@ -171,7 +200,11 @@ void EspecificaParametrosVisualizacao(void)
 
 // Função callback chamada quando o tamanho da janela é alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
-{
+{	
+
+	windowsHeight = h;
+    windowsWidth = w;
+
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
 	// Especifica as dimensões da viewport
@@ -189,22 +222,31 @@ void GerenciaMouse(int button, int state, int x, int y)
 		if (state == GLUT_DOWN) {
 			// Zoom-in
 			//if (angle >= 10)
-			//	angle -= 5;
-			escala = escala + 0.1;
-			teste.setScale(escala,escala,escala);
+				//angle -= 5;
+			//escala = escala + 0.1;
+			//teste.setScale(escala,escala,escala);
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
 			// Zoom-out
 			//if (angle <= 130)
-			//	angle += 5;
-			escala = escala - 0.1;
-			teste.setScale(escala,escala,escala);
+				//angle += 5;
+			//escala = escala - 0.1;
+			//teste.setScale(escala,escala,escala);
+			int xt,zt;
+			xt = x - windowsWidth/2;
+			zt = (y - windowsHeight/2)*cos(rotY);
+			cout << xt << " - " << zt << endl;
+			teste.setPosition( xt, 0, dz );
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
 }
 
+/*
+void reshape( int largura, int altura ){
+    
+}*/
 
 // Função callback chamada para gerenciar eventos de teclas especiais (F1,PgDn,...)
 void TeclasEspeciais (int tecla, int x, int y)
@@ -230,7 +272,6 @@ void TeclasEspeciais (int tecla, int x, int y)
 	PosicionaObservador();
 	glutPostRedisplay();
 }
-
 void keyboard(unsigned char tecla, int x, int y){
     switch (tecla)
 	{	
@@ -265,8 +306,9 @@ int main()
 	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(1024,720);
 	// Cria a janela passando como argumento o titulo da mesma
-	glutCreateWindow("Desenho de um teapot com iluminacao");
+	glutCreateWindow("Desenho de um teapot com iluminação");
 
+	glutFullScreen(); 
 
 	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc(Desenha);
@@ -279,9 +321,11 @@ int main()
 	// Registra a funcao callback para tratamento do teclado
 	glutKeyboardFunc( keyboard );
 	glutIdleFunc( idle );
+	//glutReshapeFunc( reshape );
 
+	teste.setHeadColor( 0.7, 0.7, 0.1 );
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
-	teste.setArmColor( 0.0, 1.0, 0.0 );
+	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setLegColor( 0.0, 0.0, 1.0 );
 	teste.setScale( 0.3, 0.3, 0.3 );
 	teste.setRotate( 0, 45, 0 );

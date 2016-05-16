@@ -39,9 +39,9 @@ void HumanoidCharacter::setArmColor( float r, float g, float b ){
 }
 void HumanoidCharacter::setLegColor( float r, float g, float b ){
 	leftThigh.setColor( r, g, b );
-	rightThigh.setColor( 1 + r, g-0.5, b-0.5 );
+	rightThigh.setColor( r, g, b );
 	leftCalf.setColor( r, g, b );
-	rightCalf.setColor( 1 + r, g-0.5, b-0.5 );
+	rightCalf.setColor( r, g, b );
 }
 void HumanoidCharacter::setWalk(bool w){
 	walking = w;
@@ -77,21 +77,20 @@ void HumanoidCharacter::walkAnimation(){
     	//Movimentar a canela
     	float x, y, z;
     	//Canela esquerda    	
-		calfBeginZ = (8.5) * sinCos.getSin( walkCicle );
-    	calfBeginY = (8.5) * sinCos.getCos( walkCicle );
-    	y = getPosition().getY() -9.5 - calfBeginY;
-    	z =  +calfBeginZ + getPosition().getZ();
+		calfBeginZ = (9.0) * sinCos.getSin( walkCicle );
+    	calfBeginY = (9.0) * sinCos.getCos( walkCicle );
+    	y = -9.5 - calfBeginY;
+    	z =  -0.5 - calfBeginZ;
     	leftCalfPosition.setY(y);
-    	leftCalfPosition.setZ(-z);
+    	leftCalfPosition.setZ(z);
     	
     	//Canela direita
-    	calfBeginZ = (8.5) * sinCos.getSin( -walkCicle );
-    	calfBeginY = (8.5) * sinCos.getCos( -walkCicle );
-    	y = getPosition().getY() -9.5 - calfBeginY;
-    	z = getPosition().getZ() - calfBeginZ;
+    	calfBeginZ = (9.0) * sinCos.getSin( -walkCicle );
+    	calfBeginY = (9.0) * sinCos.getCos( -walkCicle );
+    	y = -9.5 - calfBeginY;
+    	z =  -0.5 - calfBeginZ;
     	rightCalfPosition.setY(y);
     	rightCalfPosition.setZ(z);
-   
     
     	
     	//Inclinar a canela
@@ -123,11 +122,11 @@ void HumanoidCharacter::walkAnimation(){
 void HumanoidCharacter::draw(){
 	if(isVisible()){
 		glPushMatrix();
-		cout << getPosition().getX() << " - "<< getPosition().getY() << " - "<< getPosition().getZ() << " - "<<endl;
-		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*26.0 , getPosition().getZ() );
+		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
 		glPushMatrix();
-			setLifeBarPosition( 0.0, 100.0, 0.0 );
-			glScalef( 0.01 ,0.01 ,0.01 );
+			setLifeBarPosition( 0.0, 120.0, 0.0 );
+			glScalef( 0.03 ,0.03 ,0.03 );
+			glRotatef( -45, 1,0,0 );
 			getLifeBar().draw();
 			glPopMatrix();
 		glPushMatrix();
@@ -135,6 +134,13 @@ void HumanoidCharacter::draw(){
 			glRotatef( rotateY, 0,1,0 );
 			glRotatef( rotateZ, 0,0,1 );
 			glScalef( scaleX, scaleY, scaleZ );
+
+
+			glPushMatrix();
+				head.setScale( 3.5 ,3.5 ,3.5 );
+				head.setHeadPosition( 0.0 , 2.3, 0.0 );
+				head.draw();
+			glPopMatrix();
 
 			glPushMatrix();
 				body.setScale( 4.0 ,4.0 ,4.0 );

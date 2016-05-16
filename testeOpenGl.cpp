@@ -21,6 +21,7 @@ FILE * fp;
 FILE * saida;
 vector<Position> vertices;
 vector<Position> vertices2;
+vector<Position> normals;
 int theta;
 int dx,dy;
 
@@ -92,7 +93,7 @@ void display( void )
 
 
     fp = fopen("objTeste.txt", "r");
-    //saida = fopen("teste.cpp","w");
+    saida = fopen("teste.cpp","w");
     glPushMatrix();
         char v[5];
         float x, y, z;
@@ -105,7 +106,7 @@ void display( void )
 
         float r=0.4,g=0.1,b=0.7;
         while( fscanf( fp, "%s", v) != EOF ){
-            while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0){
+            while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0){
                 if(fscanf( fp, "%s", v) == EOF) break;
             }
            
@@ -117,29 +118,38 @@ void display( void )
                 aux.setY(y);
                 aux.setZ(z);
                 vertices.push_back(aux);
+            }else if (strcmp("vn",v) == 0){
+                fscanf(fp,"%f %f %f",&x, &y, &z );
+                Position aux;
+                aux.setX(x);
+                aux.setY(y);
+                aux.setZ(z);
+                normals.push_back(aux);
             }else if (strcmp("f",v) == 0){
                 char point[50];
                 int i,j,k,aux;
-                /*
-                Se for ler o macaco
-                fscanf(fp,"%d %*c %*c %*d",&i);
-                fscanf(fp,"%d %*c %*c %*d",&j);
-                fscanf(fp,"%d %*c %*c %*d",&k);
-				*/
-                fscanf(fp,"%d",&i);
-                fscanf(fp,"%d",&j);
-                fscanf(fp,"%d",&k);
+                int ni,nj,nk;
+
+                fscanf(fp,"%d %*c %*c %d",&i,&ni);
+                fscanf(fp,"%d %*c %*c %d",&j,&nj);
+                fscanf(fp,"%d %*c %*c %d",&k,&nk);
 				i--;
 				j--;
 				k--;
-				/*
+                ni--;
+                nj--;
+                nk--;
+				
+                
+                fprintf(saida, "glNormal3f( %f, %f, %f );\n", normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
 				fprintf(saida, "glBegin(GL_TRIANGLES);\n");
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
 				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
 				fprintf(saida, "glEnd();\n\n");
-				*/
+				
 
+                glNormal3f(normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
                 glBegin(GL_TRIANGLES);
                 glColor3f(r,g,b);
                 glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
@@ -150,7 +160,7 @@ void display( void )
             }
         }
         
-    	//fclose( saida );
+    	fclose( saida );
     	fclose( fp );        
     glPopMatrix();
 
