@@ -77,16 +77,16 @@ void HumanoidCharacter::walkAnimation(){
     	//Movimentar a canela
     	float x, y, z;
     	//Canela esquerda    	
-		calfBeginZ = (9.0) * sinCos.getSin( walkCicle );
-    	calfBeginY = (9.0) * sinCos.getCos( walkCicle );
+		calfBeginZ = (9.0) * sin( walkCicle *M_PI/180);
+    	calfBeginY = (9.0) * cos( walkCicle *M_PI/180 );
     	y = -9.5 - calfBeginY;
     	z =  -0.5 - calfBeginZ;
     	leftCalfPosition.setY(y);
     	leftCalfPosition.setZ(z);
     	
     	//Canela direita
-    	calfBeginZ = (9.0) * sinCos.getSin( -walkCicle );
-    	calfBeginY = (9.0) * sinCos.getCos( -walkCicle );
+    	calfBeginZ = (9.0) * sin( -walkCicle *M_PI/180);
+    	calfBeginY = (9.0) * cos( -walkCicle *M_PI/180);
     	y = -9.5 - calfBeginY;
     	z =  -0.5 - calfBeginZ;
     	rightCalfPosition.setY(y);

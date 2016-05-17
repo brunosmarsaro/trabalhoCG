@@ -84,8 +84,8 @@ void idle( void ){
     	teste.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
-    	dx+= 0.09;
-		dz+= 0.09;
+    	//dx-= 0.09;
+		//dz-= 0.09;
 		//teste.setPosition( dx, 0, dz );
     }
     if(dx > 50) dx = -50;
@@ -261,12 +261,12 @@ void TeclasEspeciais (int tecla, int x, int y)
 							break;
 		case GLUT_KEY_DOWN:	rotX--;
 							break;
-		case GLUT_KEY_HOME:	obsZ++;
-							break;
-		case GLUT_KEY_END:	obsZ--;
-							break;
-		case 'b':
-			teste.takeDamage(20);
+		//case GLUT_KEY_HOME:	obsZ++;
+		//					break;
+		//case GLUT_KEY_END:	obsZ--;
+		//					break;
+        default:
+            break;
 	}
 	//teste.setRotate( rotX, 30 + rotY, 0 );
 	PosicionaObservador();
@@ -287,8 +287,23 @@ void keyboard(unsigned char tecla, int x, int y){
 		case 'd':
 			dx++;
 			break;
-	}
-	teste.setPosition(dx,dy,0);
+        case 'w':
+            dz--;
+            break;
+        case 's':
+            dz++;
+            break;
+        case 'o':
+            obsZ++;
+            break;
+        case 'i':
+            obsZ--;
+            break;
+        default:
+            break;
+    }
+	teste.setPosition(dx,dy,dz);
+    PosicionaObservador();
 	glutPostRedisplay();
 }
 
@@ -323,7 +338,7 @@ int main()
 	glutIdleFunc( idle );
 	//glutReshapeFunc( reshape );
 
-	teste.setHeadColor( 0.7, 0.7, 0.1 );
+	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setLegColor( 0.0, 0.0, 1.0 );
