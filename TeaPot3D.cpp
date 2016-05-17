@@ -23,11 +23,13 @@ int windowsWidth, windowsHeight;
 void linesBackground( void ){
     glColor3f( 0.7, 0.7, 0.7 );
     glBegin( GL_LINES );
-        for(float i = -250 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+1){
+	    if((int)i % 10 == 0) glColor3f(1.0,0.0,0.0);
+	    else glColor3f( 0.7, 0.7, 0.7 );
             glVertex3f( -250.0, 0.0, i );
             glVertex3f( 250.0, 0.0, i ); 
         }
-        for(float i = -250 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+1){
             glVertex3f( i, 0.0, -250.0 );
             glVertex3f( i, 0.0, 250 ); 
         }
