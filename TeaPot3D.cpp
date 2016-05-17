@@ -167,7 +167,7 @@ void Inicializa(void)
 	angle = 45;
 	rotX = 45;
     rotY = 0;
-    obsZ = 120; 
+    obsZ = 100; 
         
 }
 
