@@ -22,6 +22,7 @@ FILE * saida;
 vector<Position> vertices;
 vector<Position> vertices2;
 vector<Position> normals;
+vector<Position> texture;
 int theta;
 int dx,dy;
 
@@ -80,13 +81,13 @@ void display( void )
     //linesBackground();
     glPushMatrix();
         glTranslatef( dx, 0, -dy );
-        hero.draw();
+       // hero.draw();
     glPopMatrix();
 
     glPushMatrix();
         glTranslatef( 2.0 , 5.0, 0 );
-        glRotatef(theta,0,1,0);
-        atakerHero.draw();
+        glRotatef(theta,1,0,0);
+        //atakerHero.draw();
     glPopMatrix();
 
 
@@ -95,10 +96,12 @@ void display( void )
     fp = fopen("objTeste.txt", "r");
     saida = fopen("teste.cpp","w");
     glPushMatrix();
+
         char v[5];
         float x, y, z;
-        glTranslatef( -50.0 , -50.0, 0 );
-        glScalef(10,10,10);
+        glTranslatef( 0 , 0, 0 );
+glRotatef(theta,1,0,0);
+        glScalef(5,5,5);
         
         float i=0,j=0,k=0;
          int o = 0;
@@ -110,7 +113,6 @@ void display( void )
                 if(fscanf( fp, "%s", v) == EOF) break;
             }
            
-       
             if(strcmp("v",v) == 0){
                 fscanf(fp,"%f %f %f",&x, &y, &z );
                 Position aux;
@@ -125,42 +127,55 @@ void display( void )
                 aux.setY(y);
                 aux.setZ(z);
                 normals.push_back(aux);
+            }else if (strcmp("vt",v) == 0){
+                fscanf(fp,"%f %f",&x, &y );
+                Position aux;
+                aux.setX(x);
+                aux.setY(y);
+                texture.push_back(aux);
             }else if (strcmp("f",v) == 0){
                 char point[50];
                 int i,j,k,aux;
                 int ni,nj,nk;
+		int ti,tj,tk;
 
-                fscanf(fp,"%d %*c %*c %d",&i,&ni);
-                fscanf(fp,"%d %*c %*c %d",&j,&nj);
-                fscanf(fp,"%d %*c %*c %d",&k,&nk);
-				i--;
-				j--;
-				k--;
+                fscanf(fp,"%d %*c %d %*c %d",&i,&ti,&ni);
+                fscanf(fp,"%d %*c %d %*c %d",&j,&tj,&nj);
+                fscanf(fp,"%d %*c %d %*c %d",&k,&tk,&nk);
+		i--;
+		j--;
+		k--;
                 ni--;
                 nj--;
                 nk--;
+		ti--;
+                tj--;
+                tk--;
 				
                 
-                fprintf(saida, "glNormal3f( %f, %f, %f );\n", normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
-				fprintf(saida, "glBegin(GL_TRIANGLES);\n");
-				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
-				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
-				fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
-				fprintf(saida, "glEnd();\n\n");
+		fprintf(saida, "glNormal3f( %f, %f, %f );\n", normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
+		fprintf(saida, "glBegin(GL_TRIANGLES);\n");
+		fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
+		fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
+		fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
+		fprintf(saida, "glEnd();\n\n");
 				
 
                 glNormal3f(normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
                 glBegin(GL_TRIANGLES);
                 glColor3f(r,g,b);
-                glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
+		//glTexCoord3f( texture[ti].getX(), texture[ti].getY(), texture[ti].getZ());
+		glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
+		//glTexCoord3f( texture[tj].getX(), texture[tj].getY(), texture[tj].getZ());
                 glVertex3f( vertices[j].getX(),vertices[j].getY(), vertices[j].getZ());
+		//glTexCoord3f( texture[tk].getX(), texture[tk].getY(), texture[tk].getZ());
                 glVertex3f( vertices[k].getX(),vertices[k].getY(), vertices[k].getZ());
                 glEnd();               
 
             }
         }
         
-    	fclose( saida );
+    fclose( saida );
     	fclose( fp );        
     glPopMatrix();
 
