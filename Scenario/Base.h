@@ -1,8 +1,9 @@
 #include "../gLib.h"
+#include "../Character/Character.h"
 
 using namespace std;
 
-class Base{
+class Base : : public Character{
 
     public:
     /* Constructors and Desconstructors */
@@ -10,6 +11,6 @@ class Base{
         virtual ~Base();
     
     /* Class Methods */
-        Base::create();
+        void create( void );
     
 };

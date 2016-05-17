@@ -16,7 +16,7 @@ class Scenario{
         void setDimension( int w, int h ) { width = w; height = h; }
     
         /* Class Methods */
-        Scenario::landscape( void );
+        void landscape( void );
     
     
 };
