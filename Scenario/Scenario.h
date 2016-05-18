@@ -1,9 +1,4 @@
 #include "../gLib.h"
-//#include "../Util/Position.cpp"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <memory.h>
 
 using namespace std;
 
@@ -23,6 +18,7 @@ class Scenario{
     
         /* Class Methods */
         void landscape( void );
+	GLuint loadBMP_custom(const char * imagepath);
     
     
 };

@@ -17,3 +17,4 @@
 #include <cstdio>
 #include <vector>
 #include <cstring>
+#include <memory.h>

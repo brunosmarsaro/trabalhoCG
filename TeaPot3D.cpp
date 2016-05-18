@@ -177,6 +177,8 @@ void Inicializa(void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
 
+	//glEnable(GL_TEXTURE_2D);
+
 	angle = 45;
 	rotX = 45;
     rotY = 0;

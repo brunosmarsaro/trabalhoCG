@@ -18,12 +18,8 @@ struct position
 };
 
 
-void Scenario::landscape( void ){
-    /* Reading Image File */
-    
-    GLuint image = loadBMP_custom("../Img/scenario.bmp");
-    
-    // Data read from the header of the BMP file
+GLuint Scenario::loadBMP_custom(const char * imagepath){
+	// Data read from the header of the BMP file
     unsigned char header[54]; // Each BMP file begins by a 54-bytes header
     unsigned int dataPos;     // Position in the file where the actual data begins
     unsigned int width, height;
@@ -31,19 +27,19 @@ void Scenario::landscape( void ){
     // Actual RGB data
     unsigned char * data;
     
-    FILE * file = fopen("../Img/scenario.bmp","rb");
+    FILE * file = fopen(imagepath,"rb");
     
     /* Verifications regarding BMP file */
-    if (!file){printf("Image could not be opened\n"); return;}
+    if (!file){printf("Image could not be opened\n"); return 0;}
     
     if ( fread(header, 1, 54, file)!=54 ){ // If not 54 bytes read : problem
         printf("Not a correct BMP file\n");
-        return;
+        return false;
     }
     
     if ( header[0]!='B' || header[1]!='M' ){
         printf("Not a correct BMP file\n");
-        return;
+        return 0;
     }
     
     /* Getting Data Info */
@@ -77,11 +73,26 @@ void Scenario::landscape( void ){
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	free( data );
+	return textureID;
+
+}
+
+void Scenario::landscape( void ){
+    /* Reading Image File */
+    
+	glEnable(GL_TEXTURE_2D);
+	GLuint image = loadBMP_custom("../Img/scenario.bmp");
+	glBindTexture (GL_TEXTURE_2D, image);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	//cout << "AQUI" << endl;
     
     /* Reading Object File */
     
     FILE * fp;
-    fp = fopen("../Objs/scenario.obj", "r");
+    fp = fopen("../Objs/scenario.txt", "a+");
 
     glPushMatrix();
     char v[5];
@@ -96,12 +107,14 @@ void Scenario::landscape( void ){
     
     float i=0,j=0,k=0;
     int o = 0;
-    float r=0.4,g=0.1,b=0.7;
-    
+    //float r=0.4,g=0.1,b=0.7;
+
     while( fscanf( fp, "%s", v) != EOF ){
         while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
-            if(fscanf( fp, "%s", v) == EOF) break;
+                cout << "AQUI" << endl;
+			if(fscanf( fp, "%s", v) == EOF) break;
         }
+		
         
         if(strcmp("v",v) == 0){
             fscanf(fp,"%f %f %f",&x, &y, &z );
@@ -124,7 +137,7 @@ void Scenario::landscape( void ){
             aux.y=y;
             texture.push_back(aux);
         }else if (strcmp("f",v) == 0){
-            char point[50];
+            //char point[50];
             int i,j,k,aux;
             int ni,nj,nk;
             int ti,tj,tk;
@@ -150,16 +163,17 @@ void Scenario::landscape( void ){
             fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
             fprintf(saida, "glEnd();\n\n");
             */
-            
+
             glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
             glBegin(GL_TRIANGLES);
             //glColor3f(r,g,b);
-            //glTexCoord2f( texture[ti].x, texture[ti].y);
+            
             glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
-            //glTexCoord2f( texture[tj].x, texture[tj].y);
+			glTexCoord2f( texture[ti].x, texture[ti].y);      
             glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
-           // glTexCoord2f( texture[tk].x, texture[tk].y);
+			glTexCoord2f( texture[tj].x, texture[tj].y);
             glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
+			glTexCoord2f( texture[tk].x, texture[tk].y);
             glEnd();
             
         }

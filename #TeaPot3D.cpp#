@@ -3,7 +3,9 @@
 // de objetos 3D.
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
+#include "everything.cpp"
 //#include "Character/Body.cpp"
+#include "Scenario/Scenario.cpp"
 
 
 
@@ -12,6 +14,8 @@ GLdouble obsX, obsY, obsZ;
 
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
+HumanoidCharacter teste2;
+Scenario landscape;
 float escala;
 float dx,dy,dz;
 
@@ -24,10 +28,12 @@ void linesBackground( void ){
     glColor3f( 0.7, 0.7, 0.7 );
     glBegin( GL_LINES );
         for(float i = -250 ;i < 250; i=i+1){
+        	if((int)i % 10 == 0) glColor3f( 1.0, 0.0, 0.0 );
+        	else glColor3f( 0.7, 0.7, 0.7 );
             glVertex3f( -250.0, 0.0, i );
             glVertex3f( 250.0, 0.0, i ); 
         }
-        for(float i = -250 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+1){
             glVertex3f( i, 0.0, -250.0 );
             glVertex3f( i, 0.0, 250 ); 
         }
@@ -37,10 +43,10 @@ void linesBackground( void ){
 
 void DefineIluminacao (void)
 {
-        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
         GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
         GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-        GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+        GLfloat posicaoLuz[4]={0.0, -500.0, 500.0, 1.0};
         // Capacidade de brilho do material
         GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
         GLint especMaterial = 60;
@@ -63,11 +69,19 @@ void Desenha(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//DefineIluminacao();
-	linesBackground();
+	DefineIluminacao();
+	//linesBackground();
 	teste.draw();
+	teste2.draw();
+	
+	glPushMatrix();
+		//glColor3f(85/255.0,107/255.0,47/255.0);
+		glRotatef(180,0,1,0); 	
+		glScalef(20,20,20);
+		landscape.landscape();
+	glPopMatrix();
 	glutSwapBuffers();
-}
+}	
 
 GLdouble lastWalkAnimation;
 void idle( void ){
@@ -82,14 +96,15 @@ void idle( void ){
 	
     if(difference >= 10){
     	teste.walkAnimation();
+		teste2.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
-    	//dx-= 0.09;
-		//dz-= 0.09;
+    	//dx+= 0.09;
+		//dz+= 0.09;
 		//teste.setPosition( dx, 0, dz );
     }
-    if(dx > 50) dx = -50;
-    if(dz > 50) dz = -50;
+    //if(dx > 50) dx = -50;
+    //if(dz > 50) dz = -50;
 
 
     glutPostRedisplay();
@@ -134,7 +149,7 @@ void Inicializa(void)
 	GLint especMaterial = 60;
 
  	// Especifica que a cor de fundo da janela será preta
-	glClearColor(0.7f, 0.7f, 0.7f, 0.7f);
+	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
@@ -162,11 +177,13 @@ void Inicializa(void)
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
 
+	
+
 	angle = 45;
 	rotX = 45;
     rotY = 0;
-    obsZ = 120; 
-        
+    obsZ = 100; 
+    dx = dy = 0;        
 }
 
 
@@ -203,7 +220,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {	
 
 	windowsHeight = h;
-	windowsWidth = w;
+    windowsWidth = w;
 
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
@@ -233,11 +250,11 @@ void GerenciaMouse(int button, int state, int x, int y)
 				//angle += 5;
 			//escala = escala - 0.1;
 			//teste.setScale(escala,escala,escala);
-			int xt,zt;
-			xt = x - windowsWidth/2;
-			zt = (y - windowsHeight/2)*cos(rotY);
-			cout << xt << " - " << zt << endl;
-			teste.setPosition( xt, 0, dz );
+			//int xt,zt;
+			//xt = x - windowsWidth/2;
+			//zt = (y - windowsHeight/2)*cos(rotY);
+			cout << x - windowsWidth/2  << " - " << y - windowsHeight/2 << endl;
+			//teste.setPosition( xt, 0, dz );
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
@@ -261,14 +278,14 @@ void TeclasEspeciais (int tecla, int x, int y)
 							break;
 		case GLUT_KEY_DOWN:	rotX--;
 							break;
-		//case GLUT_KEY_HOME:	obsZ++;
-		//					break;
-		//case GLUT_KEY_END:	obsZ--;
-		//					break;
+		case GLUT_KEY_HOME:	obsZ++;
+							break;
+		case GLUT_KEY_END:	obsZ--;
+							break;
         default:
             break;
+
 	}
-	//teste.setRotate( rotX, 30 + rotY, 0 );
 	PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -322,9 +339,8 @@ int main()
 	glutInitWindowSize(1024,720);
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminacao");
-
-	glutFullScreen(); 
-
+	// Janela em modo fullscreen
+	//glutFullScreen(); 
 	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc(Desenha);
 	// Registra a funcao callback para tratamento das teclas especiais
@@ -342,10 +358,19 @@ int main()
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setLegColor( 0.0, 0.0, 1.0 );
-	teste.setScale( 0.3, 0.3, 0.3 );
+	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( 0.0, 0.0, 0.0 );
+	teste.setPosition( 10.0, 0.0, 0.0 );
+
+	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setBodyColor( 0.5, 0.5, 0.5 );
+	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setLegColor( 0.0, 0.0, 1.0 );
+	teste2.setScale( 0.7, 0.5, 0.7 );
+	teste2.setRotate( 0, 45, 0 );
+	teste2.setWalk(true);
+	teste2.setPosition( 0.0, 0.0, 0.0 );
 	
 
 	Inicializa();
