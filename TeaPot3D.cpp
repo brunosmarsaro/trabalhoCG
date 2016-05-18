@@ -23,11 +23,13 @@ int windowsWidth, windowsHeight;
 void linesBackground( void ){
     glColor3f( 0.7, 0.7, 0.7 );
     glBegin( GL_LINES );
-        for(float i = -250 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+1){
+        	if((int)i % 10 == 0) glColor3f( 1.0, 0.0, 0.0 );
+        	else glColor3f( 0.7, 0.7, 0.7 );
             glVertex3f( -250.0, 0.0, i );
             glVertex3f( 250.0, 0.0, i ); 
         }
-        for(float i = -250 ;i < 250; i=i+10){
+        for(float i = -250 ;i < 250; i=i+1){
             glVertex3f( i, 0.0, -250.0 );
             glVertex3f( i, 0.0, 250 ); 
         }
@@ -84,12 +86,12 @@ void idle( void ){
     	teste.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
-    	dx+= 0.09;
-		dz+= 0.09;
+    	//dx+= 0.09;
+		//dz+= 0.09;
 		//teste.setPosition( dx, 0, dz );
     }
-    if(dx > 50) dx = -50;
-    if(dz > 50) dz = -50;
+    //if(dx > 50) dx = -50;
+    //if(dz > 50) dz = -50;
 
 
     glutPostRedisplay();
@@ -165,7 +167,8 @@ void Inicializa(void)
 	angle = 45;
 	rotX = 45;
     rotY = 0;
-    obsZ = 120; 
+    obsZ = 100; 
+    dx = dy = 0;
         
 }
 
@@ -233,11 +236,11 @@ void GerenciaMouse(int button, int state, int x, int y)
 				//angle += 5;
 			//escala = escala - 0.1;
 			//teste.setScale(escala,escala,escala);
-			int xt,zt;
-			xt = x - windowsWidth/2;
-			zt = (y - windowsHeight/2)*cos(rotY);
-			cout << xt << " - " << zt << endl;
-			teste.setPosition( xt, 0, dz );
+			//int xt,zt;
+			//xt = x - windowsWidth/2;
+			//zt = (y - windowsHeight/2)*cos(rotY);
+			cout << x - windowsWidth/2  << " - " << y - windowsHeight/2 << endl;
+			//teste.setPosition( xt, 0, dz );
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
@@ -265,10 +268,7 @@ void TeclasEspeciais (int tecla, int x, int y)
 							break;
 		case GLUT_KEY_END:	obsZ--;
 							break;
-		case 'b':
-			teste.takeDamage(20);
 	}
-	//teste.setRotate( rotX, 30 + rotY, 0 );
 	PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -287,8 +287,16 @@ void keyboard(unsigned char tecla, int x, int y){
 		case 'd':
 			dx++;
 			break;
+		case 'w':
+			dz--;
+			break;
+		case 's':
+			dz++;
+			break;
 	}
-	teste.setPosition(dx,dy,0);
+
+	cout << "dx: "<< dx << " dz: "<< dz << endl; 
+	teste.setPosition(dx,dy,dz);
 	glutPostRedisplay();
 }
 
@@ -307,9 +315,8 @@ int main()
 	glutInitWindowSize(1024,720);
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminação");
-
-	glutFullScreen(); 
-
+	// Janela em modo fullscreen
+	//glutFullScreen(); 
 	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc(Desenha);
 	// Registra a funcao callback para tratamento das teclas especiais
@@ -324,9 +331,9 @@ int main()
 	//glutReshapeFunc( reshape );
 
 	teste.setHeadColor( 0.7, 0.7, 0.1 );
-	teste.setBodyColor( 1.0, 0.0, 0.0 );
+	teste.setBodyColor( 0.1, 0.1, 0.1 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setLegColor( 0.0, 0.0, 1.0 );
+	teste.setLegColor( 0.0, 0.0, 0.8 );
 	teste.setScale( 0.3, 0.3, 0.3 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);

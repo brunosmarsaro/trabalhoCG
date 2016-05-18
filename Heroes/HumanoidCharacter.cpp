@@ -123,12 +123,13 @@ void HumanoidCharacter::draw(){
 	if(isVisible()){
 		glPushMatrix();
 		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
+
 		glPushMatrix();
 			setLifeBarPosition( 0.0, 120.0, 0.0 );
 			glScalef( 0.03 ,0.03 ,0.03 );
 			glRotatef( -45, 1,0,0 );
 			getLifeBar().draw();
-			glPopMatrix();
+		glPopMatrix();
 		glPushMatrix();
 			glRotatef( rotateX, 1,0,0 );
 			glRotatef( rotateY, 0,1,0 );
