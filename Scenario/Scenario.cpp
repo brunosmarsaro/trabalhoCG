@@ -11,6 +11,12 @@ Scenario::Scenario( void ){}
 Scenario::~Scenario( void ){}
 /*==================== Class Methods ====================*/
 
+typedef struct position SPosition;
+struct position
+{
+    float x, y, z;
+};
+
 
 void Scenario::landscape( void ){
     /* Reading Image File */
@@ -84,9 +90,9 @@ void Scenario::landscape( void ){
     //glRotatef(theta,1,0,0);
     //glScalef(5,5,5);
     
-    vector<Position> vertices;
-    vector<Position> normals;
-    vector<Position> texture;
+    vector<SPosition> vertices;
+    vector<SPosition> normals;
+    vector<SPosition> texture;
     
     float i=0,j=0,k=0;
     int o = 0;
@@ -99,23 +105,23 @@ void Scenario::landscape( void ){
         
         if(strcmp("v",v) == 0){
             fscanf(fp,"%f %f %f",&x, &y, &z );
-            Position aux;
-            aux.setX(x);
-            aux.setY(y);
-            aux.setZ(z);
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
+            aux.z=z;
             vertices.push_back(aux);
         }else if (strcmp("vn",v) == 0){
             fscanf(fp,"%f %f %f",&x, &y, &z );
-            Position aux;
-            aux.setX(x);
-            aux.setY(y);
-            aux.setZ(z);
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
+            aux.z=z;
             normals.push_back(aux);
         }else if (strcmp("vt",v) == 0){
             fscanf(fp,"%f %f",&x, &y );
-            Position aux;
-            aux.setX(x);
-            aux.setY(y);
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
             texture.push_back(aux);
         }else if (strcmp("f",v) == 0){
             char point[50];
@@ -145,15 +151,15 @@ void Scenario::landscape( void ){
             fprintf(saida, "glEnd();\n\n");
             */
             
-            glNormal3f(normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
+            glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
             glBegin(GL_TRIANGLES);
             //glColor3f(r,g,b);
-            glTexCoord2f( texture[ti].getX(), texture[ti].getY());
-            glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
-            glTexCoord2f( texture[tj].getX(), texture[tj].getY());
-            glVertex3f( vertices[j].getX(),vertices[j].getY(), vertices[j].getZ());
-            glTexCoord2f( texture[tk].getX(), texture[tk].getY());
-            glVertex3f( vertices[k].getX(),vertices[k].getY(), vertices[k].getZ());
+            glTexCoord2f( texture[ti].x, texture[ti].y);
+            glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
+            glTexCoord2f( texture[tj].x, texture[tj].y);
+            glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
+            glTexCoord2f( texture[tk].x, texture[tk].y);
+            glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
             glEnd();
             
         }
