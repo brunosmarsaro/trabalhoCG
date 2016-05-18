@@ -3,7 +3,9 @@
 // de objetos 3D.
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
+#include "everything.cpp"
 //#include "Character/Body.cpp"
+#include "Scenario/Scenario.cpp"
 
 
 
@@ -12,6 +14,8 @@ GLdouble obsX, obsY, obsZ;
 
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
+HumanoidCharacter teste2;
+Scenario landscape;
 float escala;
 float dx,dy,dz;
 
@@ -39,10 +43,10 @@ void linesBackground( void ){
 
 void DefineIluminacao (void)
 {
-        GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+        GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
         GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
         GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-        GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
+        GLfloat posicaoLuz[4]={0.0, -500.0, 500.0, 1.0};
         // Capacidade de brilho do material
         GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
         GLint especMaterial = 60;
@@ -65,11 +69,19 @@ void Desenha(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//DefineIluminacao();
-	linesBackground();
+	DefineIluminacao();
+	//linesBackground();
 	teste.draw();
+	teste2.draw();
+	
+	glPushMatrix();
+		//glColor3f(85/255.0,107/255.0,47/255.0);
+		glRotatef(180,0,1,0); 	
+		glScalef(20,20,20);
+		landscape.landscape();
+	glPopMatrix();
 	glutSwapBuffers();
-}
+}	
 
 GLdouble lastWalkAnimation;
 void idle( void ){
@@ -84,6 +96,7 @@ void idle( void ){
 	
     if(difference >= 10){
     	teste.walkAnimation();
+		teste2.walkAnimation();
     	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
     	//dx+= 0.09;
@@ -136,7 +149,7 @@ void Inicializa(void)
 	GLint especMaterial = 60;
 
  	// Especifica que a cor de fundo da janela será preta
-	glClearColor(0.7f, 0.7f, 0.7f, 0.7f);
+	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
@@ -168,8 +181,7 @@ void Inicializa(void)
 	rotX = 45;
     rotY = 0;
     obsZ = 100; 
-    dx = dy = 0;
-        
+    dx = dy = 0;        
 }
 
 
@@ -268,6 +280,9 @@ void TeclasEspeciais (int tecla, int x, int y)
 							break;
 		case GLUT_KEY_END:	obsZ--;
 							break;
+        default:
+            break;
+
 	}
 	PosicionaObservador();
 	glutPostRedisplay();
@@ -287,16 +302,23 @@ void keyboard(unsigned char tecla, int x, int y){
 		case 'd':
 			dx++;
 			break;
-		case 'w':
-			dz--;
-			break;
-		case 's':
-			dz++;
-			break;
-	}
-
-	cout << "dx: "<< dx << " dz: "<< dz << endl; 
+        case 'w':
+            dz--;
+            break;
+        case 's':
+            dz++;
+            break;
+        case 'o':
+            obsZ++;
+            break;
+        case 'i':
+            obsZ--;
+            break;
+        default:
+            break;
+    }
 	teste.setPosition(dx,dy,dz);
+    PosicionaObservador();
 	glutPostRedisplay();
 }
 
@@ -330,14 +352,23 @@ int main()
 	glutIdleFunc( idle );
 	//glutReshapeFunc( reshape );
 
-	teste.setHeadColor( 0.7, 0.7, 0.1 );
-	teste.setBodyColor( 0.1, 0.1, 0.1 );
+	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setLegColor( 0.0, 0.0, 0.8 );
-	teste.setScale( 0.3, 0.3, 0.3 );
+	teste.setLegColor( 0.0, 0.0, 1.0 );
+	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( 0.0, 0.0, 0.0 );
+	teste.setPosition( 10.0, 0.0, 0.0 );
+
+	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setBodyColor( 0.5, 0.5, 0.5 );
+	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setLegColor( 0.0, 0.0, 1.0 );
+	teste2.setScale( 0.7, 0.5, 0.7 );
+	teste2.setRotate( 0, 45, 0 );
+	teste2.setWalk(true);
+	teste2.setPosition( 0.0, 0.0, 0.0 );
 	
 
 	Inicializa();

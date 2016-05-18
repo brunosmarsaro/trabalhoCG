@@ -1,4 +1,5 @@
 #include "../gLib.h"
+#include "../Util/Position.cpp"
 
 using namespace std;
 
@@ -9,14 +10,15 @@ class Scenario{
     
     public:
         /* Constructors and Desconstructors */
-        Scenario(int, int);
+        //Scenario(int, int);
+        Scenario( void );
         virtual ~Scenario();
     
         /* Setters */
         void setDimension( int w, int h ) { width = w; height = h; }
     
         /* Class Methods */
-        Scenario::landscape( void );
+        void landscape( void );
     
     
 };

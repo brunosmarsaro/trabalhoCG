@@ -1,11 +1,12 @@
 #include "../gLib.h"
+#include "../Character/Character.cpp"
 
 using namespace std;
 
-class Tower{
+class Tower : public Character{
 public:
     Tower();
     ~Tower();
     
-    Tower::create();
+    void create( void );
 };
