@@ -1,5 +1,9 @@
 #include "../gLib.h"
 //#include "../Util/Position.cpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <memory.h>
 
 using namespace std;
 

@@ -62,7 +62,7 @@ void Scenario::landscape( void ){
     // Read the actual data from the file into the buffer
     fread(data,1,imageSize,file);
     
-    //Everything is in memory now, the file can be closed
+    // Everything is in memory now, the file can be closed
     fclose(file);
     
     // Create one OpenGL texture
@@ -154,11 +154,11 @@ void Scenario::landscape( void ){
             glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
             glBegin(GL_TRIANGLES);
             //glColor3f(r,g,b);
-            glTexCoord2f( texture[ti].x, texture[ti].y);
+            //glTexCoord2f( texture[ti].x, texture[ti].y);
             glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
-            glTexCoord2f( texture[tj].x, texture[tj].y);
+            //glTexCoord2f( texture[tj].x, texture[tj].y);
             glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
-            glTexCoord2f( texture[tk].x, texture[tk].y);
+           // glTexCoord2f( texture[tk].x, texture[tk].y);
             glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
             glEnd();
             
