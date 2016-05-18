@@ -17,7 +17,7 @@ class Scenario{
         void setDimension( int w, int h ) { width = w; height = h; }
     
         /* Class Methods */
-        void landscape( void );
+        void draw( void );
 	GLuint loadBMP_custom(const char * imagepath);
     
     

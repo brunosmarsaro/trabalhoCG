@@ -75,9 +75,10 @@ void Desenha(void)
 	teste2.draw();
 	
 	glPushMatrix();
-		//glColor3f(85/255.0,107/255.0,47/255.0);
+		glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
 		glScalef(20,20,20);
+		//everything();
 		landscape.landscape();
 	glPopMatrix();
 	glutSwapBuffers();

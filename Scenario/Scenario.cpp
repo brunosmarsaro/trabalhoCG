@@ -79,7 +79,7 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
 
 }
 
-void Scenario::landscape( void ){
+void Scenario::draw( void ){
     /* Reading Image File */
     
 	glEnable(GL_TEXTURE_2D);
@@ -92,7 +92,7 @@ void Scenario::landscape( void ){
     /* Reading Object File */
     
     FILE * fp;
-    fp = fopen("../Objs/scenario.txt", "a+");
+    fp = fopen("../Objs/scenario.txt", "r");
 
     glPushMatrix();
     char v[5];
