@@ -5,6 +5,7 @@
 #include "Heroes/HumanoidCharacter.cpp"
 #include "everything.cpp"
 //#include "Character/Body.cpp"
+#include "Scenario/Scenario.cpp"
 
 
 
@@ -14,6 +15,7 @@ GLdouble obsX, obsY, obsZ;
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
 HumanoidCharacter teste2;
+Scenario landscape;
 float escala;
 float dx,dy,dz;
 
@@ -73,10 +75,10 @@ void Desenha(void)
 	teste2.draw();
 	
 	glPushMatrix();
-		glColor3f(85/255.0,107/255.0,47/255.0);
+		//glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
 		glScalef(20,20,20);
-		everything1();
+		landscape.landscape();
 	glPopMatrix();
 	glutSwapBuffers();
 }	

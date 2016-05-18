@@ -8,7 +8,7 @@ private:
 	float z;
 
 public:
-	Position();
+	Position(void);
 	Position(float,float,float);
 	Position(float);
 	~Position();

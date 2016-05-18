@@ -137,18 +137,18 @@ glRotatef(theta,1,0,0);
                 char point[50];
                 int i,j,k,aux;
                 int ni,nj,nk;
-		int ti,tj,tk;
+                int ti,tj,tk;
 
                 fscanf(fp,"%d %*c %d %*c %d",&i,&ti,&ni);
                 fscanf(fp,"%d %*c %d %*c %d",&j,&tj,&nj);
                 fscanf(fp,"%d %*c %d %*c %d",&k,&tk,&nk);
-		i--;
-		j--;
-		k--;
+                i--;
+                j--;
+                k--;
                 ni--;
                 nj--;
                 nk--;
-		ti--;
+                ti--;
                 tj--;
                 tk--;
 				
