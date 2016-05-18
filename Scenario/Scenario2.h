@@ -2,20 +2,17 @@
 
 using namespace std;
 
-class Scenario{
+class Scenario2{
     private:
         int width;
         int height;
-        vector<SPosition> vertices;
-        vector<SPosition> normals;
-        vector<SPosition> texture;
         
 
     public:
         /* Constructors and Destructors */
         //Scenario(int, int);
-        Scenario( void );
-        virtual ~Scenario();
+        Scenario2( void );
+        virtual ~Scenario2();
     
         /* Setters */
         void setDimension( int w, int h ) { width = w; height = h; }

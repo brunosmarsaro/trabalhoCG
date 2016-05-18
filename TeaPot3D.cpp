@@ -79,7 +79,7 @@ void Desenha(void)
 		glRotatef(180,0,1,0); 	
 		glScalef(20,20,20);
 		//everything();
-		landscape.landscape();
+		landscape.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	

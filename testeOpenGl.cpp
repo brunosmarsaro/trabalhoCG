@@ -100,7 +100,7 @@ void display( void )
         char v[5];
         float x, y, z;
         glTranslatef( 0 , 0, 0 );
-glRotatef(theta,1,0,0);
+        glRotatef(theta,1,0,0);
         glScalef(5,5,5);
         
         float i=0,j=0,k=0;

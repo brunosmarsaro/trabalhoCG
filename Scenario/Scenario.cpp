@@ -82,10 +82,10 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
 void Scenario::draw( void ){
     /* Reading Image File */
     
-	glEnable(GL_TEXTURE_2D);
-	GLuint image = loadBMP_custom("../Img/scenario.bmp");
-	glBindTexture (GL_TEXTURE_2D, image);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	//glEnable(GL_TEXTURE_2D);
+	//GLuint image = loadBMP_custom("../Img/scenario.bmp");
+	//glBindTexture (GL_TEXTURE_2D, image);
+	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	//cout << "AQUI" << endl;
     
@@ -96,22 +96,19 @@ void Scenario::draw( void ){
 
     glPushMatrix();
     char v[5];
-    float x, y, z;
-    //glTranslatef( 0, 0, 0 );
-    //glRotatef(theta,1,0,0);
-    //glScalef(5,5,5);
-    
-    vector<SPosition> vertices;
-    vector<SPosition> normals;
-    vector<SPosition> texture;
+    float x, y, z; 
     
     float i=0,j=0,k=0;
-    int o = 0;
-    //float r=0.4,g=0.1,b=0.7;
 
     while( fscanf( fp, "%s", v) != EOF ){
         while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
                 cout << "AQUI" << endl;
+                printf("-\n");
+                printf("-\n");
+                printf("-\n");
+                printf("-\n");
+                printf("-\n");
+                printf("-\n");
 			if(fscanf( fp, "%s", v) == EOF) break;
         }
 		
@@ -169,11 +166,11 @@ void Scenario::draw( void ){
             //glColor3f(r,g,b);
             
             glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
-			glTexCoord2f( texture[ti].x, texture[ti].y);      
+			//glTexCoord2f( texture[ti].x, texture[ti].y);      
             glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
-			glTexCoord2f( texture[tj].x, texture[tj].y);
+			//glTexCoord2f( texture[tj].x, texture[tj].y);
             glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
-			glTexCoord2f( texture[tk].x, texture[tk].y);
+			//glTexCoord2f( texture[tk].x, texture[tk].y);
             glEnd();
             
         }
