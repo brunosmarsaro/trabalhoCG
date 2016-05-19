@@ -14,7 +14,7 @@ GLdouble obsX, obsY, obsZ;
 
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
-HumanoidCharacter teste2;
+HumanoidCharacter teste2, teste3;
 Scenario landscape;
 float escala;
 float dx,dy,dz;
@@ -71,15 +71,21 @@ void Desenha(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	DefineIluminacao();
 	//linesBackground();
-	teste.draw();
+	//teste.draw();
 	teste2.draw();
+    teste3.draw();
 	
 	glPushMatrix();
 		glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
 		glScalef(20,20,20);
+<<<<<<< Updated upstream
 		//everything();
 		landscape.draw();
+=======
+		everything();
+		//landscape.draw();
+>>>>>>> Stashed changes
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -355,6 +361,7 @@ int main()
 	glutIdleFunc( idle );
 	//glutReshapeFunc( reshape );
 
+    /*
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -363,6 +370,7 @@ int main()
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
 	teste.setPosition( 10.0, 0.0, 0.0 );
+     */
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste2.setBodyColor( 0.5, 0.5, 0.5 );
@@ -372,8 +380,17 @@ int main()
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
-	
-
+    
+    teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+    teste3.setBodyColor( 0.5, 0.5, 0.5 );
+    teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+    teste3.setLegColor( 0.0, 0.0, 1.0 );
+    teste3.setScale( 0.7, 0.5, 0.7 );
+    teste3.setRotate( 0, 45, 0 );
+    teste3.setWalk(true);
+    teste3.setPosition( 29.0, 0.0, 0.0 );
+    
+    
 	Inicializa();
 	glutMainLoop();
 }
