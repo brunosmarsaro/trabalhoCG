@@ -15,7 +15,7 @@ GLdouble obsX, obsY, obsZ;
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
 HumanoidCharacter teste2, teste3;
-Scenario landscape;
+Scenario landscape("Objs/scenario.txt", "Img/scenario.bmp");
 float escala;
 float dx,dy,dz;
 
@@ -76,16 +76,12 @@ void Desenha(void)
     teste3.draw();
 	
 	glPushMatrix();
-		glColor3f(85/255.0,107/255.0,47/255.0);
+		//glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
 		glScalef(20,20,20);
-<<<<<<< Updated upstream
-		//everything();
+
 		landscape.draw();
-=======
-		everything();
-		//landscape.draw();
->>>>>>> Stashed changes
+		//everything();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -185,6 +181,9 @@ void Inicializa(void)
 	glEnable(GL_DEPTH_TEST);
 
 	//glEnable(GL_TEXTURE_2D);
+    
+    // INICIALIZA CENARIO
+    
 
 	angle = 45;
 	rotX = 45;

@@ -3,10 +3,12 @@
 /*==================== Constructors and Destructor ====================*/
 Scenario::Scenario( void ){}
 
-/*Scenario::Scenario( int w, int h ){
-    width = w;
-    height = h;
-}*/
+Scenario::Scenario( const char * obj, const char * tex ){
+    objfile = obj;
+    texfile = tex;
+    readObjFile();
+    setTexID();
+}
 
 Scenario::~Scenario( void ){}
 /*==================== Class Methods ====================*/
@@ -79,27 +81,19 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
 
 }
 
-void Scenario::draw( void ){
-    /* Reading Image File */
-    
-	//glEnable(GL_TEXTURE_2D);
-	//GLuint image = loadBMP_custom("../Img/scenario.bmp");
-	//glBindTexture (GL_TEXTURE_2D, image);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	//cout << "AQUI" << endl;
-    
+void Scenario::readObjFile( void ){
     /* Reading Object File */
     
-    FILE * fp;
-    fp = fopen("../Objs/scenario.txt", "r");
+    FILE * fp = fopen(objfile, "r");
 
-    glPushMatrix();
+    if (!fp){printf("File could not be opened\n"); exit(0);}
     char v[5];
     float x, y, z; 
-    
+    vector<SPosition> vertices;
+    vector<SPosition> normals;
+    vector<SPosition> texture;
     float i=0,j=0,k=0;
-
+    int fcount =0;
     while( fscanf( fp, "%s", v) != EOF ){
         while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
                 cout << "AQUI" << endl;
@@ -152,32 +146,71 @@ void Scenario::draw( void ){
             tj--;
             tk--;
             
-            /*
-            fprintf(saida, "glNormal3f( %f, %f, %f );\n", normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
-            fprintf(saida, "glBegin(GL_TRIANGLES);\n");
-            fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
-            fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[j].getX(),vertices[j].getY() ,vertices[j].getZ());
-            fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[k].getX(),vertices[k].getY() ,vertices[k].getZ());
-            fprintf(saida, "glEnd();\n\n");
-            */
+            faces[fcount].push_back(normals[ni].x);
+            faces[fcount].push_back(normals[nj].y);
+            faces[fcount].push_back(normals[nk].z);
+            
+            faces[fcount].push_back(vertices[i].x);
+            faces[fcount].push_back(vertices[i].y);
+            faces[fcount].push_back(vertices[i].z);
+            
+            faces[fcount].push_back(texture[ti].x);
+            faces[fcount].push_back(texture[ti].y);
+            
+            faces[fcount].push_back(vertices[j].x);
+            faces[fcount].push_back(vertices[j].y);
+            faces[fcount].push_back(vertices[j].z);
+            
+            faces[fcount].push_back(texture[tj].x);
+            faces[fcount].push_back(texture[tj].y);
+            
+            faces[fcount].push_back(vertices[k].x);
+            faces[fcount].push_back(vertices[k].y);
+            faces[fcount].push_back(vertices[k].z);
+            
+            faces[fcount].push_back(texture[tk].x);
+            faces[fcount].push_back(texture[tk].y);
 
+            /*
             glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
             glBegin(GL_TRIANGLES);
             //glColor3f(r,g,b);
-            
             glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
-			//glTexCoord2f( texture[ti].x, texture[ti].y);      
+			//glTexCoord2f( texture[ti].x, texture[ti].y);
             glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
 			//glTexCoord2f( texture[tj].x, texture[tj].y);
             glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
 			//glTexCoord2f( texture[tk].x, texture[tk].y);
             glEnd();
+             */
             
+            fcount++;
         }
     }
     
     fclose( fp );
+    //glPopMatrix();
+    //glutSwapBuffers();
+}
+
+void Scenario::draw( void ){
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, textureID);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    
+    int i;
+    glPushMatrix();
+    for(i = 0; i < faces.size(); i++){
+        glNormal3f(faces[i][0], faces[i][1], faces[i][2]);
+        glBegin(GL_TRIANGLES);
+            glVertex3f( faces[i][3],faces[i][4], faces[i][5]);
+            glTexCoord2f( faces[i][6], faces[i][7]);
+            glVertex3f( faces[i][8],faces[i][9], faces[i][10]);
+            glTexCoord2f( faces[i][11], faces[i][12]);
+            glVertex3f( faces[i][13],faces[i][14], faces[i][15]);
+            glTexCoord2f( faces[i][16], faces[i][17]);
+        glEnd();
+    }
     glPopMatrix();
     glutSwapBuffers();
-    
 }

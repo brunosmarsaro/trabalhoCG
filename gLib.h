@@ -18,3 +18,4 @@
 #include <vector>
 #include <cstring>
 #include <memory.h>
+#include <string>
