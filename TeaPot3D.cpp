@@ -25,7 +25,7 @@ GLdouble difference;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 
-void DefineIluminacao (void)
+void defineIlumination (void)
 {
     GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
     GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
@@ -53,7 +53,7 @@ void draw(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	DefineIluminacao();
+	defineIlumination();
 
 	teste.draw();
 	teste2.draw();
@@ -151,9 +151,6 @@ void Inicializa(void)
 	rotX = 45;
     rotY = 0;
     obsZ = 200;
-    
-
-
 }
 
 
@@ -169,7 +166,7 @@ void PosicionaObservador(void)
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
 	glTranslatef(0,0,-dz);
-	DefineIluminacao();
+	defineIlumination();
 }
 
 
