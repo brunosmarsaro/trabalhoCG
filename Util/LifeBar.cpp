@@ -74,7 +74,6 @@ void LifeBar::setLife( int l ){
 	if( life > max ) life = max;
 	setColorAuto();
 }
-
 void LifeBar::setLife( float l ){
 	if( l > 0.0 && l < 1.0) life = 1;
 	else life = (int)l;
@@ -105,8 +104,7 @@ void LifeBar::draw( void ){
 
     glPushMatrix();
     glTranslatef( x, y, z );
-    glRotatef( 180, 1, 0, 0);
-
+    glRotatef( 135, 1, 0, 0);
 
     glColor3f( 0.0 , 0.0, 0.0 );
     glLineWidth( 2 );

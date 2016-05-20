@@ -1,6 +1,5 @@
 #include "HumanoidCharacter.h"
 
-
 HumanoidCharacter::HumanoidCharacter(){
 	rotateX = 0;
 	rotateY = 0;
@@ -125,9 +124,9 @@ void HumanoidCharacter::draw(){
 		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
 
 		glPushMatrix();
-			setLifeBarPosition( 0.0, 120.0, 0.0 );
+			setLifeBarPosition( 0.0, 250.0*scaleY + 30, 0 );
 			glScalef( 0.03 ,0.03 ,0.03 );
-			glRotatef( -45, 1,0,0 );
+			//glRotatef( -45, 1,0,0 );
 			getLifeBar().draw();
 		glPopMatrix();
 		glPushMatrix();
