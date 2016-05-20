@@ -10,7 +10,6 @@ LifeBar::LifeBar( void ){
 	width = standardWidth;
 	height = standardHeight;
 }
-
 LifeBar::LifeBar( int m ){
 	red = 0.0;
 	green = 1.0;
@@ -20,7 +19,6 @@ LifeBar::LifeBar( int m ){
 	width = standardWidth;
 	height = standardHeight;
 }
-
 LifeBar::LifeBar( int l, int m){
 	max = m;
 	life = l;
@@ -31,7 +29,6 @@ LifeBar::LifeBar( int l, int m){
 
 LifeBar::~LifeBar( void ){
 }
-
 
 /*====================Getters====================*/
 int LifeBar::getLife(){
@@ -81,7 +78,6 @@ void LifeBar::setLife( float l ){
 	if( life > max ) life = max;
 	setColorAuto();
 }
-
 void LifeBar::setMaxLife( int m ){
 	max = m;
     setColorAuto();
@@ -91,6 +87,11 @@ void LifeBar::setWidth( float w ){
 }
 void LifeBar::setHeight( float h ){
 	height = h;
+}
+void LifeBar::setRotate( float rx, float ry, float rz ){
+    rotateX = rx;
+    rotateY = ry;
+    rotateZ = rz;
 }
 
 /*====================Class methods====================*/
@@ -104,8 +105,11 @@ void LifeBar::draw( void ){
 
     glPushMatrix();
     glTranslatef( x, y, z );
-    glRotatef( 135, 1, 0, 0);
+    glRotatef( rotateX, 1, 0, 0);
+    glRotatef( rotateY, 0, 1, 0);
+    glRotatef( rotateZ, 0, 0, 1);
 
+    glPushMatrix();
     glColor3f( 0.0 , 0.0, 0.0 );
     glLineWidth( 2 );
     glBegin( GL_POLYGON );
@@ -114,7 +118,9 @@ void LifeBar::draw( void ){
         glVertex3f( width/2, height, 2.001 );
         glVertex3f( -width/2, height, 2.001 );
     glEnd();
+    glPopMatrix();
 
+    glPushMatrix();
     int lifeWidth = width*( life/(float)max );
     glLineWidth( 2 );
     glColor3f( red , green, blue );    	
@@ -124,7 +130,9 @@ void LifeBar::draw( void ){
         glVertex3f( -width/2 + lifeWidth, height, 0.0 );
         glVertex3f( -width/2, height, 0.0 );
     glEnd();
+    glPopMatrix();
 
+    glPushMatrix();
     glLineWidth( 2 );
     glColor3f( 1.0 , 1.0, 1.0 );
     glBegin( GL_LINE_LOOP );
@@ -133,6 +141,6 @@ void LifeBar::draw( void ){
         glVertex3f( width/2, height, 0.0 );
         glVertex3f( -width/2, height, 0.0 );
     glEnd();
-
+    glPopMatrix();
     glPopMatrix();
 }

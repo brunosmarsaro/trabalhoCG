@@ -46,12 +46,12 @@ void HumanoidCharacter::setWalk(bool w){
 	walking = w;
 }
 void HumanoidCharacter::walkAnimation(){
-	float max = 30;
+	float max = 45;
 	float passo;
 	float calfBeginY;
 	float calfBeginZ;
 
-	passo = 1;	
+	passo = 5;	
 
 	//Ciclo de caminhada de -max até max
 	//O angulo de rotação das pernas e braçõs é o valor do walkCicle
@@ -127,6 +127,7 @@ void HumanoidCharacter::draw(){
 			setLifeBarPosition( 0.0, 250.0*scaleY + 30, 0 );
 			glScalef( 0.03 ,0.03 ,0.03 );
 			//glRotatef( -45, 1,0,0 );
+			setBarLifeRotate( 135, 0, 0 );
 			getLifeBar().draw();
 		glPopMatrix();
 		glPushMatrix();

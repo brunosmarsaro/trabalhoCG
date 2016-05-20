@@ -1,8 +1,8 @@
 // TeaPot3D.cpp - Isabel H. Manssour
-// Um programa OpenGL que exemplifica a visualizaÁ„o
+// Um programa OpenGL que exemplifica a visualiza√ß√£o
 // de objetos 3D.
 #include "gLib.h"
-#include "Heroes/HumanoidCharacter.cpp"
+#include "Heroes/HumanoidCharacter.h"
 #include "Scenario/Scenario.cpp"
 
 
@@ -22,24 +22,24 @@ float dx,dy,dz;
 
 int windowsWidth, windowsHeight;
 
-// FunÁ„o respons·vel pela especificaÁ„o dos par‚metros de iluminaÁ„o
+// Fun√ß√£o respons√°vel pela especifica√ß√£o dos par√¢metros de ilumina√ß√£o
 
 void DefineIluminacao (void)
 {
         GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
         GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
         GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-        GLfloat posicaoLuz[4]={0.0, 20, 20, 1.0};
+        GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
         // Capacidade de brilho do material
         GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
         GLint especMaterial = 60;
-        // Define a reflet‚ncia do material 
+        // Define a reflet√¢ncia do material 
         glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-        // Define a concentraÁ„o do brilho
+        // Define a concentra√ß√£o do brilho
         glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
         // Ativa o uso da luz ambiente 
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-        // Define os par‚metros da luz de n˙mero 0
+        // Define os par√¢metros da luz de n√∫mero 0
         glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
         glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
         glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
@@ -47,16 +47,18 @@ void DefineIluminacao (void)
 }
 
 
-// FunÁ„o callback chamada para fazer o desenho
+// Fun√ß√£o callback chamada para fazer o desenho
 void Desenha(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	DefineIluminacao();
+
 	teste.draw();
 	teste2.draw();
     teste3.draw();
 	
+
 	glPushMatrix();
 		//glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
@@ -117,7 +119,7 @@ double mouseOriginAngle( int x, int y ){
 }
 
 
-// InicializaÁ„o
+// Inicializa√ß√£o
 void Inicializa(void)
 {
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
@@ -132,31 +134,31 @@ void Inicializa(void)
 	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
 	GLint especMaterial = 60;
 
- 	// Especifica que a cor de fundo da janela ser· preta
+ 	// Especifica que a cor de fundo da janela ser√° preta
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	
-	// Habilita o modelo de colorizaÁ„o de Gouraud
+	// Habilita o modelo de coloriza√ß√£o de Gouraud
 	glShadeModel(GL_SMOOTH);
 
-	// Define a reflet‚ncia do material 
+	// Define a reflet√¢ncia do material 
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentraÁ„o do brilho
+	// Define a concentra√ß√£o do brilho
 	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
 
 	// Ativa o uso da luz ambiente 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
 
-	// Define os par‚metros da luz de n˙mero 0
+	// Define os par√¢metros da luz de n√∫mero 0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
 
-	// Habilita a definiÁ„o da cor do material a partir da cor corrente
+	// Habilita a defini√ß√£o da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminaÁ„o
+	//Habilita o uso de ilumina√ß√£o
 	glEnable(GL_LIGHTING);  
-	// Habilita a luz de n˙mero 0
+	// Habilita a luz de n√∫mero 0
 	glEnable(GL_LIGHT0);
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
@@ -172,7 +174,8 @@ void Inicializa(void)
     //landscape.loadBMP_custom(bmp);
     landscape.readObjFile();
     landscape.setTexID();
-
+    fclose( objFile );
+    fclose( bmp );
 	angle = 45;
 	rotX = 45;
     rotY = 0;
@@ -183,14 +186,14 @@ void Inicializa(void)
 }
 
 
-// FunÁ„o usada para especificar a posiÁ„o do observador virtual
+// Fun√ß√£o usada para especificar a posi√ß√£o do observador virtual
 void PosicionaObservador(void)
 {
 	// Especifica sistema de coordenadas do modelo
 	glMatrixMode(GL_MODELVIEW);
 	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
-	// Especifica posiÁ„o do observador e do alvo
+	// Especifica posi√ß√£o do observador e do alvo
 	glTranslatef(-dx,0,-obsZ);
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
@@ -199,31 +202,31 @@ void PosicionaObservador(void)
 }
 
 
-// FunÁ„o usada para especificar o volume de visualizaÁ„o
+// Fun√ß√£o usada para especificar o volume de visualiza√ß√£o
 void EspecificaParametrosVisualizacao(void)
 {
-	// Especifica sistema de coordenadas de projeÁ„o
+	// Especifica sistema de coordenadas de proje√ß√£o
 	glMatrixMode(GL_PROJECTION);
-	// Inicializa sistema de coordenadas de projeÁ„o
+	// Inicializa sistema de coordenadas de proje√ß√£o
 	glLoadIdentity();
-	// Especifica a projeÁ„o perspectiva(angulo,aspecto,zMin,zMax)
+	// Especifica a proje√ß√£o perspectiva(angulo,aspecto,zMin,zMax)
 	gluPerspective(angle,fAspect,0.5,1000);
 	PosicionaObservador();
 }
 
 
-// FunÁ„o callback chamada quando o tamanho da janela È alterado
+// Fun√ß√£o callback chamada quando o tamanho da janela √© alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {	
 
 	windowsHeight = h;
     windowsWidth = w;
 
-	// Para previnir uma divis„o por zero
+	// Para previnir uma divis√£o por zero
 	if ( h == 0 ) h = 1;
-	// Especifica as dimensıes da viewport
+	// Especifica as dimens√µes da viewport
 	glViewport(0, 0, w, h);
-	// Calcula a correÁ„o de aspecto
+	// Calcula a corre√ß√£o de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	EspecificaParametrosVisualizacao();
 }
@@ -262,7 +265,7 @@ void reshape( int largura, int altura ){
     
 }*/
 
-// FunÁ„o callback chamada para gerenciar eventos de teclas especiais (F1,PgDn,...)
+// Fun√ß√£o callback chamada para gerenciar eventos de teclas especiais (F1,PgDn,...)
 void TeclasEspeciais (int tecla, int x, int y)
 {
 	switch (tecla)
@@ -291,7 +294,7 @@ void keyboard(unsigned char tecla, int x, int y){
     switch (tecla)
 	{	
 		case 'b':
-			teste2.takeDamage(20);
+			teste.takeDamage(20);
 			break;
 		case 27:
 			exit(0);
@@ -309,7 +312,7 @@ void keyboard(unsigned char tecla, int x, int y){
             rotate = 180;
             break;
         case 's':
-            dz+=1.5;
+            dz+=1.5	;
             rotate = 0;
             break;
         case 'o':
@@ -321,8 +324,8 @@ void keyboard(unsigned char tecla, int x, int y){
         default:
             break;
     }
-    teste2.setRotate( 0, rotate, 0 );
-	teste2.setPosition(dx,dy,dz);
+    teste.setRotate( 0, rotate, 0 );
+	teste.setPosition(dx,dy,dz);
     PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -336,7 +339,7 @@ int main()
 	glutInit(&argc,argv);
 	// Define do modo de operacao da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
-	// Especifica a posiÁ„o inicial da janela GLUT
+	// Especifica a posi√ß√£o inicial da janela GLUT
     glutInitWindowPosition(5,5);
 	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(1024,720);
@@ -357,6 +360,15 @@ int main()
 	glutIdleFunc( idle );
 	//glutReshapeFunc( reshape );
 
+
+	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+    teste3.setBodyColor( 0.5, 0.5, 0.5 );
+    teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+    teste3.setLegColor( 0.0, 0.0, 1.0 );
+    teste3.setScale( 0.7, 0.5, 0.7 );
+    teste3.setRotate( 0, 45, 0 );
+    teste3.setWalk(true);
+    teste3.setPosition( 29.0, 0.0, 0.0 );
    
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
@@ -377,14 +389,7 @@ int main()
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
     
-    teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setBodyColor( 0.5, 0.5, 0.5 );
-    teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setLegColor( 0.0, 0.0, 1.0 );
-    teste3.setScale( 0.7, 0.5, 0.7 );
-    teste3.setRotate( 0, 45, 0 );
-    teste3.setWalk(true);
-    teste3.setPosition( 29.0, 0.0, 0.0 );
+    
     
     
 	Inicializa();

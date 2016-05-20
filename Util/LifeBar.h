@@ -16,6 +16,9 @@ private:
 	float blue;
 	float width;
 	float height;
+	float rotateX;
+	float rotateY;
+	float rotateZ;
 
 public:
 	/*Constructors and destructors*/
@@ -41,6 +44,7 @@ public:
 	void setMaxLife( int );
 	void setWidth( float );
 	void setHeight( float );
+	void setRotate( float, float, float );
 
 	/*Class methods*/
 	void draw();

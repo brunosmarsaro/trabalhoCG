@@ -51,6 +51,7 @@ public:
 	void setLifeBarPosition( int, int, int );
 	void setVulnerableExperience( int );
 	void setVisibility( bool );
+	void setBarLifeRotate( float, float, float );
 
 	/*Class methods*/
 	void addLevel( int );

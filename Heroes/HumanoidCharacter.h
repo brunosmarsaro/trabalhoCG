@@ -1,3 +1,6 @@
+#ifndef HUMANOIDCHARACTER_H
+#define HUMANOIDCHARACTER_H
+
 #include "../gLib.h"
 #include "../Character/Character.cpp"
 #include "../Character/Head.cpp"
@@ -5,7 +8,6 @@
 #include "../Character/Thigh.cpp"
 #include "../Character/Calf.cpp"
 #include "../Character/Arm.cpp"
-#include "../Util/SinCos.cpp"
 
 class HumanoidCharacter : public Character{
 
@@ -34,8 +36,6 @@ private:
 	Position leftCalfPosition;
 	Position rightCalfPosition;
 
-	SinCos sinCos;
-
 
 public:
 	HumanoidCharacter();
@@ -49,3 +49,4 @@ public:
 	void walkAnimation();
 	void draw();
 };
+#endif

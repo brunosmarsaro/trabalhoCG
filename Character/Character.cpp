@@ -125,14 +125,16 @@ void Character::setCharacterMaxLife( int ml ){
 void Character::setLifeBarPosition( int x, int y, int z ){
     characterLife.setPosition( x, y, z );
 }
-
 void Character::setVulnerableExperience( int vExp ){
     vulnerableExperience = vExp;
 }
-
 void Character::setVisibility( bool v ){
     visible = v;
 }
+void Character::setBarLifeRotate( float rx, float ry, float rz ){
+    characterLife.setRotate( rx, ry, rz );
+}
+
 
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
