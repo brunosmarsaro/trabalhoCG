@@ -125,7 +125,7 @@ void HumanoidCharacter::draw(){
 
 		glPushMatrix();
 			setLifeBarPosition( 0.0, 250.0*scaleY + 30, 0 );
-			glScalef( 0.03 ,0.03 ,0.03 );
+			glScalef( 0.05 ,0.07 ,0.03 );
 			//glRotatef( -45, 1,0,0 );
 			setBarLifeRotate( 135, 0, 0 );
 			getLifeBar().draw();

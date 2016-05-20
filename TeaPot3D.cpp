@@ -2,7 +2,7 @@
 // Um programa OpenGL que exemplifica a visualização
 // de objetos 3D.
 #include "gLib.h"
-#include "Heroes/HumanoidCharacter.h"
+#include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
 
 
@@ -10,11 +10,7 @@
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
-//HumanoidCharacter testHero;
-HumanoidCharacter teste;
-HumanoidCharacter teste2, teste3;
-
-//Scenario landscape("Objs/scenario.txt", "Img/scenario.bmp");
+HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
 
 float escala;
@@ -22,33 +18,38 @@ float dx,dy,dz;
 
 int windowsWidth, windowsHeight;
 
+//Limitador da animação
+GLdouble lastWalkAnimation;
+GLdouble currentWalkAnimation;
+GLdouble difference;
+
 // Função responsável pela especificação dos parâmetros de iluminação
 
 void DefineIluminacao (void)
 {
-        GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
-        GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
-        GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-        GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
-        // Capacidade de brilho do material
-        GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
-        GLint especMaterial = 60;
-        // Define a refletância do material 
-        glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-        // Define a concentração do brilho
-        glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-        // Ativa o uso da luz ambiente 
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-        // Define os parâmetros da luz de número 0
-        glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-        glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-        glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
+    GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
+    GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
+    GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+    GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
+    // Capacidade de brilho do material
+    GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+    GLint especMaterial = 60;
+    // Define a refletância do material 
+    glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+    // Define a concentração do brilho
+    glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+    // Ativa o uso da luz ambiente 
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+    // Define os parâmetros da luz de número 0
+    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
 }
 
 
 // Função callback chamada para fazer o desenho
-void Desenha(void)
+void draw(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -57,30 +58,22 @@ void Desenha(void)
 	teste.draw();
 	teste2.draw();
     teste3.draw();
-	
 
 	glPushMatrix();
-		//glColor3f(85/255.0,107/255.0,47/255.0);
-		glRotatef(180,0,1,0); 	
-		glScalef(80,80,80);
+		glRotatef(180,0,1,0); 
+		glScalef(150,150,150);
 		landscape.draw();
-		//everything();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
 
-GLdouble lastWalkAnimation;
+
 void idle( void ){
-
-
-	GLdouble currentWalkAnimation;
-	GLdouble difference;
-	 glutPostRedisplay();
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 	//	cout << difference << endl;
 	
-    if(difference >= 1){
+    if(difference >= 10){
     	teste.walkAnimation();
 		teste2.walkAnimation();
     	//cout << "entrou\n";
@@ -122,38 +115,14 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void Inicializa(void)
 {
+	dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
 
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};	   // "cor" 
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-	GLfloat posicaoLuz[4]={0.0, 50.0, 50.0, 1.0};
-
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
-	GLint especMaterial = 60;
-
- 	// Especifica que a cor de fundo da janela será preta
+	//Define cor de céu
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
-	
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
-
-	// Define a refletância do material 
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-
-	// Ativa o uso da luz ambiente 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-
-	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
-
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
 	//Habilita o uso de iluminação
@@ -176,11 +145,13 @@ void Inicializa(void)
     landscape.setTexID();
     fclose( objFile );
     fclose( bmp );
+
+    //Inicializa opções do observador
 	angle = 45;
 	rotX = 45;
     rotY = 0;
-    obsZ = 100;
-    dx = dy = 0;
+    obsZ = 200;
+    
 
 
 }
@@ -346,9 +317,9 @@ int main()
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminacao");
 	// Janela em modo fullscreen
-	//glutFullScreen(); 
+	glutFullScreen(); 
 	// Registra a funcao callback de redesenho da janela de visualizacao
-	glutDisplayFunc(Desenha);
+	glutDisplayFunc( draw );
 	// Registra a funcao callback para tratamento das teclas especiais
 	glutSpecialFunc(TeclasEspeciais);
 	// Registra a funcao callback para tratamento do redimensionamento da janela
@@ -388,9 +359,6 @@ int main()
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
-    
-    
-    
     
 	Inicializa();
 	glutMainLoop();
