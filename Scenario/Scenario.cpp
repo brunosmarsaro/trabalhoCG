@@ -3,13 +3,6 @@
 /*==================== Constructors and Destructor ====================*/
 Scenario::Scenario( void ){}
 
-Scenario::Scenario( const char * obj, const char * tex ){
-    objfile = obj;
-    texfile = tex;
-    readObjFile();
-    setTexID();
-}
-
 Scenario::~Scenario( void ){}
 /*==================== Class Methods ====================*/
 
@@ -20,7 +13,7 @@ struct position
 };
 
 
-GLuint Scenario::loadBMP_custom(const char * imagepath){
+GLuint Scenario::loadBMP_custom(FILE *file){
 	// Data read from the header of the BMP file
     unsigned char header[54]; // Each BMP file begins by a 54-bytes header
     unsigned int dataPos;     // Position in the file where the actual data begins
@@ -29,7 +22,8 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
     // Actual RGB data
     unsigned char * data;
     
-    FILE * file = fopen(imagepath,"rb");
+ 	//FILE * file = fopen(imagepath,"rb");
+ 	//FILE *file = imagepath;
     
     /* Verifications regarding BMP file */
     if (!file){printf("Image could not be opened\n"); return 0;}
@@ -61,7 +55,7 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
     fread(data,1,imageSize,file);
     
     // Everything is in memory now, the file can be closed
-    fclose(file);
+    //fclose(file);
     
     // Create one OpenGL texture
     GLuint textureID;
@@ -84,7 +78,8 @@ GLuint Scenario::loadBMP_custom(const char * imagepath){
 void Scenario::readObjFile( void ){
     /* Reading Object File */
     
-    FILE * fp = fopen(objfile, "r");
+    //FILE * fp = fopen(objfile, "r");
+    FILE * fp = objfile;
 
     if (!fp){printf("File could not be opened\n"); exit(0);}
     char v[5];
@@ -96,15 +91,10 @@ void Scenario::readObjFile( void ){
     int fcount =0;
     while( fscanf( fp, "%s", v) != EOF ){
         while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
-                cout << "AQUI" << endl;
-                printf("-\n");
-                printf("-\n");
-                printf("-\n");
-                printf("-\n");
-                printf("-\n");
-                printf("-\n");
 			if(fscanf( fp, "%s", v) == EOF) break;
         }
+
+        //cout << v << endl;
 		
         
         if(strcmp("v",v) == 0){
@@ -146,30 +136,36 @@ void Scenario::readObjFile( void ){
             tj--;
             tk--;
             
-            faces[fcount].push_back(normals[ni].x);
-            faces[fcount].push_back(normals[nj].y);
-            faces[fcount].push_back(normals[nk].z);
+
+ 			vector<float> auxV;
+
+ 			auxV.push_back(normals[ni].x);
+            auxV.push_back(normals[nj].y);
+            auxV.push_back(normals[nk].z);
             
-            faces[fcount].push_back(vertices[i].x);
-            faces[fcount].push_back(vertices[i].y);
-            faces[fcount].push_back(vertices[i].z);
+            auxV.push_back(vertices[i].x);
+            auxV.push_back(vertices[i].y);
+            auxV.push_back(vertices[i].z);
             
-            faces[fcount].push_back(texture[ti].x);
-            faces[fcount].push_back(texture[ti].y);
+            auxV.push_back(texture[ti].x);
+            auxV.push_back(texture[ti].y);
             
-            faces[fcount].push_back(vertices[j].x);
-            faces[fcount].push_back(vertices[j].y);
-            faces[fcount].push_back(vertices[j].z);
+            auxV.push_back(vertices[j].x);
+            auxV.push_back(vertices[j].y);
+            auxV.push_back(vertices[j].z);
             
-            faces[fcount].push_back(texture[tj].x);
-            faces[fcount].push_back(texture[tj].y);
+            auxV.push_back(texture[tj].x);
+            auxV.push_back(texture[tj].y);
             
-            faces[fcount].push_back(vertices[k].x);
-            faces[fcount].push_back(vertices[k].y);
-            faces[fcount].push_back(vertices[k].z);
+            auxV.push_back(vertices[k].x);
+            auxV.push_back(vertices[k].y);
+            auxV.push_back(vertices[k].z);
             
-            faces[fcount].push_back(texture[tk].x);
-            faces[fcount].push_back(texture[tk].y);
+            auxV.push_back(texture[tk].x);
+            auxV.push_back(texture[tk].y);
+
+            faces.push_back(auxV);
+
 
             /*
             glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
@@ -188,7 +184,7 @@ void Scenario::readObjFile( void ){
         }
     }
     
-    fclose( fp );
+    //fclose( fp );
     //glPopMatrix();
     //glutSwapBuffers();
 }
@@ -200,6 +196,7 @@ void Scenario::draw( void ){
     
     int i;
     glPushMatrix();
+    glColor3f( 1.0f, 1.0f, 1.0f );
     for(i = 0; i < faces.size(); i++){
         glNormal3f(faces[i][0], faces[i][1], faces[i][2]);
         glBegin(GL_TRIANGLES);

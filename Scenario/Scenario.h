@@ -7,27 +7,27 @@ class Scenario{
     private:
         int width;
         int height;
-        string objfile;
-        string texfile;
+        FILE *objfile;
+        FILE *texfile;
         GLuint textureID;
-        vector< vector<int> > faces;
+        vector< vector<float> > faces;
     
     public:
         /* Constructors and Destructors */
-        Scenario( const char*, const char* );
+        //Scenario( const char*, const char* );
         Scenario( void );
         virtual ~Scenario();
     
         /* Setters */
         void setDimension( int w, int h ) { width = w; height = h; }
-        void setObjFile( string name ) { objfile = name; }
-        void setTexFile( string name ) { texfile = name; }
+        void setObjFile( FILE *fp ) { objfile = fp; }
+        void setTexFile( FILE *fp ) { texfile = fp; }
         void setTexID( void ) { textureID = loadBMP_custom(texfile); }
     
         /* Class Methods */
         void readObjFile( void );
         void draw( void );
-        GLuint loadBMP_custom(const char * imagepath);
+        GLuint loadBMP_custom( FILE* );
     
     
 };

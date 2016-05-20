@@ -3,8 +3,6 @@
 // de objetos 3D.
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
-#include "everything.cpp"
-//#include "Character/Body.cpp"
 #include "Scenario/Scenario.cpp"
 
 
@@ -15,7 +13,10 @@ GLdouble obsX, obsY, obsZ;
 //HumanoidCharacter testHero;
 HumanoidCharacter teste;
 HumanoidCharacter teste2, teste3;
-Scenario landscape("Objs/scenario.txt", "Img/scenario.bmp");
+
+//Scenario landscape("Objs/scenario.txt", "Img/scenario.bmp");
+Scenario landscape;
+
 float escala;
 float dx,dy,dz;
 
@@ -23,30 +24,12 @@ int windowsWidth, windowsHeight;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 
-
-void linesBackground( void ){
-    glColor3f( 0.7, 0.7, 0.7 );
-    glBegin( GL_LINES );
-        for(float i = -250 ;i < 250; i=i+1){
-        	if((int)i % 10 == 0) glColor3f( 1.0, 0.0, 0.0 );
-        	else glColor3f( 0.7, 0.7, 0.7 );
-            glVertex3f( -250.0, 0.0, i );
-            glVertex3f( 250.0, 0.0, i ); 
-        }
-        for(float i = -250 ;i < 250; i=i+1){
-            glVertex3f( i, 0.0, -250.0 );
-            glVertex3f( i, 0.0, 250 ); 
-        }
-    glEnd();
-}
-
-
 void DefineIluminacao (void)
 {
         GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
         GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
         GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-        GLfloat posicaoLuz[4]={0.0, -500.0, 500.0, 1.0};
+        GLfloat posicaoLuz[4]={0.0, 20, 20, 1.0};
         // Capacidade de brilho do material
         GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
         GLint especMaterial = 60;
@@ -70,16 +53,14 @@ void Desenha(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	DefineIluminacao();
-	//linesBackground();
-	//teste.draw();
+	teste.draw();
 	teste2.draw();
     teste3.draw();
 	
 	glPushMatrix();
 		//glColor3f(85/255.0,107/255.0,47/255.0);
 		glRotatef(180,0,1,0); 	
-		glScalef(20,20,20);
-
+		glScalef(80,80,80);
 		landscape.draw();
 		//everything();
 	glPopMatrix();
@@ -97,7 +78,7 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 	//	cout << difference << endl;
 	
-    if(difference >= 10){
+    if(difference >= 1){
     	teste.walkAnimation();
 		teste2.walkAnimation();
     	//cout << "entrou\n";
@@ -183,13 +164,22 @@ void Inicializa(void)
 	//glEnable(GL_TEXTURE_2D);
     
     // INICIALIZA CENARIO
-    
+    FILE *objFile, *bmp;
+    objFile = fopen("Objs/scenario.txt","r");
+    bmp = fopen("Img/scenario.bmp","rb");
+    landscape.setObjFile(objFile);
+    landscape.setTexFile(bmp);
+    //landscape.loadBMP_custom(bmp);
+    landscape.readObjFile();
+    landscape.setTexID();
 
 	angle = 45;
 	rotX = 45;
     rotY = 0;
-    obsZ = 100; 
-    dx = dy = 0;        
+    obsZ = 100;
+    dx = dy = 0;
+
+
 }
 
 
@@ -201,9 +191,10 @@ void PosicionaObservador(void)
 	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
-	glTranslatef(0,0,-obsZ);
+	glTranslatef(-dx,0,-obsZ);
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
+	glTranslatef(0,0,-dz);
 	DefineIluminacao();
 }
 
@@ -216,7 +207,7 @@ void EspecificaParametrosVisualizacao(void)
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,500);
+	gluPerspective(angle,fAspect,0.5,1000);
 	PosicionaObservador();
 }
 
@@ -296,25 +287,30 @@ void TeclasEspeciais (int tecla, int x, int y)
 	glutPostRedisplay();
 }
 void keyboard(unsigned char tecla, int x, int y){
+	int rotate;
     switch (tecla)
 	{	
 		case 'b':
-			teste.takeDamage(20);
+			teste2.takeDamage(20);
 			break;
 		case 27:
 			exit(0);
 			break;
 		case 'a':
-			dx--;
+			dx-=1.5;
+			rotate = -90;
 			break;
 		case 'd':
-			dx++;
+			dx+=1.5;
+			rotate = 90;
 			break;
         case 'w':
-            dz--;
+            dz-=1.5;
+            rotate = 180;
             break;
         case 's':
-            dz++;
+            dz+=1.5;
+            rotate = 0;
             break;
         case 'o':
             obsZ++;
@@ -325,7 +321,8 @@ void keyboard(unsigned char tecla, int x, int y){
         default:
             break;
     }
-	teste.setPosition(dx,dy,dz);
+    teste2.setRotate( 0, rotate, 0 );
+	teste2.setPosition(dx,dy,dz);
     PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -360,7 +357,7 @@ int main()
 	glutIdleFunc( idle );
 	//glutReshapeFunc( reshape );
 
-    /*
+   
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -368,8 +365,8 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( 10.0, 0.0, 0.0 );
-     */
+	teste.setPosition( -20.0, 0.0, 0.0 );
+    
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste2.setBodyColor( 0.5, 0.5, 0.5 );
