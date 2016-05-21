@@ -93,9 +93,6 @@ void Scenario::readObjFile( void ){
         while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
 			if(fscanf( fp, "%s", v) == EOF) break;
         }
-
-        //cout << v << endl;
-		
         
         if(strcmp("v",v) == 0){
             fscanf(fp,"%f %f %f",&x, &y, &z );
@@ -118,8 +115,7 @@ void Scenario::readObjFile( void ){
             aux.y=y;
             texture.push_back(aux);
         }else if (strcmp("f",v) == 0){
-            //char point[50];
-            int i,j,k,aux;
+            int i,j,k;
             int ni,nj,nk;
             int ti,tj,tk;
             
@@ -165,28 +161,10 @@ void Scenario::readObjFile( void ){
             auxV.push_back(texture[tk].y);
 
             faces.push_back(auxV);
-
-
-            /*
-            glNormal3f(normals[ni].x, normals[nj].y, normals[nk].z);
-            glBegin(GL_TRIANGLES);
-            //glColor3f(r,g,b);
-            glVertex3f( vertices[i].x,vertices[i].y, vertices[i].z);
-			//glTexCoord2f( texture[ti].x, texture[ti].y);
-            glVertex3f( vertices[j].x,vertices[j].y, vertices[j].z);
-			//glTexCoord2f( texture[tj].x, texture[tj].y);
-            glVertex3f( vertices[k].x,vertices[k].y, vertices[k].z);
-			//glTexCoord2f( texture[tk].x, texture[tk].y);
-            glEnd();
-             */
             
             fcount++;
         }
     }
-    
-    //fclose( fp );
-    //glPopMatrix();
-    //glutSwapBuffers();
 }
 
 void Scenario::draw( void ){
@@ -209,5 +187,6 @@ void Scenario::draw( void ){
         glEnd();
     }
     glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
     glutSwapBuffers();
 }

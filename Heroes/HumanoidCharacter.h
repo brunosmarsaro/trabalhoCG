@@ -46,7 +46,7 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
-	void walkAnimation();
+	void walkAnimation( float );
 	void draw();
 };
 #endif

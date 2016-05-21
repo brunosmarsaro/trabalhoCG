@@ -2,6 +2,8 @@
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
 
+
+
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
@@ -10,7 +12,6 @@ Scenario landscape;
 
 float escala;
 float dx,dy,dz;
-float rotateY;
 
 int windowsWidth, windowsHeight;
 
@@ -19,30 +20,12 @@ GLdouble lastWalkAnimation;
 GLdouble currentWalkAnimation;
 GLdouble difference;
 
+// Função responsável pela especificação dos parâmetros de iluminação
 
-void defineIlumination ( void ){
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};          // "cor" 
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-	GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
-	GLint especMaterial = 60;
-	// Define a refletância do material 
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-	// Ativa o uso da luz ambiente 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );  
-
-/*
+void defineIlumination (void)
+{
     GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
-    GLfloat luzDifusa[4]={0.3,0.3,0.3,1.0}; // "cor" 
+    GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
     GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
     GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
     // Capacidade de brilho do material
@@ -59,11 +42,12 @@ void defineIlumination ( void ){
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
     glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
-    */
 }
 
 
-void draw( void ){
+// Função callback chamada para fazer o desenho
+void draw(void)
+{
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
@@ -75,7 +59,7 @@ void draw( void ){
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
 		glScalef(150,150,150);
-		landscape.draw();
+        landscape.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -84,13 +68,24 @@ void draw( void ){
 void idle( void ){
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
+	//	cout << difference << endl;
 	
     if(difference >= 10){
-    	teste.walkAnimation( rotateY );
-		teste2.walkAnimation( 0.0f );
+    	teste.walkAnimation();
+		teste2.walkAnimation();
+    	//cout << "entrou\n";
     	lastWalkAnimation = currentWalkAnimation;
+    	//dx+= 0.09;
+		//dz+= 0.09;
+		//teste.setPosition( dx, 0, dz );
     }
+    //if(dx > 50) dx = -50;
+    //if(dz > 50) dz = -50;
+
+
     glutPostRedisplay();
+    
+   
 }
 
 double mouseOriginAngle( int x, int y ){
@@ -115,12 +110,13 @@ double mouseOriginAngle( int x, int y ){
 
 
 // Inicialização
-void init(void)
+void Inicializa(void)
 {
 	dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
 
+	//Define cor de céu
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	// Habilita o modelo de colorização de Gouraud
 	glShadeModel(GL_SMOOTH);
@@ -135,7 +131,7 @@ void init(void)
 
 	//glEnable(GL_TEXTURE_2D);
     
-    // Initializes Scenario
+    // INICIALIZA CENARIO
     FILE *objFile, *bmp;
     objFile = fopen("Objs/scenario.txt","r");
     bmp = fopen("Img/scenario.bmp","rb");
@@ -155,7 +151,7 @@ void init(void)
 
 
 // Função usada para especificar a posição do observador virtual
-void positionsObserver(void)
+void PosicionaObservador(void)
 {
 	// Especifica sistema de coordenadas do modelo
 	glMatrixMode(GL_MODELVIEW);
@@ -171,93 +167,117 @@ void positionsObserver(void)
 
 
 // Função usada para especificar o volume de visualização
-void SpecifiesVisualizationParameters( void ){
+void EspecificaParametrosVisualizacao(void)
+{
 	// Especifica sistema de coordenadas de projeção
 	glMatrixMode(GL_PROJECTION);
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
 	gluPerspective(angle,fAspect,0.5,1000);
-	positionsObserver();
+	PosicionaObservador();
 }
 
-void reshape(GLsizei w, GLsizei h){	
+
+// Função callback chamada quando o tamanho da janela é alterado
+void AlteraTamanhoJanela(GLsizei w, GLsizei h)
+{	
+
 	windowsHeight = h;
     windowsWidth = w;
+
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
 	// Especifica as dimensões da viewport
 	glViewport(0, 0, w, h);
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
-	SpecifiesVisualizationParameters();
+	EspecificaParametrosVisualizacao();
 }
 
 
 // Callback para gerenciar eventos do mouse
-void mouse(int button, int state, int x, int y){
+void GerenciaMouse(int button, int state, int x, int y)
+{
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {
-			///code
+			// Zoom-in
+			//if (angle >= 10)
+				//angle -= 5;
+			//escala = escala + 0.1;
+			//teste.setScale(escala,escala,escala);
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
-			///code
+			// Zoom-out
+			//if (angle <= 130)
+				//angle += 5;
+			//escala = escala - 0.1;
+			//teste.setScale(escala,escala,escala);
+			//int xt,zt;
+			//xt = x - windowsWidth/2;
+			//zt = (y - windowsHeight/2)*cos(rotY);
+			cout << x - windowsWidth/2  << " - " << y - windowsHeight/2 << endl;
+			//teste.setPosition( xt, 0, dz );
 		}
-	SpecifiesVisualizationParameters();
+	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
 }
 
-void SpecialKeys (int tecla, int x, int y){
-	switch (tecla){
-		case GLUT_KEY_LEFT:	
-			rotY--;
-			break;
-		case GLUT_KEY_RIGHT:
-			rotY++;
-			break;
-		case GLUT_KEY_UP:
-			rotX++;
-			break;
-		case GLUT_KEY_DOWN:
-			rotX--;
-			break;
-		case GLUT_KEY_HOME:
-			obsZ++;
-			break;
-		case GLUT_KEY_END:
-			obsZ--;
-			break;
+/*
+void reshape( int largura, int altura ){
+    
+}*/
+
+// Função callback chamada para gerenciar eventos de teclas especiais (F1,PgDn,...)
+void TeclasEspeciais (int tecla, int x, int y)
+{
+	switch (tecla)
+	{
+		case GLUT_KEY_LEFT:	rotY--;
+							break;
+		case GLUT_KEY_RIGHT:rotY++;
+							break;
+		case GLUT_KEY_UP:	rotX++;
+							break;
+		case GLUT_KEY_DOWN:	rotX--;
+							break;
+		case GLUT_KEY_HOME:	obsZ++;
+							break;
+		case GLUT_KEY_END:	obsZ--;
+							break;
         default:
             break;
+
 	}
-	positionsObserver();
+	PosicionaObservador();
 	glutPostRedisplay();
 }
-void keyboard(unsigned char key, int x, int y){
-	
-    switch (key){	
+void keyboard(unsigned char tecla, int x, int y){
+	int rotate;
+    switch (tecla)
+	{	
 		case 'b':
-			teste2.takeDamage(20);
+			teste.takeDamage(20);
 			break;
 		case 27:
 			exit(0);
 			break;
 		case 'a':
 			dx-=1.5;
-			rotateY = -90;
+			rotate = -90;
 			break;
 		case 'd':
 			dx+=1.5;
-			rotateY = 90;
+			rotate = 90;
 			break;
         case 'w':
             dz-=1.5;
-            rotateY = 180;
+            rotate = 180;
             break;
         case 's':
             dz+=1.5	;
-            rotateY = 0;
+            rotate = 0;
             break;
         case 'o':
             obsZ++;
@@ -268,9 +288,9 @@ void keyboard(unsigned char key, int x, int y){
         default:
             break;
     }
-    //teste.setRotate( 0, rotate, 0 );
-	teste.setPosition(dx,teste.getPosition().getY(),dz);
-    positionsObserver();
+    teste.setRotate( 0, rotate, 0 );
+	teste.setPosition(dx,dy,dz);
+    PosicionaObservador();
 	glutPostRedisplay();
 }
 
@@ -281,18 +301,28 @@ int main()
 	char *argv[] = { (char *)"gl", 0 };
 
 	glutInit(&argc,argv);
+	// Define do modo de operacao da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
+	// Especifica a posição inicial da janela GLUT
     glutInitWindowPosition(5,5);
+	// Especifica o tamanho inicial em pixels da janela GLUT
 	glutInitWindowSize(1024,720);
-	glutCreateWindow("Hello MOBA");
-	glutFullScreen(); 
-
+	// Cria a janela passando como argumento o titulo da mesma
+	glutCreateWindow("Desenho de um teapot com iluminacao");
+	// Janela em modo fullscreen
+	glutFullScreen();
+	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc( draw );
-	glutSpecialFunc( SpecialKeys );
-    glutReshapeFunc( reshape );
-	glutMouseFunc( mouse );
+	// Registra a funcao callback para tratamento das teclas especiais
+	glutSpecialFunc(TeclasEspeciais);
+	// Registra a funcao callback para tratamento do redimensionamento da janela
+    glutReshapeFunc(AlteraTamanhoJanela);
+	// Registra a funcao callback para tratamento do mouse
+	glutMouseFunc(GerenciaMouse);
+	// Registra a funcao callback para tratamento do teclado
 	glutKeyboardFunc( keyboard );
 	glutIdleFunc( idle );
+	//glutReshapeFunc( reshape );
 
 
 	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -323,7 +353,7 @@ int main()
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
     
-	init();
+	Inicializa();
 	glutMainLoop();
 }
 
