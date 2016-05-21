@@ -1,6 +1,3 @@
-// TeaPot3D.cpp - Isabel H. Manssour
-// Um programa OpenGL que exemplifica a visualização
-// de objetos 3D.
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
@@ -62,7 +59,7 @@ void draw(void)
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
 		glScalef(150,150,150);
-		landscape.draw();
+        landscape.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -140,7 +137,6 @@ void Inicializa(void)
     bmp = fopen("Img/scenario.bmp","rb");
     landscape.setObjFile(objFile);
     landscape.setTexFile(bmp);
-    //landscape.loadBMP_custom(bmp);
     landscape.readObjFile();
     landscape.setTexID();
     fclose( objFile );
@@ -314,7 +310,7 @@ int main()
 	// Cria a janela passando como argumento o titulo da mesma
 	glutCreateWindow("Desenho de um teapot com iluminacao");
 	// Janela em modo fullscreen
-	glutFullScreen(); 
+	glutFullScreen();
 	// Registra a funcao callback de redesenho da janela de visualizacao
 	glutDisplayFunc( draw );
 	// Registra a funcao callback para tratamento das teclas especiais
