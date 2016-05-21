@@ -1,8 +1,10 @@
+//*************************************************************************//
+//**************************** MONKEY's WAR *******************************//
+//*************************************************************************//
+
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
-
-
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
@@ -21,7 +23,6 @@ GLdouble currentWalkAnimation;
 GLdouble difference;
 
 // Função responsável pela especificação dos parâmetros de iluminação
-
 void defineIlumination (void)
 {
     GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
@@ -44,7 +45,6 @@ void defineIlumination (void)
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
 }
 
-
 // Função callback chamada para fazer o desenho
 void draw(void)
 {
@@ -64,7 +64,6 @@ void draw(void)
 	glutSwapBuffers();
 }	
 
-
 void idle( void ){
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
@@ -82,10 +81,7 @@ void idle( void ){
     //if(dx > 50) dx = -50;
     //if(dz > 50) dz = -50;
 
-
     glutPostRedisplay();
-    
-   
 }
 
 double mouseOriginAngle( int x, int y ){
@@ -107,48 +103,6 @@ double mouseOriginAngle( int x, int y ){
 
     return aux;
 }
-
-
-// Inicialização
-void Inicializa(void)
-{
-	dx = dy = 0;
-	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-	escala = 0.15;
-
-	//Define cor de céu
-	glClearColor(135/255.0,206/255.0,250/255.0, 0);
-	// Habilita o modelo de colorização de Gouraud
-	glShadeModel(GL_SMOOTH);
-	// Habilita a definição da cor do material a partir da cor corrente
-	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
-	glEnable(GL_LIGHTING);  
-	// Habilita a luz de número 0
-	glEnable(GL_LIGHT0);
-	// Habilita o depth-buffering
-	glEnable(GL_DEPTH_TEST);
-
-	//glEnable(GL_TEXTURE_2D);
-    
-    // INICIALIZA CENARIO
-    FILE *objFile, *bmp;
-    objFile = fopen("Objs/scenario.txt","r");
-    bmp = fopen("Img/scenario.bmp","rb");
-    landscape.setObjFile(objFile);
-    landscape.setTexFile(bmp);
-    landscape.readObjFile();
-    landscape.setTexID();
-    fclose( objFile );
-    fclose( bmp );
-
-    //Inicializa opções do observador
-	angle = 45;
-	rotX = 45;
-    rotY = 0;
-    obsZ = 200;
-}
-
 
 // Função usada para especificar a posição do observador virtual
 void PosicionaObservador(void)
@@ -225,7 +179,7 @@ void GerenciaMouse(int button, int state, int x, int y)
 }
 
 /*
-void reshape( int largura, int altura ){
+void reshape( int width, int height ){
     
 }*/
 
@@ -292,6 +246,44 @@ void keyboard(unsigned char tecla, int x, int y){
 	teste.setPosition(dx,dy,dz);
     PosicionaObservador();
 	glutPostRedisplay();
+}
+
+// Inicialização
+void Inicializa(void)
+{
+    dx = dy = 0;
+    lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+    escala = 0.15;
+    
+    //Define cor de céu
+    glClearColor(135/255.0,206/255.0,250/255.0, 0);
+    // Habilita o modelo de colorização de Gouraud
+    glShadeModel(GL_SMOOTH);
+    // Habilita a definição da cor do material a partir da cor corrente
+    glEnable(GL_COLOR_MATERIAL);
+    //Habilita o uso de iluminação
+    glEnable(GL_LIGHTING);
+    // Habilita a luz de número 0
+    glEnable(GL_LIGHT0);
+    // Habilita o depth-buffering
+    glEnable(GL_DEPTH_TEST);
+    
+    // INICIALIZA CENARIO
+    FILE *objFile, *bmp;
+    objFile = fopen("Objs/scenario.txt","r");
+    bmp = fopen("Img/scenario.bmp","rb");
+    landscape.setObjFile(objFile);
+    landscape.setTexFile(bmp);
+    landscape.readObjFile();
+    landscape.setTexID();
+    fclose( objFile );
+    fclose( bmp );
+    
+    //Inicializa opções do observador
+    angle = 45;
+    rotX = 45;
+    rotY = 0;
+    obsZ = 200;
 }
 
 // Programa Principal
