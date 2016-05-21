@@ -66,6 +66,15 @@ void HumanoidCharacter::walkAnimation(){
 	
 	if(walking){
 
+
+		float x, y, z;
+
+		//Pulos 
+		y = sin( abs(walkCicle) *M_PI/180 );
+		setPosition( getPosition().getX(), y , getPosition().getZ() );
+
+		//setRotate( 0, 5*cos( 2*walkCicle *M_PI/180 ), -5*cos( 2*walkCicle *M_PI/180 ) );
+
 		//Rotacionar coxa
 		leftThigh.setRotate( walkCicle, 0, 0 );
 		rightThigh.setRotate( -walkCicle, 0, 0 );
@@ -74,7 +83,7 @@ void HumanoidCharacter::walkAnimation(){
 		
 
     	//Movimentar a canela
-    	float x, y, z;
+    	
     	//Canela esquerda    	
 		calfBeginZ = (9.0) * sin( walkCicle *M_PI/180);
     	calfBeginY = (9.0) * cos( walkCicle *M_PI/180 );
@@ -120,16 +129,17 @@ void HumanoidCharacter::walkAnimation(){
 }
 void HumanoidCharacter::draw(){
 	if(isVisible()){
-		glPushMatrix();
-		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
 
 		glPushMatrix();
-			setLifeBarPosition( 0.0, 250.0*scaleY + 30, 0 );
+			//setLifeBarPosition( 0.0, 0.0, 0.0 );
+			glTranslatef( getPosition().getX(), 1/(0.07) + scaleY*15.0 , getPosition().getZ() );
 			glScalef( 0.05 ,0.07 ,0.03 );
-			//glRotatef( -45, 1,0,0 );
-			setBarLifeRotate( 135, 0, 0 );
+			setBarLifeRotate( -45, 180, 0 );
 			getLifeBar().draw();
 		glPopMatrix();
+
+		glPushMatrix();
+		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
 		glPushMatrix();
 			glRotatef( rotateX, 1,0,0 );
 			glRotatef( rotateY, 0,1,0 );

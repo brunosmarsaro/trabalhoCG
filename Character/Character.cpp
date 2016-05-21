@@ -159,7 +159,8 @@ void Character::heal( float perCentHeal ){
 }
 int Character::takeDamage ( int opponentAtk ) {
     int damage, actualLife;
-    damage = (opponentAtk - def*( 0.3 ));
+    damage = (100*opponentAtk) / (100+def);
+    //damage = (opponentAtk - def*( 0.3 ));
     if( damage <= 0 ) damage = 1;
     actualLife = characterLife.getLife();
     characterLife.setLife( actualLife - damage );

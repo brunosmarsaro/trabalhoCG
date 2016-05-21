@@ -113,27 +113,27 @@ void LifeBar::draw( void ){
     glColor3f( 0.0 , 0.0, 0.0 );
     glLineWidth( 2 );
     glBegin( GL_POLYGON );
-       glVertex3f( -width/2, 0.0, 2.001 );
-        glVertex3f( width/2, 0.0, 2.001 );
-        glVertex3f( width/2, height, 2.001 );
-        glVertex3f( -width/2, height, 2.001 );
+        glVertex3f( -width/2, 0.0, 1 );
+        glVertex3f( width/2, 0.0, 1 );
+        glVertex3f( width/2, height, 1 );
+        glVertex3f( -width/2, height, 1 );
     glEnd();
     glPopMatrix();
 
     glPushMatrix();
     int lifeWidth = width*( life/(float)max );
     glLineWidth( 2 );
-    glColor3f( red , green, blue );    	
+    glColor3f( red , green, blue );
     glBegin( GL_POLYGON );
-        glVertex3f( -width/2, 0.0, 0.0 );
-        glVertex3f( -width/2 + lifeWidth, 0.0, 0.0 );
-        glVertex3f( -width/2 + lifeWidth, height, 0.0 );
-        glVertex3f( -width/2, height, 0.0 );
+        glVertex3f( width/2, 0.0, 0.0 );
+        glVertex3f( width/2 - lifeWidth, 0.0, 0.0 );
+        glVertex3f( width/2 - lifeWidth, height, 0.0 );
+        glVertex3f( width/2, height, 0.0 );
     glEnd();
     glPopMatrix();
 
     glPushMatrix();
-    glLineWidth( 2 );
+    glLineWidth( 3 );
     glColor3f( 1.0 , 1.0, 1.0 );
     glBegin( GL_LINE_LOOP );
        glVertex3f( -width/2, 0.0, 0.0 );
