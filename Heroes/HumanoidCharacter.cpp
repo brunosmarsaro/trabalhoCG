@@ -50,7 +50,7 @@ void HumanoidCharacter::walkAnimation( float characterYAngle ){
 	float passo;
 	float calfBeginY;
 	float calfBeginZ;
-w
+
 	passo = 5;	
 
 	//Ciclo de caminhada de -max até max
