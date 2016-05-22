@@ -14,6 +14,7 @@ Scenario landscape;
 
 float escala;
 float dx,dy,dz;
+float rotateY;
 
 int windowsWidth, windowsHeight;
 
@@ -24,8 +25,28 @@ GLdouble difference;
 
 
 void defineIlumination ( void ){
+	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
+	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};          // "cor" 
+	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+	GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
+	// Capacidade de brilho do material
+	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
+	GLint especMaterial = 60;
+	// Define a refletância do material 
+	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+	// Ativa o uso da luz ambiente 
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+	// Define os parâmetros da luz de número 0
+	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );  
+
+/*
     GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
-    GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0}; // "cor" 
+    GLfloat luzDifusa[4]={0.3,0.3,0.3,1.0}; // "cor" 
     GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
     GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
     // Capacidade de brilho do material
@@ -42,6 +63,7 @@ void defineIlumination ( void ){
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
     glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
+    */
 }
 
 
@@ -68,8 +90,8 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 	
     if(difference >= 10){
-    	teste.walkAnimation();
-		teste2.walkAnimation();
+    	teste.walkAnimation( rotateY );
+		teste2.walkAnimation( 0.0f );
     	lastWalkAnimation = currentWalkAnimation;
     }
     glutPostRedisplay();
@@ -176,7 +198,7 @@ void SpecialKeys (int tecla, int x, int y){
 	glutPostRedisplay();
 }
 void keyboard(unsigned char key, int x, int y){
-	int rotate;
+	
     switch (key){	
 		case 'b':
 			teste2.takeDamage(20);
@@ -186,19 +208,19 @@ void keyboard(unsigned char key, int x, int y){
 			break;
 		case 'a':
 			dx-=1.5;
-			rotate = -90;
+			rotateY = -90;
 			break;
 		case 'd':
 			dx+=1.5;
-			rotate = 90;
+			rotateY = 90;
 			break;
         case 'w':
             dz-=1.5;
-            rotate = 180;
+            rotateY = 180;
             break;
         case 's':
             dz+=1.5	;
-            rotate = 0;
+            rotateY = 0;
             break;
         case 'o':
             obsZ++;
@@ -209,7 +231,7 @@ void keyboard(unsigned char key, int x, int y){
         default:
             break;
     }
-    teste.setRotate( 0, rotate, 0 );
+    //teste.setRotate( 0, rotate, 0 );
 	teste.setPosition(dx,teste.getPosition().getY(),dz);
     positionsObserver();
 	glutPostRedisplay();

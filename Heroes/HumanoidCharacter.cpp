@@ -45,13 +45,13 @@ void HumanoidCharacter::setLegColor( float r, float g, float b ){
 void HumanoidCharacter::setWalk(bool w){
 	walking = w;
 }
-void HumanoidCharacter::walkAnimation(){
+void HumanoidCharacter::walkAnimation( float characterYAngle ){
 	float max = 45;
 	float passo;
 	float calfBeginY;
 	float calfBeginZ;
 
-	passo = 5;	
+	passo = 7;	
 
 	//Ciclo de caminhada de -max até max
 	//O angulo de rotação das pernas e braçõs é o valor do walkCicle
@@ -73,7 +73,7 @@ void HumanoidCharacter::walkAnimation(){
 		y = sin( abs(walkCicle) *M_PI/180 );
 		setPosition( getPosition().getX(), y , getPosition().getZ() );
 
-		//setRotate( 0, 5*cos( 2*walkCicle *M_PI/180 ), -5*cos( 2*walkCicle *M_PI/180 ) );
+		setRotate( 0, 10*sin( walkCicle *M_PI/180 ) + characterYAngle, 0 );
 
 		//Rotacionar coxa
 		leftThigh.setRotate( walkCicle, 0, 0 );
