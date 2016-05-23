@@ -5,12 +5,15 @@
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
+#include "Scenario/Tower.cpp"
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
+//Tower tower1;
+
 
 float escala;
 float dx,dy,dz;
@@ -80,6 +83,10 @@ void draw( void ){
 		glRotatef(180,0,1,0); 
 		glScalef(150,150,150);
 		landscape.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+		//tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -260,12 +267,24 @@ void init(void)
     FILE *objFile, *bmp;
     objFile = fopen("Objs/scenario.txt","r");
     bmp = fopen("Img/scenario.bmp","rb");
-    //landscape.setObjFile(objFile);
-    //landscape.readObjFile();
     landscape.setObj(objFile);
     landscape.setTex(bmp);
     fclose( objFile );
     fclose( bmp );
+
+    // Inicialize Towers
+	/*
+    FILE *objtower, *objdiam, *bmptower, *bmpdiam;
+	objtower = fopen("Objs/tower.obj", "r");
+	objdiam = fopen("Objs/diamond.obj", "r");
+	bmptower = fopen("Img/metal.bmp", "rb");
+	bmpdiam = fopen("Img/diamond.bmp", "rb");
+	tower1.setObj(objtower, objdiam);
+    tower1.setTex(bmptower, bmpdiam);
+	fclose( objtower );
+	fclose( objdiam );
+	fclose( bmptower );
+	fclose( bmpdiam );*/
     
     //Inicializa opções do observador
     angle = 45;

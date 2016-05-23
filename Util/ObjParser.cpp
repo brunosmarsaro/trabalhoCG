@@ -68,7 +68,6 @@ void ObjParser::readObj( void ){
             ti--;
             tj--;
             tk--;
-            
 
  	    vector<float> auxV;
 

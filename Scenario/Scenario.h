@@ -9,7 +9,7 @@ class Scenario{
     private:
         int width;
         int height;
-        FILE *objfile;
+        //FILE *objfile;
         //FILE *texfile;
         GLuint textureID;
         vector< vector<float> > faces;
@@ -29,7 +29,7 @@ class Scenario{
         /* Class Methods */
         //void readObjFile( void );
         void draw( void );
-        GLuint loadBMP_custom( FILE* );
+        //GLuint loadBMP_custom( FILE* );
     
     
 };
