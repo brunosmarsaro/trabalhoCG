@@ -1,12 +1,15 @@
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
+#include "Scenario/Tower.cpp"
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
+//Tower tower1;
+
 
 float escala;
 float dx,dy,dz;
@@ -57,6 +60,10 @@ void draw( void ){
 		//glRotatef(45,0,1,0);
 		glScalef(150,150,150);
 		landscape.draw();
+	glPopMatrix();
+
+	glPushMatrix();
+		//tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	

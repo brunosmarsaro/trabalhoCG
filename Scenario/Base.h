@@ -3,14 +3,18 @@
 
 using namespace std;
 
-class Base : : public Character{
+class Base:: public Character{
+	private:
+		GLuint textureID;
+        vector< vector<float> > faces;
 
     public:
-    /* Constructors and Desconstructors */
+    /* Constructors and Destructors */
         Base();
         virtual ~Base();
     
     /* Class Methods */
-        void create( void );
+        void draw( void );
+	
     
 };

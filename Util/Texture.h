@@ -7,7 +7,7 @@ class Texture{
 		FILE *file;
         GLuint textureID;
 	public:
-		Texture( void );
+		//Texture( void );
 		Texture( FILE *fp );
 		~Texture( void );
 		void setTexFile( FILE *fp ) { file = fp; }

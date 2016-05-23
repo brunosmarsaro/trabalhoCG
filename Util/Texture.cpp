@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-Texture::Texture( void ) {}
+//Texture::Texture( void ) {}
 
 Texture::Texture( FILE *fp){
 	file = fp;

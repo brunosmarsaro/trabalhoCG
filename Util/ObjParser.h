@@ -13,7 +13,5 @@ class ObjParser{
 		~ObjParser();
 		vector< vector<float> > getFaces( void ) { return faces; }
 		void setFile( FILE * file) { fp = file; }
-		void readObj( void );
-
-		
+		void readObj( void );		
 };
