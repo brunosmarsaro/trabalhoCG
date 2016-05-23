@@ -1,0 +1,17 @@
+#include "../gLib.h"
+
+using namespace std;
+
+class Texture{
+	private:
+		FILE *texfile;
+        GLuint textureID;
+	public:
+		Texture( void );
+		~Texture( void );
+		void setTexFile( FILE *fp ) { texfile = fp; }
+		void setTexID( void ) { textureID = loadBMP_custom(texfile); }
+
+		GLuint loadBMP_custom( FILE* );
+
+};

@@ -1,0 +1,139 @@
+#include "Scenario.h"
+
+/*==================== Constructors and Destructor ====================*/
+Scenario::Scenario( void ){}
+
+Scenario::~Scenario( void ){}
+/*==================== Class Methods ====================*/
+/*
+typedef struct position SPosition;
+struct position
+{
+    float x, y, z;
+};
+*/
+void Scenario::setTex( FILE *fp ){
+	Texture aux(fp);
+	textureID = aux.getTexID();
+}
+
+void Scenario::setObj( FILE *fp ){
+	ObjParser aux(fp);
+	faces = aux.getFaces();
+}
+
+/*
+void Scenario::readObjFile( void ){
+    /* Reading Object File 
+    
+    //FILE * fp = fopen(objfile, "r");
+    FILE * fp = objfile;
+
+    if (!fp){printf("File could not be opened\n"); exit(0);}
+    char v[5];
+    float x, y, z; 
+    vector<SPosition> vertices;
+    vector<SPosition> normals;
+    vector<SPosition> texture;
+    float i=0,j=0,k=0;
+    int fcount =0;
+    while( fscanf( fp, "%s", v) != EOF ){
+        while(strcmp(v,"v") !=0 && strcmp(v,"f") !=0 && strcmp(v,"vn") !=0 && strcmp(v,"vt") !=0){
+			if(fscanf( fp, "%s", v) == EOF) break;
+        }
+        
+        if(strcmp("v",v) == 0){
+            fscanf(fp,"%f %f %f",&x, &y, &z );
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
+            aux.z=z;
+            vertices.push_back(aux);
+        }else if (strcmp("vn",v) == 0){
+            fscanf(fp,"%f %f %f",&x, &y, &z );
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
+            aux.z=z;
+            normals.push_back(aux);
+        }else if (strcmp("vt",v) == 0){
+            fscanf(fp,"%f %f",&x, &y );
+            SPosition aux;
+            aux.x=x;
+            aux.y=y;
+            texture.push_back(aux);
+        }else if (strcmp("f",v) == 0){
+            int i,j,k;
+            int ni,nj,nk;
+            int ti,tj,tk;
+            
+            fscanf(fp,"%d %*c %d %*c %d",&i,&ti,&ni);
+            fscanf(fp,"%d %*c %d %*c %d",&j,&tj,&nj);
+            fscanf(fp,"%d %*c %d %*c %d",&k,&tk,&nk);
+            i--;
+            j--;
+            k--;
+            ni--;
+            nj--;
+            nk--;
+            ti--;
+            tj--;
+            tk--;
+            
+
+ 	    vector<float> auxV;
+
+ 	    auxV.push_back(normals[ni].x);
+            auxV.push_back(normals[nj].y);
+            auxV.push_back(normals[nk].z);
+            
+            auxV.push_back(vertices[i].x);
+            auxV.push_back(vertices[i].y);
+            auxV.push_back(vertices[i].z);
+            
+            auxV.push_back(texture[ti].x);
+            auxV.push_back(texture[ti].y);
+            
+            auxV.push_back(vertices[j].x);
+            auxV.push_back(vertices[j].y);
+            auxV.push_back(vertices[j].z);
+            
+            auxV.push_back(texture[tj].x);
+            auxV.push_back(texture[tj].y);
+            
+            auxV.push_back(vertices[k].x);
+            auxV.push_back(vertices[k].y);
+            auxV.push_back(vertices[k].z);
+            
+            auxV.push_back(texture[tk].x);
+            auxV.push_back(texture[tk].y);
+
+            faces.push_back(auxV);
+            
+            fcount++;
+        }
+    }
+}*/
+
+void Scenario::draw( void ){
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture (GL_TEXTURE_2D, textureID);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    
+    int i;
+    glPushMatrix();
+    glColor3f( 1.0f, 1.0f, 1.0f );
+    for(i = 0; i < faces.size(); i++){
+        glNormal3f(faces[i][0], faces[i][1], faces[i][2]);
+        glBegin(GL_TRIANGLES);
+            glVertex3f( faces[i][3],faces[i][4], faces[i][5]);
+            glTexCoord2f( faces[i][6], faces[i][7]);
+            glVertex3f( faces[i][8],faces[i][9], faces[i][10]);
+            glTexCoord2f( faces[i][11], faces[i][12]);
+            glVertex3f( faces[i][13],faces[i][14], faces[i][15]);
+            glTexCoord2f( faces[i][16], faces[i][17]);
+        glEnd();
+    }
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
+}

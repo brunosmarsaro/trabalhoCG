@@ -22,7 +22,7 @@ class Scenario{
     
         /* Setters */
         void setDimension( int w, int h ) { width = w; height = h; }
-        //void setObjFile( FILE *fp ) { objfile = fp; }
+        void setObjFile( FILE *fp ) { objfile = fp; }
 	void setTex( FILE * );
 	void setObj( FILE * );
     

@@ -260,9 +260,8 @@ void init(void)
     FILE *objFile, *bmp;
     objFile = fopen("Objs/scenario.txt","r");
     bmp = fopen("Img/scenario.bmp","rb");
-    //landscape.setObjFile(objFile);
-    //landscape.readObjFile();
-    landscape.setObj(objFile);
+    landscape.setObjFile(objFile);
+    landscape.readObjFile();
     landscape.setTex(bmp);
     fclose( objFile );
     fclose( bmp );
