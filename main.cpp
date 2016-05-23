@@ -1,7 +1,7 @@
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
-#include "Scenario/Tower.cpp"
+//#include "Scenario/Tower.cpp"
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
@@ -190,34 +190,58 @@ void reshape(GLsizei w, GLsizei h){
 	SpecifiesVisualizationParameters();
 }
 
+float x3DMouse( int x, int y ){
+//Cálculo da posição do clique no eixo x
+
+	float largMid = 264; //pq eu nao sei, é isso
+	//float largMax = largMid*cos(rotX * M_PI/180);
+	float largMax = 444;
+	float largMin = largMid*cos(rotX * M_PI/180);
+	float differenceLarg = largMax - largMin;
+	float largX = largMax - ( differenceLarg*y )/windowsHeight;
+	float mouseXReal = x - windowsWidth/2.0f;
+
+	
+	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
+	return largX*(mouseXReal/windowsWidth);
+
+}
+
+float y3DMouse( int x, int y ){
+
+	float baseObs = -obsZ * cos( rotX*M_PI/180 );
+	float obsH = obsZ * sin( rotX*M_PI/180 );
+	float mouseY = windowsHeight/2.0 - y;
+	float YFangle = -mouseY*45.0/windowsHeight + 45;
+	float w2 = obsH/tan( YFangle*M_PI/180 );
+
+	// return (foco do obsvervador em z) - (w2 + baseObs);
+	return -(w2 + baseObs);
+
+
+}
+
 
 // Callback para gerenciar eventos do mouse
 void mouse(int button, int state, int x, int y){
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {
-			///code
+			
+			dx = x3DMouse(x,y);
+			// dx = (foco do observador em x) + largX*(mouseXReal/windowsWidth);
+
+			
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
-			///code
-			//dx = (131.0*(x - windowsWidth/2)*2)/windowsWidth;
-			float baseObs = -obsZ * cos( rotX*M_PI/180 );
-			float obsH = obsZ * sin( rotX*M_PI/180 );
-			float mouseY = windowsHeight/2.0 - y;
-			float YFangle = -mouseY*45.0/windowsHeight + 45;
-			float w2 = obsH/tan( YFangle*M_PI/180 );
-			dz = - (w2 + baseObs);
-			// dz = (foco do obsvervador) - (w2 + baseObs);
-			cout << "baseObs " << baseObs << endl;
-			cout << "obsH " << obsH << endl;
-			cout << "mouseY " << mouseY << endl;
-			cout << "YFangle " << YFangle << endl;
-			cout << "tan(YFangle) " << tan( YFangle*M_PI/180 ) << endl;
-			cout << "w2 " << w2 << endl;
-			cout << "dz " << dz << endl << endl;
-			//dy = (obsZ*sin( rotX*M_PI/180 ))/tan( ((y-windowsHeight)*45)/windowsHeight ) - obsZ*cos(rotX*M_PI/180);
-			teste.setPosition(dx,dy,dz);
+			
+
+			
+			dz = y3DMouse(x,y);
+			// dz = (foco do obsvervador em z) - (w2 + baseObs);
+			
 		}
+		teste.setPosition(dx,dy,dz);
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
 }
