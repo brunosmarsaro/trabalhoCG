@@ -192,23 +192,34 @@ void reshape(GLsizei w, GLsizei h){
 
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
+//Essa função calcula o valor aproximado do valor de x no plano xz referente ao clique na tela
+//Só funciona com o ângulo padrão e o zoom padrão.
+	float mouseYReal = windowsHeight/2.0 - y;
+	float mouseXReal = x - windowsWidth/2.0f;
+
 
 	float largMid = 264; //pq eu nao sei, é isso
 	//float largMax = largMid*cos(rotX * M_PI/180);
 	float largMax = 444;
 	float largMin = largMid*cos(rotX * M_PI/180);
-	float differenceLarg = largMax - largMin;
-	float largX = largMax - ( differenceLarg*y )/windowsHeight;
-	float mouseXReal = x - windowsWidth/2.0f;
-
+	float differenceLarg;
+	float largX;
 	
+	//Dividido em duas partes pra melhorar a precisão
+	if(y > windowsHeight/2){
+		differenceLarg = largMid - largMin;
+		largX = largMid - (differenceLarg*(-mouseYReal)*2.0f)/windowsHeight;
+	}else{
+		differenceLarg = largMax - largMid;
+		largX = largMid + (differenceLarg*(mouseYReal)*2.0f)/windowsHeight;
+	}
+
 	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
 	return largX*(mouseXReal/windowsWidth);
 
 }
 
 float y3DMouse( int x, int y ){
-
 	float baseObs = -obsZ * cos( rotX*M_PI/180 );
 	float obsH = obsZ * sin( rotX*M_PI/180 );
 	float mouseY = windowsHeight/2.0 - y;
@@ -217,8 +228,6 @@ float y3DMouse( int x, int y ){
 
 	// return (foco do obsvervador em z) - (w2 + baseObs);
 	return -(w2 + baseObs);
-
-
 }
 
 
@@ -227,19 +236,11 @@ void mouse(int button, int state, int x, int y){
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {
 			
-			dx = x3DMouse(x,y);
-			// dx = (foco do observador em x) + largX*(mouseXReal/windowsWidth);
-
-			
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
-			
-
-			
+			dx = x3DMouse(x,y);
 			dz = y3DMouse(x,y);
-			// dz = (foco do obsvervador em z) - (w2 + baseObs);
-			
 		}
 		teste.setPosition(dx,dy,dz);
 	SpecifiesVisualizationParameters();
