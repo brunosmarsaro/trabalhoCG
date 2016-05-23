@@ -40,26 +40,6 @@ void defineIlumination ( void ){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );  
 
-/*
-    GLfloat luzAmbiente[4]={0.3,0.3,0.3,1.0}; 
-    GLfloat luzDifusa[4]={0.3,0.3,0.3,1.0}; // "cor" 
-    GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-    GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
-    // Capacidade de brilho do material
-    GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
-    GLint especMaterial = 60;
-    // Define a refletância do material 
-    glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-    // Define a concentração do brilho
-    glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-    // Ativa o uso da luz ambiente 
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-    // Define os parâmetros da luz de número 0
-    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-    glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
-    */
 }
 
 
@@ -74,6 +54,7 @@ void draw( void ){
 
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
+		//glRotatef(45,0,1,0);
 		glScalef(150,150,150);
 		landscape.draw();
 	glPopMatrix();
@@ -139,14 +120,14 @@ void init(void)
     FILE *objFile, *bmp;
     objFile = fopen("Objs/scenario.txt","r");
     bmp = fopen("Img/scenario.bmp","rb");
-    landscape.setObjFile(objFile);
-    landscape.setTexFile(bmp);
-    landscape.readObjFile();
-    landscape.setTexID();
+    landscape.setObj(objFile);
+    landscape.setTex(bmp);
+    //landscape.readObjFile();
+    //landscape.setTexID();
     fclose( objFile );
     fclose( bmp );
 
-    
+
 
     //Inicializa opções do observador
 	angle = 45;
@@ -164,10 +145,17 @@ void positionsObserver(void)
 	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
-	glTranslatef(-dx,0,-obsZ);
+
+
+	glTranslatef(0,0,-obsZ);
+ 	glRotatef(rotX,1,0,0);
+ 	glRotatef(rotY,0,1,0);
+/*
+	glTranslatef(0,0,-obsZ);
 	glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
 	glTranslatef(0,0,-dz);
+	*/
 	defineIlumination();
 }
 
@@ -205,6 +193,23 @@ void mouse(int button, int state, int x, int y){
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
 			///code
+			//dx = (131.0*(x - windowsWidth/2)*2)/windowsWidth;
+			float baseObs = -obsZ * cos( rotX*M_PI/180 );
+			float obsH = obsZ * sin( rotX*M_PI/180 );
+			float mouseY = windowsHeight/2.0 - y;
+			float YFangle = -mouseY*45.0/windowsHeight + 45;
+			float w2 = obsH/tan( YFangle*M_PI/180 );
+			dz = - (w2 + baseObs);
+			// dz = (foco do obsvervador) - (w2 + baseObs);
+			cout << "baseObs " << baseObs << endl;
+			cout << "obsH " << obsH << endl;
+			cout << "mouseY " << mouseY << endl;
+			cout << "YFangle " << YFangle << endl;
+			cout << "tan(YFangle) " << tan( YFangle*M_PI/180 ) << endl;
+			cout << "w2 " << w2 << endl;
+			cout << "dz " << dz << endl << endl;
+			//dy = (obsZ*sin( rotX*M_PI/180 ))/tan( ((y-windowsHeight)*45)/windowsHeight ) - obsZ*cos(rotX*M_PI/180);
+			teste.setPosition(dx,dy,dz);
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
@@ -213,10 +218,10 @@ void mouse(int button, int state, int x, int y){
 void SpecialKeys (int tecla, int x, int y){
 	switch (tecla){
 		case GLUT_KEY_LEFT:	
-			rotY--;
+			//rotY--;
 			break;
 		case GLUT_KEY_RIGHT:
-			rotY++;
+			//rotY++;
 			break;
 		case GLUT_KEY_UP:
 			rotX++;
@@ -271,6 +276,8 @@ void keyboard(unsigned char key, int x, int y){
             break;
     }
     //teste.setRotate( 0, rotate, 0 );
+    cout << "dx " << dx << endl;
+    cout << "dz" << dz << endl;
 	teste.setPosition(dx,teste.getPosition().getY(),dz);
     positionsObserver();
 	glutPostRedisplay();
@@ -304,7 +311,7 @@ int main()
     teste3.setScale( 0.7, 0.5, 0.7 );
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
-    teste3.setPosition( 	29.0, 0.0, 0.0 );
+    teste3.setPosition( 0, 0.0, 83);
    
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
