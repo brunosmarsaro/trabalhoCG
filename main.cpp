@@ -1,14 +1,14 @@
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
-//#include "Scenario/Tower.cpp"
+#include "Scenario/Tower.cpp"
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
-//Tower tower1;
+Tower tower1;
 
 
 float escala;
@@ -22,6 +22,8 @@ GLdouble lastWalkAnimation;
 GLdouble currentWalkAnimation;
 GLdouble difference;
 
+
+void arrowDraw(){}
 
 void defineIlumination ( void ){
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
@@ -63,7 +65,7 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
-		//tower1.draw();
+		tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }	
@@ -134,7 +136,20 @@ void init(void)
     fclose( objFile );
     fclose( bmp );
 
-
+    // Inicialize Towers
+	/*
+    FILE *objtower, *objdiam, *bmptower, *bmpdiam;
+	objtower = fopen("Objs/tower.obj", "r");
+	objdiam = fopen("Objs/diamond.obj", "r");
+	bmptower = fopen("Img/metal.bmp", "rb");
+	bmpdiam = fopen("Img/diamond.bmp", "rb");
+	tower1.setObj(objtower, objdiam);
+    tower1.setTex(bmptower, bmpdiam);
+	fclose( objtower );
+	fclose( objdiam );
+	fclose( bmptower );
+	fclose( bmpdiam );
+*/
 
     //Inicializa opções do observador
 	angle = 45;
@@ -190,6 +205,32 @@ void reshape(GLsizei w, GLsizei h){
 	SpecifiesVisualizationParameters();
 }
 
+/*
+
+float x3DMouse( int x, int y ){
+//Cálculo da posição do clique no eixo x
+	float baseObs = obsZ ;///* cos( rotX*M_PI/180 );
+
+	float largMid = 2* baseObs * tan( (45/2)*M_PI/180 ); //pq eu nao sei, é isso
+	//float largMax = largMid*cos(rotX * M_PI/180);
+	float largMax = 2* (baseObs + 200)* tan( (45/2)*M_PI/180 );
+	float largMin = largMid*cos(rotX * M_PI/180);
+	float differenceLarg = largMax - largMin;
+	float largX = largMax - ( differenceLarg*y )/windowsHeight;
+	float mouseXReal = x - windowsWidth/2.0f;
+
+	cout << "largMid " << largMid << endl;
+	cout << "largMax " << largMax << endl;
+	cout << "largMin " << largMin << endl;
+	cout << "differenceLarg " << differenceLarg << endl;
+	cout << "mouseXReal " << mouseXReal << endl;
+	cout << "largX " << largX << endl;
+	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
+	return largX*(mouseXReal/windowsWidth);
+
+}
+*/
+
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
 //Essa função calcula o valor aproximado do valor de x no plano xz referente ao clique na tela
@@ -197,8 +238,7 @@ float x3DMouse( int x, int y ){
 	float mouseYReal = windowsHeight/2.0 - y;
 	float mouseXReal = x - windowsWidth/2.0f;
 
-
-	float largMid = 264; //pq eu nao sei, é isso
+	float largMid = 264;
 	//float largMax = largMid*cos(rotX * M_PI/180);
 	float largMax = 444;
 	float largMin = largMid*cos(rotX * M_PI/180);
@@ -206,6 +246,7 @@ float x3DMouse( int x, int y ){
 	float largX;
 	
 	//Dividido em duas partes pra melhorar a precisão
+	//Quanto mais divisões melhor a precisão
 	if(y > windowsHeight/2){
 		differenceLarg = largMid - largMin;
 		largX = largMid - (differenceLarg*(-mouseYReal)*2.0f)/windowsHeight;
@@ -250,10 +291,10 @@ void mouse(int button, int state, int x, int y){
 void SpecialKeys (int tecla, int x, int y){
 	switch (tecla){
 		case GLUT_KEY_LEFT:	
-			//rotY--;
+			rotY--;
 			break;
 		case GLUT_KEY_RIGHT:
-			//rotY++;
+			rotY++;
 			break;
 		case GLUT_KEY_UP:
 			rotX++;

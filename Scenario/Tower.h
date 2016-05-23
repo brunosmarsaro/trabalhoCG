@@ -1,7 +1,7 @@
 #include "../gLib.h"
 //#include "../Character/Character.cpp"
-#include "../Util/Texture.cpp"
-#include "../Util/ObjParser.cpp"
+//#include "../Util/Texture.cpp"
+//#include "../Util/ObjParser.cpp"
 
 using namespace std;
 
@@ -13,8 +13,8 @@ class Tower{
         vector< vector<float> > faces_t;
 
 	public:
-    	Tower();
-    	~Tower();
+    	Tower(){};
+    	~Tower(){};
 
     	// TOWER followed by DIAMOND 
 		void setTex( FILE *, FILE * );
