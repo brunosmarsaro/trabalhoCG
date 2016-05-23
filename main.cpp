@@ -1,7 +1,3 @@
-//*************************************************************************//
-//**************************** MONKEY's WAR *******************************//
-//*************************************************************************//
-
 #include "gLib.h"
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
@@ -116,6 +112,49 @@ double mouseOriginAngle( int x, int y ){
 
     return aux;
 }
+
+
+// Inicialização
+void init(void)
+{
+	dx = dy = 0;
+	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+	escala = 0.15;
+
+	glClearColor(135/255.0,206/255.0,250/255.0, 0);
+	// Habilita o modelo de colorização de Gouraud
+	glShadeModel(GL_SMOOTH);
+	// Habilita a definição da cor do material a partir da cor corrente
+	glEnable(GL_COLOR_MATERIAL);
+	//Habilita o uso de iluminação
+	glEnable(GL_LIGHTING);  
+	// Habilita a luz de número 0
+	glEnable(GL_LIGHT0);
+	// Habilita o depth-buffering
+	glEnable(GL_DEPTH_TEST);
+
+	//glEnable(GL_TEXTURE_2D);
+    
+    // Initializes Scenario
+    FILE *objFile, *bmp;
+    objFile = fopen("Objs/scenario.txt","r");
+    bmp = fopen("Img/scenario.bmp","rb");
+    landscape.setObjFile(objFile);
+    landscape.setTexFile(bmp);
+    landscape.readObjFile();
+    landscape.setTexID();
+    fclose( objFile );
+    fclose( bmp );
+
+    
+
+    //Inicializa opções do observador
+	angle = 45;
+	rotX = 45;
+    rotY = 0;
+    obsZ = 200;
+}
+
 
 // Função usada para especificar a posição do observador virtual
 void positionsObserver(void)
@@ -237,43 +276,6 @@ void keyboard(unsigned char key, int x, int y){
 	glutPostRedisplay();
 }
 
-// Inicialização
-void init(void)
-{
-    dx = dy = 0;
-    lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-    escala = 0.15;
-    
-    glClearColor(135/255.0,206/255.0,250/255.0, 0);
-    // Habilita o modelo de colorização de Gouraud
-    glShadeModel(GL_SMOOTH);
-    // Habilita a definição da cor do material a partir da cor corrente
-    glEnable(GL_COLOR_MATERIAL);
-    //Habilita o uso de iluminação
-    glEnable(GL_LIGHTING);
-    // Habilita a luz de número 0
-    glEnable(GL_LIGHT0);
-    // Habilita o depth-buffering
-    glEnable(GL_DEPTH_TEST);
-    
-    // Initializes Scenario
-    FILE *objFile, *bmp;
-    objFile = fopen("Objs/scenario.txt","r");
-    bmp = fopen("Img/scenario.bmp","rb");
-    //landscape.setObjFile(objFile);
-    //landscape.readObjFile();
-    landscape.setObj(objFile);
-    landscape.setTex(bmp);
-    fclose( objFile );
-    fclose( bmp );
-    
-    //Inicializa opções do observador
-    angle = 45;
-    rotX = 45;
-    rotY = 0;
-    obsZ = 200;
-}
-
 // Programa Principal
 int main()
 {
@@ -302,7 +304,7 @@ int main()
     teste3.setScale( 0.7, 0.5, 0.7 );
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
-    teste3.setPosition( 29.0, 0.0, 0.0 );
+    teste3.setPosition( 	29.0, 0.0, 0.0 );
    
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
