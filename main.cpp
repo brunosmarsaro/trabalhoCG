@@ -4,6 +4,8 @@
 #include "Scenario/Tower.cpp"
 
 
+float passoCarinha = 0.5;
+
 //Obsercer Params
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
@@ -31,8 +33,9 @@ bool focusDecX = false;
 bool focusIncX = false;
 
 
+vector<void*> charactersGame;
 
-void arrowDraw(){}
+
 
 void defineIlumination ( void ){
 	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
@@ -121,8 +124,12 @@ void idle( void ){
 		if(focusIncX) focusX+=10;
 
 
-    	teste.walkTo( dx, dz );
+    	teste.walkToTarget();
+    	teste.atkTarget();
 		teste2.walkAnimation();
+		teste2.setPosition( teste2.getPosition().getX(), teste2.getPosition().getY(), teste2.getPosition().getZ() + passoCarinha);
+		if( teste2.getPosition().getZ() == -50) passoCarinha = 0.5;
+		if( teste2.getPosition().getZ() == 50) passoCarinha = -0.5;
     	lastWalkAnimation = currentWalkAnimation;
     }
     positionsObserver();
@@ -153,7 +160,7 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
-	dx = dy = 0;
+	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
 
@@ -307,6 +314,8 @@ void mouse(int button, int state, int x, int y){
 		if (state == GLUT_DOWN) {
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
+			teste.walkTo( dx, dz );
+			teste.setTargetFromClickedArea( charactersGame, dx, dz );
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
@@ -346,6 +355,7 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
 		case 'b':
+		if(sqrt( pow(( teste.getPosition().getX() - teste2.getPosition().getX()),2)  + pow(( teste.getPosition().getZ() - teste2.getPosition().getZ()),2) ) < 20.0)
 			teste.toDamage(&teste2);
 			//teste2.takeDamage(20);
 			break;
@@ -432,6 +442,10 @@ int main()
 
 	glutIdleFunc( idle );
 
+	charactersGame.push_back(&teste);
+	charactersGame.push_back(&teste2);
+	charactersGame.push_back(&teste3);
+
 
 	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
     teste3.setBodyColor( 0.5, 0.5, 0.5 );
@@ -441,7 +455,9 @@ int main()
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
     teste3.setPosition( 0, 0.0, 83);
-   
+    teste3.setRadiusCharacterAproximation(5);
+   	teste.setTeam(2);
+
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -449,7 +465,9 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( -20.0, 0.0, 0.0 );
+	teste.setPosition( -20, 0.0, 0.0 );
+	teste.setRadiusCharacterAproximation(5);
+	teste.setTeam(1);
     
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -460,6 +478,8 @@ int main()
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
+	teste2.setRadiusCharacterAproximation(5);
+	teste2.setTeam(2);
     
 	init();
 	glutMainLoop();

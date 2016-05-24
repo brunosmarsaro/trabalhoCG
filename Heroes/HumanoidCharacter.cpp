@@ -25,6 +25,10 @@ void HumanoidCharacter::setScale( float sx, float sy, float sz){
 	scaleX = sx;
 	scaleY = sy;
 	scaleZ = sz;
+	float maior = scaleX;
+	if(scaleY > maior) maior = scaleY;
+	if(scaleZ > maior) scaleZ = maior;
+	setRadiusCharacterAproximation( getRadiusCharacterAproximation() * maior );
 }
 void HumanoidCharacter::setHeadColor( float r, float g, float b ){
 	head.setColor( r, g, b );
@@ -51,14 +55,45 @@ void HumanoidCharacter::setWalk(bool w){
 		walking = false;
 	}
 }
+
+void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, float x, float z ){
+	Character * aux;
+	for(int i = 0; i< charactersGame.size(); i++){
+		float clickEnemyDist;
+		aux = (Character*)charactersGame[i];
+		if(aux->getTeam() != getTeam()){
+			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+				setTarget(aux);
+				return;
+			}
+		}
+	}
+	setTarget(NULL);
+}
 void HumanoidCharacter::walkTo( float x, float z ){
 	walkTargetX = x;
 	walkTargetZ = z;
+}
+
+void HumanoidCharacter::walkToTarget(){
+	if(getTarget() != NULL){
+		Character * aux;
+		aux = (Character*)getTarget();
+		walkTargetX = (*aux).getPosition().getX();
+		walkTargetZ = (*aux).getPosition().getZ();
+		float enemyRadius;
+		enemyRadius = (*aux).getRadiusCharacterAproximation();
+		if(abs(walkTargetX - getPosition().getX()) < enemyRadius && abs(walkTargetZ - getPosition().getZ()) < enemyRadius){
+			setWalk(false);
+		}
+	}
+
 	if( abs(walkTargetX - getPosition().getX()) < 1.0 && abs(walkTargetZ - getPosition().getZ()) < 1.0){
 		setWalk(false);
 	}else{
 		setWalk(true);
-		walkInLineTo( x, z );
+		walkInLineTo( walkTargetX, walkTargetZ );
 		walkAnimation();
 	}
 }

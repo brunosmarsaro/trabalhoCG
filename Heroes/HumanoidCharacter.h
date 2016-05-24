@@ -50,8 +50,10 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
+	void setTargetFromClickedArea( vector<void*>, float, float );
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
+	void walkToTarget();
 	void walkAnimation( );
 	void draw();
 };

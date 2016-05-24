@@ -14,6 +14,8 @@ Character::Character( void ){
     def = 10;
     vulnerableExperience = 10;
     visible = true;
+    target = NULL;
+    atkTime = 30;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -28,6 +30,8 @@ Character::Character( float r, float g, float b ){
     def = 10;
     vulnerableExperience = 10;
     visible = true;
+    target = NULL;
+    atkTime = 30;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -41,6 +45,8 @@ Character::Character( float r, float g, float b, Position p ){
     def = 10;
     vulnerableExperience = 10;
     visible = true;
+    target = NULL;
+    atkTime = 30;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -56,6 +62,8 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     def = 10;
     vulnerableExperience = 10;
     visible = true;
+    target = NULL;
+    atkTime = 30;
 }
 Character::~Character( void ){
     //Character destructor
@@ -98,7 +106,18 @@ int Character::getCharacterLife(){
 bool Character::isVisible(){
     return visible;
 }
-
+void* Character::getTarget(){
+    return target;
+}
+float Character::getRangeAtk(){
+    return rangeAtk;
+}
+int Character::getTeam(){
+    return team;
+}
+float Character::getRadiusCharacterAproximation(){
+    return radiusCharacterAproximation;
+}
 /*====================Setters====================*/
 void Character::setColor3f( float r, float g, float b){
     red = r;
@@ -134,8 +153,18 @@ void Character::setVisibility( bool v ){
 void Character::setBarLifeRotate( float rx, float ry, float rz ){
     characterLife.setRotate( rx, ry, rz );
 }
-
-
+void Character::setTarget( void* t){
+    target = t;
+}
+void Character::setRangeAtk( float rAtk){
+    rangeAtk = rAtk;
+}
+void Character::setTeam( int t ){
+    team = t;
+}
+void Character::setRadiusCharacterAproximation( float r ){
+    radiusCharacterAproximation = r;
+}
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
     lvl += lvl;
@@ -174,4 +203,22 @@ int Character::toDamage( void* target ) {
     int ret;
     ret = aux->takeDamage(atk);
     return ret;
+}
+void Character::atkTarget(){
+    Character * aux;
+    atkCicle--;
+    if( atkCicle < 0 ) atkCicle = 0;
+    if( atkCicle == 0){
+        if( getTarget() != NULL ){
+            aux = (Character*)getTarget();
+            float enemyDist;
+            float x = getPosition().getX();
+            float z = getPosition().getZ();
+            enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+            if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
+                toDamage(target);
+                atkCicle = atkTime;
+            }
+        }
+    }  
 }

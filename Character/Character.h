@@ -7,6 +7,8 @@ using namespace std;
 class Character{
 	//Atributos
 private:
+	void * target;
+	float rangeAtk;
 	Position position;
 	float red;
 	float green;
@@ -18,6 +20,10 @@ private:
 	int vulnerableExperience;
 	LifeBar characterLife;
 	bool visible;
+	int team;
+	float radiusCharacterAproximation;
+	int atkCicle;
+	int atkTime;
 public:
 	/*Constructors and destructors*/
 	Character();
@@ -40,6 +46,10 @@ public:
 	Position getPosition();
 	LifeBar getLifeBar();
 	bool isVisible();
+	void* getTarget();
+	float getRangeAtk();
+	int getTeam();
+	float getRadiusCharacterAproximation();
 
 	/*Setters*/
 	void setColor3f( float, float, float );
@@ -52,6 +62,10 @@ public:
 	void setVulnerableExperience( int );
 	void setVisibility( bool );
 	void setBarLifeRotate( float, float, float );
+	void setTarget( void* );
+	void setRangeAtk( float );
+	void setTeam( int );
+	void setRadiusCharacterAproximation( float );
 
 	/*Class methods*/
 	void addLevel( int );
@@ -59,4 +73,5 @@ public:
 	void heal( float );
 	int toDamage( void* );
 	int takeDamage( int );
+	void atkTarget();
 };
