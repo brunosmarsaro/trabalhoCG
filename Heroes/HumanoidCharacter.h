@@ -54,7 +54,7 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
-	bool isEnemyOnRangeAtk();
+	bool isEnemyNear();
 	void setTargetFromClickedArea( vector<void*>, float, float );
 	void atkTarget();
 	void walkInLineTo( float, float );

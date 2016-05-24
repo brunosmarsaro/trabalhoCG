@@ -15,6 +15,7 @@ Character::Character( void ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
+    rangeAtk = 5;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -30,6 +31,7 @@ Character::Character( float r, float g, float b ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
+    rangeAtk = 5;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -44,6 +46,7 @@ Character::Character( float r, float g, float b, Position p ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
+    rangeAtk = 5;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -60,6 +63,7 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
+    rangeAtk = 5;
 }
 Character::~Character( void ){
     //Character destructor
@@ -152,7 +156,7 @@ void Character::setBarLifeRotate( float rx, float ry, float rz ){
 void Character::setTarget( void* t){
     target = t;
 }
-void Character::setRangeAtk( float rAtk){
+void Character::setRangeAtk( float rAtk ){
     rangeAtk = rAtk;
 }
 void Character::setTeam( int t ){

@@ -56,15 +56,22 @@ void HumanoidCharacter::setWalk(bool w){
 		walking = false;
 	}
 }
-bool HumanoidCharacter::isEnemyOnRangeAtk(){
+bool HumanoidCharacter::isEnemyNear(){
 	Character * aux;
+	aux = (Character*)getTarget();
 	float enemyDist;
 	float x = getPosition().getX();
 	float z = getPosition().getZ();
 	float rngAtk = getRangeAtk();
+	//cout << "meu x " << x << endl;
+	//cout << "meu z " << z << endl;
+	//cout << "inimigo x " << (*aux).getPosition().getX() << endl;
+	//cout << "inimigo z " << (*aux).getPosition().getZ() << endl;
 
-	enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-	if( enemyDist < ( rngAtk + (*aux).getRadiusCharacterAproximation() )){
+	enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2.0)  +  pow( (z - (*aux).getPosition().getZ()) ,2.0) );
+	cout << "NEAR ENEMY - radius " << getRadiusCharacterAproximation()/4.0 + (*aux).getRadiusCharacterAproximation() << " eDist " << enemyDist << endl;
+	if( enemyDist < rngAtk/2.0 + ((*aux).getRadiusCharacterAproximation() )){
+		
 		return true;
 	}else{
 		return false;
@@ -75,7 +82,7 @@ bool HumanoidCharacter::isEnemyOnRangeAtk(){
 void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, float x, float z ){
 	Character * aux;
 	for(int i = 0; i< charactersGame.size(); i++){
-		float clickEnemyDist;
+		float clickEnemyDist; 
 		aux = (Character*)charactersGame[i];
 		if(aux->getTeam() != getTeam()){
 			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
@@ -89,10 +96,12 @@ void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, 
 }
 
 void HumanoidCharacter::atkTarget(){
+	if( getCharacterLife() == 0 ) return;
     Character * aux;
     atkCicle--;
     if( atkCicle < 0 ) atkCicle = 0;
     if( atkCicle < 10 && getTarget() != NULL){
+    	/*
     	aux = (Character*)getTarget();
 		float enemyDist;
 		float x = getPosition().getX();
@@ -100,7 +109,7 @@ void HumanoidCharacter::atkTarget(){
 		enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
 		if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
 			atacking = true;
-		}
+		}*/
  
     }
     if( atkCicle == 0 ){
@@ -110,6 +119,10 @@ void HumanoidCharacter::atkTarget(){
             float x = getPosition().getX();
             float z = getPosition().getZ();
             enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+            cout << "ATK METHOD \n enemyDist " << enemyDist;
+            cout << " getRangeAtk " << getRangeAtk() << endl;
+            cout << "getRadiusCharacterAproximation " <<(*aux).getRadiusCharacterAproximation() << endl;
+            cout << "Enemy X " << (*aux).getPosition().getX() << " Enemy Z " << (*aux).getPosition().getZ() << endl << endl;
             if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
             	int xp;
                 xp = toDamage(getTarget());
@@ -130,6 +143,7 @@ void HumanoidCharacter::walkTo( float x, float z ){
 }
 
 void HumanoidCharacter::walkToTarget(){
+	if( getCharacterLife() == 0 ) return;
 	if(getTarget() != NULL){
 		Character * aux;
 		aux = (Character*)getTarget();
@@ -137,15 +151,10 @@ void HumanoidCharacter::walkToTarget(){
 		walkTargetZ = (*aux).getPosition().getZ();
 		float enemyRadius;
 		enemyRadius = (*aux).getRadiusCharacterAproximation();
-		if(abs(walkTargetX - getPosition().getX()) < enemyRadius && abs(walkTargetZ - getPosition().getZ()) < enemyRadius){
-			//setWalk(false);
-		}
 	}
 
 	if( abs(walkTargetX - getPosition().getX()) < 1.0 && abs(walkTargetZ - getPosition().getZ()) < 1.0){
-		//setWalk(false);
 	}else{
-		//setWalk(true);
 		walkInLineTo( walkTargetX, walkTargetZ );
 		walkAnimation();
 	}
@@ -161,16 +170,20 @@ void HumanoidCharacter::walkInLineTo( float x, float z ){
 
     float px,pz;
     float passo = 1.5;
-    if(getTarget() == NULL && (atacking || isEnemyOnRangeAtk()) ){
-    	setWalk(false);
+    if(getTarget() == NULL){
+
     }
-    else{
+    if(getTarget() == NULL || !isEnemyNear()){
     	setWalk(true);
     	px = getPosition().getX();
 	    pz = getPosition().getZ();
 	    px = px + passo*sin(aux*M_PI/180);
 	    pz = pz + passo*cos(aux*M_PI/180);
 	    setPosition( px, getPosition().getY(), pz );
+    }
+    else{
+    	setWalk(false);
+    	
     }
 }
 void HumanoidCharacter::walkAnimation( ){
