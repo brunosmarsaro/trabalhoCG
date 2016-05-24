@@ -1,33 +1,15 @@
-#include "LifeBar.h"
+#include "ClickArrow.h"
 
 /*====================Constructors and destructors====================*/
-LifeBar::LifeBar( void ){
+ClickArrow::ClickArrow( void ){
 	red = 0.0;
 	green = 1.0;
 	blue = 0.0;
 	max = 100;
 	life = 100;
-	width = standardWidth;
-	height = standardHeight;
-}
-LifeBar::LifeBar( int m ){
-	red = 0.0;
-	green = 1.0;
-	blue = 0.0;
-	max = m;
-	life = m;
-	width = standardWidth;
-	height = standardHeight;
-}
-LifeBar::LifeBar( int l, int m){
-	max = m;
-	life = l;
-	width = standardWidth;
-	height = standardHeight;
-	setColorAuto();
 }
 
-LifeBar::~LifeBar( void ){
+ClickArrow::~ClickArrow( void ){
 }
 
 /*====================Getters====================*/

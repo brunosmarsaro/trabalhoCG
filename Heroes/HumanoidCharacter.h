@@ -20,6 +20,10 @@ private:
 	float scaleY;
 	float scaleZ;
 
+	float walkTargetX;
+	float walkTargetZ;
+	float characterYAngle;
+
 	int walkCicle;
 	bool walking;
 	bool upCicle;
@@ -46,7 +50,9 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
-	void walkAnimation( float );
+	void walkInLineTo( float, float );
+	void walkTo( float, float );
+	void walkAnimation( );
 	void draw();
 };
 #endif

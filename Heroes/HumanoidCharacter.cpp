@@ -45,7 +45,39 @@ void HumanoidCharacter::setLegColor( float r, float g, float b ){
 void HumanoidCharacter::setWalk(bool w){
 	walking = w;
 }
-void HumanoidCharacter::walkAnimation( float characterYAngle ){
+void HumanoidCharacter::walkTo( float x, float z ){
+	walkTargetX = x;
+	walkTargetZ = z;
+	if( abs(walkTargetX - getPosition().getX()) < 1.0 && abs(walkTargetZ - getPosition().getZ()) < 1.0){
+		setWalk(false);
+	}else{
+		setWalk(true);
+	}
+
+
+	walkInLineTo( x, z );
+	walkAnimation();
+}
+void HumanoidCharacter::walkInLineTo( float x, float z ){
+	double oposto, adjascente;
+    adjascente = x - getPosition().getX();
+    oposto = z - getPosition().getZ();
+
+    double aux =  atan(adjascente/oposto) * 180 / M_PI;
+    if(oposto < 0) aux = aux + 180;
+    characterYAngle = aux;
+
+    float px,pz;
+    float passo = 1.5;
+    px = getPosition().getX();
+    pz = getPosition().getZ();
+    px = px + passo*sin(aux*M_PI/180);
+    pz = pz + passo*cos(aux*M_PI/180);
+    setPosition( px, getPosition.().getY(), pz );
+
+
+}
+void HumanoidCharacter::walkAnimation( ){
 	float max = 45;
 	float passo;
 	float calfBeginY;

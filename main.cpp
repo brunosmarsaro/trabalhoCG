@@ -3,13 +3,15 @@
 #include "Scenario/Scenario.cpp"
 #include "Scenario/Tower.cpp"
 
+
+//Obsercer Params
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
+GLdouble focusX, focusY, focusZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
 Tower tower1;
-
 
 float escala;
 float dx,dy,dz;
@@ -21,6 +23,8 @@ int windowsWidth, windowsHeight;
 GLdouble lastWalkAnimation;
 GLdouble currentWalkAnimation;
 GLdouble difference;
+
+bool observerFollows = true;
 
 
 void arrowDraw(){}
@@ -76,8 +80,8 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 	
     if(difference >= 10){
-    	teste.walkAnimation( rotateY );
-		teste2.walkAnimation( 0.0f );
+    	teste.walkAnimation();
+		teste2.walkAnimation();
     	lastWalkAnimation = currentWalkAnimation;
     }
     glutPostRedisplay();
@@ -168,16 +172,23 @@ void positionsObserver(void)
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
 
+	if(observerFollows){
+		focusX = dx;
+		focusY = dy;
+		focusZ = dz;
 
-	glTranslatef(0,0,-obsZ);
- 	glRotatef(rotX,1,0,0);
- 	glRotatef(rotY,0,1,0);
-/*
-	glTranslatef(0,0,-obsZ);
-	glRotatef(rotX,1,0,0);
-	glRotatef(rotY,0,1,0);
-	glTranslatef(0,0,-dz);
-	*/
+		glTranslatef(-focusX,0,-obsZ);
+		glRotatef(rotX,1,0,0);
+		glRotatef(rotY,0,1,0);
+		glTranslatef(0,0,-focusZ);
+
+	}else{
+		glTranslatef(0,0,-obsZ);
+	 	glRotatef(rotX,1,0,0);
+	 	glRotatef(rotY,0,1,0);
+	}
+	
+
 	defineIlumination();
 }
 
@@ -256,7 +267,7 @@ float x3DMouse( int x, int y ){
 	}
 
 	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
-	return largX*(mouseXReal/windowsWidth);
+	return focusX + largX*(mouseXReal/windowsWidth);
 
 }
 
@@ -268,7 +279,7 @@ float y3DMouse( int x, int y ){
 	float w2 = obsH/tan( YFangle*M_PI/180 );
 
 	// return (foco do obsvervador em z) - (w2 + baseObs);
-	return -(w2 + baseObs);
+	return focusZ -(w2 + baseObs);
 }
 
 
@@ -280,8 +291,9 @@ void mouse(int button, int state, int x, int y){
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
-			dx = x3DMouse(x,y);
-			dz = y3DMouse(x,y);
+			float dx1 = x3DMouse( x, y );
+			float dz1 = y3DMouse( x, y );
+			teste.walkTo( dx1, dz1 );
 		}
 		teste.setPosition(dx,dy,dz);
 	SpecifiesVisualizationParameters();
