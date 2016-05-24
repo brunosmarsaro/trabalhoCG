@@ -41,10 +41,11 @@ vector<void*> figurantTeam1;
 vector<void*> figurantTeam2;
 vector<int> timeTodisappear;
 
+bool timeFlag = false;
 
 void gameController(){
-	GLdouble seconds = actualTime/1000000000.0;
-	if((int)seconds%60 == 0) {
+	GLdouble seconds = actualTime/1000.0;
+	if((int)seconds%10 == 0 &&  (int)seconds != 0) {
 		minutes++;
 		cout << "aqui " << minutes <<endl;
 		for(int i = 0; i < 5 ;i++){
@@ -537,7 +538,7 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( 00, 0, -110 );
+	teste.setPosition( -1000, 0, -110 );
 	teste.setRadiusCharacterAproximation(5);
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
@@ -551,7 +552,7 @@ int main()
 	teste2.setScale( 0.7, 0.5, 0.7 );
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
-	teste2.setPosition( 0.0, 0.0, 0.0 );
+	teste2.setPosition( 1000, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(5);
 	teste.setRangeAtk(10.0);
 	teste2.setTeam(2);
