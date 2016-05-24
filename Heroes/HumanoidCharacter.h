@@ -28,6 +28,10 @@ private:
 	bool walking;
 	bool upCicle;
 
+	int atkCicle;
+	int atkTime;
+	bool atacking;
+
 	Head head;
 	Body body;
 	Thigh leftThigh;
@@ -50,7 +54,9 @@ public:
 	void setArmColor( float, float, float );
 	void setLegColor( float, float, float );
 	void setWalk( bool );
+	bool isEnemyOnRangeAtk();
 	void setTargetFromClickedArea( vector<void*>, float, float );
+	void atkTarget();
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
 	void walkToTarget();

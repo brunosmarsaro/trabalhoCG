@@ -363,6 +363,8 @@ void keyboard(unsigned char key, int x, int y){
 			exit(0);
 			break;
 		case 'a':
+			teste2.heal(1.0);
+			teste3.heal(1.0);
 			//dx-=1.5;
 			//rotateY = -90;
 			break;

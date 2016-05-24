@@ -22,8 +22,6 @@ private:
 	bool visible;
 	int team;
 	float radiusCharacterAproximation;
-	int atkCicle;
-	int atkTime;
 public:
 	/*Constructors and destructors*/
 	Character();
@@ -73,5 +71,4 @@ public:
 	void heal( float );
 	int toDamage( void* );
 	int takeDamage( int );
-	void atkTarget();
 };

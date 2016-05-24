@@ -15,7 +15,6 @@ Character::Character( void ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
-    atkTime = 30;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -31,7 +30,6 @@ Character::Character( float r, float g, float b ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
-    atkTime = 30;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -46,7 +44,6 @@ Character::Character( float r, float g, float b, Position p ){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
-    atkTime = 30;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -63,7 +60,6 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     vulnerableExperience = 10;
     visible = true;
     target = NULL;
-    atkTime = 30;
 }
 Character::~Character( void ){
     //Character destructor
@@ -167,15 +163,16 @@ void Character::setRadiusCharacterAproximation( float r ){
 }
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
-    lvl += lvl;
+    level += lvl;
     atk += atk*(0.3)*lvl;
     def += def*(0.25)*lvl;
     int maxLife = characterLife.getMaxLife();
     setCharacterMaxLife( (int)(maxLife + maxLife*lvl*(0.183)));
+    cout << "level " << level << endl;
 }
 void Character::addExperience( int exp ){
-    int interval = 100;
-    experience += 100;
+    int interval = 20;
+    experience += exp;
     if(experience/interval > level) addLevel(1);
 }
 void Character::heal( float perCentHeal ){
@@ -183,7 +180,7 @@ void Character::heal( float perCentHeal ){
     if( perCentHeal > 1.0 ) aux = 1.0;
     else if ( perCentHeal < 0.0 ) aux = 0;
     else aux = perCentHeal;
-    int actualLife = characterLife.getLife();
+    int actualLife = characterLife.getMaxLife();
     characterLife.setLife( ( int )( actualLife + actualLife * ( perCentHeal ) ) );
 }
 int Character::takeDamage ( int opponentAtk ) {
@@ -203,22 +200,4 @@ int Character::toDamage( void* target ) {
     int ret;
     ret = aux->takeDamage(atk);
     return ret;
-}
-void Character::atkTarget(){
-    Character * aux;
-    atkCicle--;
-    if( atkCicle < 0 ) atkCicle = 0;
-    if( atkCicle == 0){
-        if( getTarget() != NULL ){
-            aux = (Character*)getTarget();
-            float enemyDist;
-            float x = getPosition().getX();
-            float z = getPosition().getZ();
-            enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-            if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
-                toDamage(target);
-                atkCicle = atkTime;
-            }
-        }
-    }  
 }

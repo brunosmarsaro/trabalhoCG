@@ -9,6 +9,7 @@ HumanoidCharacter::HumanoidCharacter(){
 	scaleZ = 1;
 	walkCicle = -30;
 	walking = false;
+	atkTime = 30;
 	leftCalfPosition.setX( 3.15 );
 	leftCalfPosition.setY( -18.5 );
 	leftCalfPosition.setZ( -0.5 );
@@ -55,6 +56,21 @@ void HumanoidCharacter::setWalk(bool w){
 		walking = false;
 	}
 }
+bool HumanoidCharacter::isEnemyOnRangeAtk(){
+	Character * aux;
+	float enemyDist;
+	float x = getPosition().getX();
+	float z = getPosition().getZ();
+	float rngAtk = getRangeAtk();
+
+	enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+	if( enemyDist < ( rngAtk + (*aux).getRadiusCharacterAproximation() )){
+		return true;
+	}else{
+		return false;
+	}
+
+}
 
 void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, float x, float z ){
 	Character * aux;
@@ -71,6 +87,43 @@ void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, 
 	}
 	setTarget(NULL);
 }
+
+void HumanoidCharacter::atkTarget(){
+    Character * aux;
+    atkCicle--;
+    if( atkCicle < 0 ) atkCicle = 0;
+    if( atkCicle < 10 && getTarget() != NULL){
+    	aux = (Character*)getTarget();
+		float enemyDist;
+		float x = getPosition().getX();
+		float z = getPosition().getZ();
+		enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+		if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
+			atacking = true;
+		}
+ 
+    }
+    if( atkCicle == 0 ){
+        if( getTarget() != NULL ){
+            aux = (Character*)getTarget();
+            float enemyDist;
+            float x = getPosition().getX();
+            float z = getPosition().getZ();
+            enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+            if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
+            	int xp;
+                xp = toDamage(getTarget());
+                addExperience(xp);
+                atacking = false;
+                atkCicle = atkTime;
+                if(xp != 0){
+                	setTarget(NULL);
+                }
+            }
+        }
+    }  
+}
+
 void HumanoidCharacter::walkTo( float x, float z ){
 	walkTargetX = x;
 	walkTargetZ = z;
@@ -85,14 +138,14 @@ void HumanoidCharacter::walkToTarget(){
 		float enemyRadius;
 		enemyRadius = (*aux).getRadiusCharacterAproximation();
 		if(abs(walkTargetX - getPosition().getX()) < enemyRadius && abs(walkTargetZ - getPosition().getZ()) < enemyRadius){
-			setWalk(false);
+			//setWalk(false);
 		}
 	}
 
 	if( abs(walkTargetX - getPosition().getX()) < 1.0 && abs(walkTargetZ - getPosition().getZ()) < 1.0){
-		setWalk(false);
+		//setWalk(false);
 	}else{
-		setWalk(true);
+		//setWalk(true);
 		walkInLineTo( walkTargetX, walkTargetZ );
 		walkAnimation();
 	}
@@ -108,13 +161,17 @@ void HumanoidCharacter::walkInLineTo( float x, float z ){
 
     float px,pz;
     float passo = 1.5;
-    px = getPosition().getX();
-    pz = getPosition().getZ();
-    px = px + passo*sin(aux*M_PI/180);
-    pz = pz + passo*cos(aux*M_PI/180);
-    setPosition( px, getPosition().getY(), pz );
-
-
+    if(getTarget() == NULL && (atacking || isEnemyOnRangeAtk()) ){
+    	setWalk(false);
+    }
+    else{
+    	setWalk(true);
+    	px = getPosition().getX();
+	    pz = getPosition().getZ();
+	    px = px + passo*sin(aux*M_PI/180);
+	    pz = pz + passo*cos(aux*M_PI/180);
+	    setPosition( px, getPosition().getY(), pz );
+    }
 }
 void HumanoidCharacter::walkAnimation( ){
 	float max = 45;
