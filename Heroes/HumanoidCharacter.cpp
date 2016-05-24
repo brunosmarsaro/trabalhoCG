@@ -44,6 +44,12 @@ void HumanoidCharacter::setLegColor( float r, float g, float b ){
 }
 void HumanoidCharacter::setWalk(bool w){
 	walking = w;
+	if(!walking){
+		walking = true;
+		walkCicle = -1;
+		walkAnimation();
+		walking = false;
+	}
 }
 void HumanoidCharacter::walkTo( float x, float z ){
 	walkTargetX = x;
@@ -52,11 +58,12 @@ void HumanoidCharacter::walkTo( float x, float z ){
 		setWalk(false);
 	}else{
 		setWalk(true);
+		walkInLineTo( x, z );
+		walkAnimation();
 	}
 
 
-	walkInLineTo( x, z );
-	walkAnimation();
+	
 }
 void HumanoidCharacter::walkInLineTo( float x, float z ){
 	double oposto, adjascente;
@@ -73,7 +80,7 @@ void HumanoidCharacter::walkInLineTo( float x, float z ){
     pz = getPosition().getZ();
     px = px + passo*sin(aux*M_PI/180);
     pz = pz + passo*cos(aux*M_PI/180);
-    setPosition( px, getPosition.().getY(), pz );
+    setPosition( px, getPosition().getY(), pz );
 
 
 }

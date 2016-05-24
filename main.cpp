@@ -51,6 +51,34 @@ void defineIlumination ( void ){
 
 }
 
+// Função usada para especificar a posição do observador virtual
+void positionsObserver(void)
+{
+	// Especifica sistema de coordenadas do modelo
+	glMatrixMode(GL_MODELVIEW);
+	// Inicializa sistema de coordenadas do modelo
+	glLoadIdentity();
+	// Especifica posição do observador e do alvo
+
+	if(observerFollows){
+		focusX = teste.getPosition().getX();
+		focusY = dy;
+		focusZ = teste.getPosition().getZ();
+
+		glTranslatef(-focusX,0,-obsZ);
+		glRotatef(rotX,1,0,0);
+		glRotatef(rotY,0,1,0);
+		glTranslatef(0,0,-focusZ);
+
+	}else{
+		glTranslatef(0,0,-obsZ);
+	 	glRotatef(rotX,1,0,0);
+	 	glRotatef(rotY,0,1,0);
+	}
+	defineIlumination();
+}
+
+
 
 void draw( void ){
 
@@ -80,10 +108,11 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 	
     if(difference >= 10){
-    	teste.walkAnimation();
+    	teste.walkTo( dx, dz );
 		teste2.walkAnimation();
     	lastWalkAnimation = currentWalkAnimation;
     }
+    positionsObserver();
     glutPostRedisplay();
 }
 
@@ -163,34 +192,6 @@ void init(void)
 }
 
 
-// Função usada para especificar a posição do observador virtual
-void positionsObserver(void)
-{
-	// Especifica sistema de coordenadas do modelo
-	glMatrixMode(GL_MODELVIEW);
-	// Inicializa sistema de coordenadas do modelo
-	glLoadIdentity();
-	// Especifica posição do observador e do alvo
-
-	if(observerFollows){
-		focusX = dx;
-		focusY = dy;
-		focusZ = dz;
-
-		glTranslatef(-focusX,0,-obsZ);
-		glRotatef(rotX,1,0,0);
-		glRotatef(rotY,0,1,0);
-		glTranslatef(0,0,-focusZ);
-
-	}else{
-		glTranslatef(0,0,-obsZ);
-	 	glRotatef(rotX,1,0,0);
-	 	glRotatef(rotY,0,1,0);
-	}
-	
-
-	defineIlumination();
-}
 
 
 // Função usada para especificar o volume de visualização
@@ -291,11 +292,10 @@ void mouse(int button, int state, int x, int y){
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
-			float dx1 = x3DMouse( x, y );
-			float dz1 = y3DMouse( x, y );
-			teste.walkTo( dx1, dz1 );
+			dx = x3DMouse( x, y );
+			dz = y3DMouse( x, y );
 		}
-		teste.setPosition(dx,dy,dz);
+		//teste.setPosition(dx,dy,dz);
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
 }
@@ -363,7 +363,7 @@ void keyboard(unsigned char key, int x, int y){
     //teste.setRotate( 0, rotate, 0 );
     cout << "dx " << dx << endl;
     cout << "dz" << dz << endl;
-	teste.setPosition(dx,teste.getPosition().getY(),dz);
+	//teste.setPosition(dx,teste.getPosition().getY(),dz);
     positionsObserver();
 	glutPostRedisplay();
 }
