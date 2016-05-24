@@ -16,6 +16,7 @@ Character::Character( void ){
     visible = true;
     target = NULL;
     rangeAtk = 5;
+    sightRadius = 40;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -32,6 +33,7 @@ Character::Character( float r, float g, float b ){
     visible = true;
     target = NULL;
     rangeAtk = 5;
+    sightRadius = 40;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -47,6 +49,7 @@ Character::Character( float r, float g, float b, Position p ){
     visible = true;
     target = NULL;
     rangeAtk = 5;
+    sightRadius = 40;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -64,6 +67,7 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     visible = true;
     target = NULL;
     rangeAtk = 5;
+    sightRadius = 40;
 }
 Character::~Character( void ){
     //Character destructor
@@ -118,6 +122,9 @@ int Character::getTeam(){
 float Character::getRadiusCharacterAproximation(){
     return radiusCharacterAproximation;
 }
+float Character::getSightRadius(){
+    return sightRadius;
+}
 /*====================Setters====================*/
 void Character::setColor3f( float r, float g, float b){
     red = r;
@@ -165,6 +172,9 @@ void Character::setTeam( int t ){
 void Character::setRadiusCharacterAproximation( float r ){
     radiusCharacterAproximation = r;
 }
+void Character::setSightRadius( float sightR ){
+    sightRadius = sightR;
+}
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
     level += lvl;
@@ -204,4 +214,80 @@ int Character::toDamage( void* target ) {
     int ret;
     ret = aux->takeDamage(atk);
     return ret;
+}
+void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2 ){
+    Character * aux;
+    Character * enemyCloser;
+    float x = getPosition().getX();
+    float z = getPosition().getZ();
+    enemyCloser = NULL;
+    for(int i = 0; i< charactersGame.size(); i++){
+        float enemyDist; 
+        float closerEnemyDist;
+
+        aux = (Character*)charactersGame[i];
+        if( (*aux).getCharacterLife() > 0){
+            if( (*aux).getTeam() != getTeam() ){
+                if(enemyCloser == NULL) enemyCloser = aux;
+                else{
+                    enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+                    closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+                    if( enemyDist <  getSightRadius() ){
+                        if( enemyDist <  closerEnemyDist){
+                            enemyCloser = aux;
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+    for(int i = 0; i< figurants1.size(); i++){
+        float enemyDist; 
+        float closerEnemyDist;
+
+        aux = (Character*)figurants1[i];
+        if( (*aux).getCharacterLife() > 0){
+            if( (*aux).getTeam() != getTeam() ){
+                if(enemyCloser == NULL) enemyCloser = aux;
+                else{
+                    enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+                    closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+                    if( enemyDist <  getSightRadius() ){
+                        if( enemyDist <  closerEnemyDist){
+                            enemyCloser = aux;
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+    for(int i = 0; i< figurants2.size(); i++){
+        float enemyDist; 
+        float closerEnemyDist;
+
+        aux = (Character*)figurants2[i];
+        if( (*aux).getCharacterLife() > 0){
+            if( (*aux).getTeam() != getTeam() ){
+                if(enemyCloser == NULL) enemyCloser = aux;
+                else{
+                    enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+                    closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+                    if( enemyDist <  getSightRadius() ){
+                        if( enemyDist <  closerEnemyDist){
+                            enemyCloser = aux;
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+    setTarget(enemyCloser);
 }

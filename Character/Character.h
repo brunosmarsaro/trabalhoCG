@@ -22,6 +22,7 @@ private:
 	bool visible;
 	int team;
 	float radiusCharacterAproximation;
+	float sightRadius;
 public:
 	/*Constructors and destructors*/
 	Character();
@@ -48,6 +49,7 @@ public:
 	float getRangeAtk();
 	int getTeam();
 	float getRadiusCharacterAproximation();
+	float getSightRadius();
 
 	/*Setters*/
 	void setColor3f( float, float, float );
@@ -64,6 +66,8 @@ public:
 	void setRangeAtk( float );
 	void setTeam( int );
 	void setRadiusCharacterAproximation( float );
+	void setSightRadius( float );
+
 
 	/*Class methods*/
 	void addLevel( int );
@@ -71,4 +75,6 @@ public:
 	void heal( float );
 	int toDamage( void* );
 	int takeDamage( int );
+	void setTargetFromSightRadius( vector<void*>, vector<void*>, vector<void*> );
+
 };

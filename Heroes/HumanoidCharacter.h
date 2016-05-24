@@ -30,7 +30,7 @@ private:
 
 	int atkCicle;
 	int atkTime;
-	bool atacking;
+	bool attacking;
 
 	Head head;
 	Body body;
@@ -60,7 +60,9 @@ public:
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
 	void walkToTarget();
-	void walkAnimation( );
+	void walkAnimation();
+	void attackingAnimation( int, int );
+	void IA( vector<void*>, vector<void*>, vector<void*>);
 	void draw();
 };
 #endif

@@ -32,9 +32,55 @@ bool focusIncZ = false;
 bool focusDecX = false;
 bool focusIncX = false;
 
+GLdouble beginTime;
+GLdouble actualTime;
+long long minutes;
 
 vector<void*> charactersGame;
+vector<void*> figurantTeam1;
+vector<void*> figurantTeam2;
+vector<int> timeTodisappear;
 
+
+void gameController(){
+	GLdouble seconds = actualTime/1000000000.0;
+	if((int)seconds%60 == 0) {
+		minutes++;
+		cout << "aqui " << minutes <<endl;
+		for(int i = 0; i < 5 ;i++){
+			HumanoidCharacter* figurant = new HumanoidCharacter ();
+			(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+			(*figurant).setBodyColor( 1.0, 0.0, 0.0 );
+			(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+			(*figurant).setLegColor( 0.0, 0.0, 1.0 );
+			(*figurant).setScale( 0.3, 0.3, 0.27 );
+			(*figurant).setRotate( 0, 45, 0 );
+			(*figurant).setWalk(true);
+			(*figurant).setPosition( -987.0, 0, -90 + i*3 );
+			(*figurant).setRadiusCharacterAproximation(4);
+			(*figurant).setRangeAtk(7.0);
+			(*figurant).setTeam(1);
+			figurantTeam1.push_back(figurant);
+		}
+
+		for(int i = 0; i < 5 ;i++){
+			HumanoidCharacter* figurant = new HumanoidCharacter ();
+			(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+			(*figurant).setBodyColor( 0.0, 0.0, 1.0 );
+			(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+			(*figurant).setLegColor( 0.0, 0.0, 1.0 );
+			(*figurant).setScale( 0.3, 0.3, 0.27 );
+			(*figurant).setRotate( 0, 45, 0 );
+			(*figurant).setWalk(true);
+			(*figurant).setPosition( 987.0, 0, -90 + i*3 );
+			(*figurant).setRadiusCharacterAproximation(4);
+			(*figurant).setRangeAtk(7.0);
+			(*figurant).setTeam(2);
+			figurantTeam2.push_back(figurant);
+		}
+	}
+
+}
 
 
 void defineIlumination ( void ){
@@ -94,6 +140,16 @@ void draw( void ){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
 
+	HumanoidCharacter * aux;
+	for(int i = 0; i<figurantTeam1.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam1[i]);
+		(*aux).draw();
+	}
+	for(int i = 0; i<figurantTeam2.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam2[i]);
+		(*aux).draw();
+	}
+
 	teste.draw();
 	teste2.draw();
     teste3.draw();
@@ -113,10 +169,24 @@ void draw( void ){
 
 
 void idle( void ){
-
+	actualTime = glutGet(GLUT_ELAPSED_TIME);
+	
+	//Limitador de tempo
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
-	
+
+
+	//gameController();
+	HumanoidCharacter * aux;
+	for(int i = 0; i<figurantTeam1.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam1[i]);
+		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+	}
+	for(int i = 0; i<figurantTeam2.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam2[i]);
+		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+	}
+
     if(difference >= 10){
     	if(focusDecZ) focusZ-=10;
 		if(focusIncZ) focusZ+=10;
@@ -126,10 +196,9 @@ void idle( void ){
 
     	teste.walkToTarget();
     	teste.atkTarget();
+
+    	teste2.IA(charactersGame, figurantTeam1, figurantTeam2 );
 		teste2.walkAnimation();
-		teste2.setPosition( teste2.getPosition().getX(), teste2.getPosition().getY(), teste2.getPosition().getZ() + passoCarinha);
-		if( teste2.getPosition().getZ() == -50) passoCarinha = 0.5;
-		if( teste2.getPosition().getZ() == 50) passoCarinha = -0.5;
     	lastWalkAnimation = currentWalkAnimation;
     }
     positionsObserver();
@@ -160,6 +229,8 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
+	beginTime = glutGet(GLUT_ELAPSED_TIME);
+	minutes = 0;
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
@@ -446,7 +517,6 @@ int main()
 
 	charactersGame.push_back(&teste);
 	charactersGame.push_back(&teste2);
-	charactersGame.push_back(&teste3);
 
 
 	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -467,9 +537,11 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( -20, 0.0, 0.0 );
+	teste.setPosition( 00, 0, -110 );
 	teste.setRadiusCharacterAproximation(5);
+	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
+	teste.setAtk(30);
     
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -481,6 +553,7 @@ int main()
 	teste2.setWalk(true);
 	teste2.setPosition( 0.0, 0.0, 0.0 );
 	teste2.setRadiusCharacterAproximation(5);
+	teste.setRangeAtk(10.0);
 	teste2.setTeam(2);
     
 	init();
