@@ -25,6 +25,11 @@ GLdouble currentWalkAnimation;
 GLdouble difference;
 
 bool observerFollows = true;
+bool focusDecZ = false;
+bool focusIncZ = false;
+bool focusDecX = false;
+bool focusIncX = false;
+
 
 
 void arrowDraw(){}
@@ -71,9 +76,10 @@ void positionsObserver(void)
 		glTranslatef(0,0,-focusZ);
 
 	}else{
-		glTranslatef(0,0,-obsZ);
-	 	glRotatef(rotX,1,0,0);
-	 	glRotatef(rotY,0,1,0);
+		glTranslatef(-focusX,0,-obsZ);
+		glRotatef(rotX,1,0,0);
+		glRotatef(rotY,0,1,0);
+		glTranslatef(0,0,-focusZ);
 	}
 	defineIlumination();
 }
@@ -104,10 +110,17 @@ void draw( void ){
 
 
 void idle( void ){
+
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 	
     if(difference >= 10){
+    	if(focusDecZ) focusZ-=10;
+		if(focusIncZ) focusZ+=10;
+		if(focusDecX) focusX-=10;
+		if(focusIncX) focusX+=10;
+
+
     	teste.walkTo( dx, dz );
 		teste2.walkAnimation();
     	lastWalkAnimation = currentWalkAnimation;
@@ -295,13 +308,16 @@ void mouse(int button, int state, int x, int y){
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
 		}
-		//teste.setPosition(dx,dy,dz);
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
 }
 
 void SpecialKeys (int tecla, int x, int y){
 	switch (tecla){
+		case GLUT_KEY_F1:
+			focusX = teste.getPosition().getX();
+			focusZ = teste.getPosition().getZ();
+			break;
 		case GLUT_KEY_LEFT:	
 			rotY--;
 			break;
@@ -330,26 +346,27 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
 		case 'b':
-			teste2.takeDamage(20);
+			teste.toDamage(&teste2);
+			//teste2.takeDamage(20);
 			break;
 		case 27:
 			exit(0);
 			break;
 		case 'a':
-			dx-=1.5;
-			rotateY = -90;
+			//dx-=1.5;
+			//rotateY = -90;
 			break;
 		case 'd':
-			dx+=1.5;
-			rotateY = 90;
+			//dx+=1.5;
+			//rotateY = 90;
 			break;
         case 'w':
-            dz-=1.5;
-            rotateY = 180;
+            //dz-=1.5;
+            //rotateY = 180;
             break;
         case 's':
-            dz+=1.5	;
-            rotateY = 0;
+            //dz+=1.5	;
+            //rotateY = 0;
             break;
         case 'o':
             obsZ++;
@@ -357,15 +374,39 @@ void keyboard(unsigned char key, int x, int y){
         case 'i':
             obsZ--;
             break;
+        case 'y':
+        	observerFollows = !observerFollows;
+        	break;
         default:
             break;
     }
-    //teste.setRotate( 0, rotate, 0 );
-    cout << "dx " << dx << endl;
-    cout << "dz" << dz << endl;
-	//teste.setPosition(dx,teste.getPosition().getY(),dz);
     positionsObserver();
 	glutPostRedisplay();
+}
+
+void passiveMotion(int x, int y){
+    if(!observerFollows){
+    	if((windowsHeight - y) < 5) focusIncZ = true;
+    	else focusIncZ = false;
+
+    	if(y < 5) focusDecZ = true;
+    	else focusDecZ = false;
+
+    	if((windowsWidth - x) < 5) focusIncX = true;
+    	else focusIncX = false;
+
+    	if(x < 5) focusDecX = true;
+    	else focusDecX = false;
+    }else{
+    	focusDecZ = false;
+    	focusIncZ = false;
+    	focusDecX = false;
+    	focusIncX = false;
+    }
+}
+
+void Upkeyboard( unsigned char tecla, int x, int y ){
+
 }
 
 // Programa Principal
@@ -386,6 +427,9 @@ int main()
     glutReshapeFunc( reshape );
 	glutMouseFunc( mouse );
 	glutKeyboardFunc( keyboard );
+	glutPassiveMotionFunc( passiveMotion );
+	glutKeyboardUpFunc( Upkeyboard );
+
 	glutIdleFunc( idle );
 
 

@@ -61,9 +61,6 @@ void HumanoidCharacter::walkTo( float x, float z ){
 		walkInLineTo( x, z );
 		walkAnimation();
 	}
-
-
-	
 }
 void HumanoidCharacter::walkInLineTo( float x, float z ){
 	double oposto, adjascente;
@@ -170,7 +167,6 @@ void HumanoidCharacter::draw(){
 	if(isVisible()){
 
 		glPushMatrix();
-			//setLifeBarPosition( 0.0, 0.0, 0.0 );
 			glTranslatef( getPosition().getX(), 1/(0.07) + scaleY*15.0 , getPosition().getZ() );
 			glScalef( 0.05 ,0.07 ,0.03 );
 			setBarLifeRotate( -45, 180, 0 );
@@ -180,7 +176,14 @@ void HumanoidCharacter::draw(){
 		glPushMatrix();
 		glTranslatef( getPosition().getX(), getPosition().getY() + scaleY*27.4 , getPosition().getZ() );
 		glPushMatrix();
-			glRotatef( rotateX, 1,0,0 );
+			if(getCharacterLife() == 0){
+				glTranslatef( 0, scaleY*4.5 - scaleY*27.4 , 0 );
+				glRotatef( rotateX - 90, 1,0,0 );
+				setWalk(false);
+			}
+			else{
+				glRotatef( rotateX, 1,0,0 );
+			}
 			glRotatef( rotateY, 0,1,0 );
 			glRotatef( rotateZ, 0,0,1 );
 			glScalef( scaleX, scaleY, scaleZ );
