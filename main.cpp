@@ -175,15 +175,15 @@ void draw( void ){
 
 
 	glPushMatrix();	
-    teste3.draw();
+    	teste3.draw();
     glPopMatrix();
 
 	glPushMatrix();	
-	teste.draw();
+		teste.draw();
 	glPopMatrix();
 
 	glPushMatrix();	
-	teste2.draw();
+		teste2.draw();
 	glPopMatrix();
 
 	glPushMatrix();
@@ -194,7 +194,8 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
-		glScalef(0.06,0.06,0.06);
+		//glScalef(0.06,0.06,0.06);
+		glTranslatef(0,0,-110);
 		tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -210,6 +211,9 @@ void idle( void ){
 
 
 	gameController();
+	
+
+    if(difference >= 20){
 	HumanoidCharacter * aux;
 	for(int i = 0; i<figurantTeam1.size();i++ ){
 		aux = (HumanoidCharacter*) (figurantTeam1[i]);
@@ -220,7 +224,6 @@ void idle( void ){
 		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
 	}
 
-    if(difference >= 10){
     	if(focusDecZ) focusZ-=10;
 		if(focusIncZ) focusZ+=10;
 		if(focusDecX) focusX-=10;
@@ -323,7 +326,7 @@ void SpecifiesVisualizationParameters( void ){
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,1000);
+	gluPerspective(angle,fAspect,0.5,2000);
 	positionsObserver();
 }
 
