@@ -5,8 +5,8 @@
 CC = g++
 LINLIBS = -lm -lGL -lglut -lGLU
 MACLIBS = -framework OpenGL -framework GLUT
-#CODE = main.cpp
-CODE = testeScenario.cpp
+CODE = main.cpp
+#CODE = testeScenario.cpp
 EXE = ./main
 
 # - SCRIPT

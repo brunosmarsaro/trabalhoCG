@@ -72,11 +72,39 @@ bool HumanoidCharacter::isEnemyNear(){
 
 }
 
-void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, float x, float z ){
+void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2, float x, float z ){
 	Character * aux;
 	for(int i = 0; i< charactersGame.size(); i++){
 		float clickEnemyDist; 
 		aux = (Character*)charactersGame[i];
+		if(aux->getTeam() != getTeam()){
+			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+				if( (*aux).getCharacterLife() != 0 ){
+					setTarget(aux);
+					return;
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i< figurants1.size(); i++){
+		float clickEnemyDist; 
+		aux = (Character*)figurants1[i];
+		if(aux->getTeam() != getTeam()){
+			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+				if( (*aux).getCharacterLife() != 0 ){
+					setTarget(aux);
+					return;
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i< figurants1.size(); i++){
+		float clickEnemyDist; 
+		aux = (Character*)figurants1[i];
 		if(aux->getTeam() != getTeam()){
 			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
 			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){

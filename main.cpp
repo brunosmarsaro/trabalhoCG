@@ -41,44 +41,66 @@ vector<void*> figurantTeam1;
 vector<void*> figurantTeam2;
 vector<int> timeTodisappear;
 
-bool timeFlag = false;
+bool timeFlag = true;
 
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
-	if((int)seconds%10 == 0 &&  (int)seconds != 0) {
-		minutes++;
-		cout << "aqui " << minutes <<endl;
-		for(int i = 0; i < 5 ;i++){
-			HumanoidCharacter* figurant = new HumanoidCharacter ();
-			(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-			(*figurant).setBodyColor( 1.0, 0.0, 0.0 );
-			(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-			(*figurant).setLegColor( 0.0, 0.0, 1.0 );
-			(*figurant).setScale( 0.3, 0.3, 0.27 );
-			(*figurant).setRotate( 0, 45, 0 );
-			(*figurant).setWalk(true);
-			(*figurant).setPosition( -987.0, 0, -90 + i*3 );
-			(*figurant).setRadiusCharacterAproximation(4);
-			(*figurant).setRangeAtk(7.0);
-			(*figurant).setTeam(1);
-			figurantTeam1.push_back(figurant);
-		}
+	HumanoidCharacter * aux;
 
-		for(int i = 0; i < 5 ;i++){
-			HumanoidCharacter* figurant = new HumanoidCharacter ();
-			(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-			(*figurant).setBodyColor( 0.0, 0.0, 1.0 );
-			(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-			(*figurant).setLegColor( 0.0, 0.0, 1.0 );
-			(*figurant).setScale( 0.3, 0.3, 0.27 );
-			(*figurant).setRotate( 0, 45, 0 );
-			(*figurant).setWalk(true);
-			(*figurant).setPosition( 987.0, 0, -90 + i*3 );
-			(*figurant).setRadiusCharacterAproximation(4);
-			(*figurant).setRangeAtk(7.0);
-			(*figurant).setTeam(2);
-			figurantTeam2.push_back(figurant);
+	for(int i = 0; i < figurantTeam1.size() ;i++){
+		aux = (HumanoidCharacter*)figurantTeam1[i];
+		if( (*aux).getCharacterLife() == 0){
+			figurantTeam1.erase(figurantTeam1.begin() + i);
 		}
+	}
+	for(int i = 0; i < figurantTeam2.size() ;i++){
+		aux = (HumanoidCharacter*)figurantTeam2[i];
+		if( (*aux).getCharacterLife() == 0){
+			figurantTeam2.erase(figurantTeam2.begin() + i);
+		}
+	}
+
+	if((int)seconds%120 == 0) {
+		if(timeFlag == true){
+			timeFlag = false;
+			minutes++;
+			cout << "aqui " << minutes <<endl;
+			for(int i = 0; i < 4 ;i++){
+				HumanoidCharacter* figurant = new HumanoidCharacter ();
+				(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant).setBodyColor( 1.0, 0.0, 0.0 );
+				(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant).setLegColor( 0.0, 0.0, 1.0 );
+				(*figurant).setScale( 0.3, 0.3, 0.27 );
+				(*figurant).setRotate( 0, 45, 0 );
+				(*figurant).setWalk(true);
+				(*figurant).setPosition( -987.0, 0, -85 + i*5 );
+				(*figurant).setRadiusCharacterAproximation(4);
+				(*figurant).setRangeAtk(7.0);
+				(*figurant).setTeam(1);
+				figurantTeam1.push_back(figurant);
+			}
+
+			for(int i = 0; i < 4 ;i++){
+				HumanoidCharacter* figurant = new HumanoidCharacter ();
+				(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant).setBodyColor( 0.0, 0.0, 1.0 );
+				(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant).setLegColor( 0.0, 0.0, 1.0 );
+				(*figurant).setScale( 0.3, 0.3, 0.27 );
+				(*figurant).setRotate( 0, 45, 0 );
+				(*figurant).setWalk(true);
+				(*figurant).setPosition( 987.0, 0, -85 + i*5 );
+				(*figurant).setRadiusCharacterAproximation(4);
+				(*figurant).setRangeAtk(7.0);
+				(*figurant).setTeam(2);
+				figurantTeam2.push_back(figurant);
+			}
+		}	
+	}	
+
+	if((int)seconds%10 != 0) {
+		timeFlag = true;
 	}
 
 }
@@ -151,10 +173,19 @@ void draw( void ){
 		(*aux).draw();
 	}
 
-	teste.draw();
-	teste2.draw();
+
+	glPushMatrix();	
     teste3.draw();
-    
+    glPopMatrix();
+
+	glPushMatrix();	
+	teste.draw();
+	glPopMatrix();
+
+	glPushMatrix();	
+	teste2.draw();
+	glPopMatrix();
+
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
 		//glRotatef(45,0,1,0);
@@ -163,6 +194,7 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
+		glScalef(0.06,0.06,0.06);
 		tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -177,7 +209,7 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	//gameController();
+	gameController();
 	HumanoidCharacter * aux;
 	for(int i = 0; i<figurantTeam1.size();i++ ){
 		aux = (HumanoidCharacter*) (figurantTeam1[i]);
@@ -385,7 +417,7 @@ void mouse(int button, int state, int x, int y){
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
 			teste.walkTo( dx, dz );
-			teste.setTargetFromClickedArea( charactersGame, dx, dz );
+			teste.setTargetFromClickedArea( charactersGame, figurantTeam1, figurantTeam2, dx, dz );
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
@@ -525,7 +557,7 @@ int main()
     teste3.setScale( 0.7, 0.5, 0.7 );
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
-    teste3.setPosition( 0, 0.0, 83);
+    teste3.setPosition( 2000, 2000.0, 1000);
     teste3.setRadiusCharacterAproximation(5);
    	teste.setTeam(2);
 
@@ -541,6 +573,7 @@ int main()
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
 	teste.setAtk(30);
+	teste.setDef(1000000);
     
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);

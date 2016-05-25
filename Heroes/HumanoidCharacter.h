@@ -55,7 +55,7 @@ public:
 	void setLegColor( float, float, float );
 	void setWalk( bool );
 	bool isEnemyNear();
-	void setTargetFromClickedArea( vector<void*>, float, float );
+	void setTargetFromClickedArea( vector<void*>, vector<void*>, vector<void*>, float, float );
 	void atkTarget();
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
