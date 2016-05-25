@@ -538,7 +538,7 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( -1000, 0, -110 );
+	teste.setPosition( 0, 0, -110 );
 	teste.setRadiusCharacterAproximation(5);
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
@@ -552,7 +552,7 @@ int main()
 	teste2.setScale( 0.7, 0.5, 0.7 );
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
-	teste2.setPosition( 1000, 0.0, -110.0 );
+	teste2.setPosition( 30, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(5);
 	teste.setRangeAtk(10.0);
 	teste2.setTeam(2);
