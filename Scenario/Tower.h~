@@ -3,8 +3,8 @@
 
 #include "../gLib.h"
 //#include "../Character/Character.cpp"
-//#include "../Util/Texture.h"
-//#include "../Util/ObjParser.h"
+#include "../Util/Texture.h"
+#include "../Util/ObjParser.h"
 
 using namespace std;
 

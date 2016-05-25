@@ -13,7 +13,7 @@ GLdouble focusX, focusY, focusZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
-//Tower tower1;
+Tower tower1;
 
 float escala;
 float dx,dy,dz;
@@ -163,7 +163,7 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
-		//tower1.draw();
+		tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -256,16 +256,14 @@ void init(void)
     bmp = fopen("Img/scenario.bmp","rb");
     landscape.setObj(objFile);
     landscape.setTex(bmp);
-    //landscape.readObjFile();
-    //landscape.setTexID();
     fclose( objFile );
     fclose( bmp );
 
     // Inicialize Towers
-	/*
+	
     FILE *objtower, *objdiam, *bmptower, *bmpdiam;
-	objtower = fopen("Objs/tower.obj", "r");
-	objdiam = fopen("Objs/diamond.obj", "r");
+	objtower = fopen("Objs/tower.txt", "r");
+	objdiam = fopen("Objs/diamond.txt", "r");
 	bmptower = fopen("Img/metal.bmp", "rb");
 	bmpdiam = fopen("Img/diamond.bmp", "rb");
 	tower1.setObj(objtower, objdiam);
@@ -274,7 +272,7 @@ void init(void)
 	fclose( objdiam );
 	fclose( bmptower );
 	fclose( bmpdiam );
-*/
+
 
     //Inicializa opções do observador
 	angle = 45;

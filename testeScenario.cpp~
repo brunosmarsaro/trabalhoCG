@@ -166,7 +166,7 @@ void draw( void ){
 
 	glPushMatrix();
             
-        glTranslatef(0,0,-300);
+        glTranslatef(0,0,-200);
 		glScalef(0.06,0.06,0.06);
         tower1.draw();
 	glPopMatrix();
