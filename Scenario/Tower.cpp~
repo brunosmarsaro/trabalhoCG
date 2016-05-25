@@ -25,19 +25,19 @@ void Tower::draw( void ){
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     
     glPushMatrix();
-		glScalef(150,150,150);
-		glColor3f( 1.0f, 1.0f, 1.0f );
-		for(i = 0; i < faces_t.size(); i++){
-		    glNormal3f(faces_t[i][0], faces_t[i][1], faces_t[i][2]);
-		    glBegin(GL_TRIANGLES);
-		        glVertex3f( faces_t[i][3],faces_t[i][4], faces_t[i][5]);
-		        glTexCoord2f( faces_t[i][6], faces_t[i][7]);
-		        glVertex3f( faces_t[i][8],faces_t[i][9], faces_t[i][10]);
-		        glTexCoord2f( faces_t[i][11], faces_t[i][12]);
-		        glVertex3f( faces_t[i][13],faces_t[i][14], faces_t[i][15]);
-		        glTexCoord2f( faces_t[i][16], faces_t[i][17]);
-		    glEnd();
-		}
+    //glScalef(150,150,150);
+    glColor3f( 1.0f, 1.0f, 1.0f );
+    for(i = 0; i < faces_t.size(); i++){
+        glNormal3f(faces_t[i][0], faces_t[i][1], faces_t[i][2]);
+        glBegin(GL_TRIANGLES);
+            glVertex3f( faces_t[i][3],faces_t[i][4], faces_t[i][5]);
+            glTexCoord2f( faces_t[i][6], faces_t[i][7]);
+            glVertex3f( faces_t[i][8],faces_t[i][9], faces_t[i][10]);
+            glTexCoord2f( faces_t[i][11], faces_t[i][12]);
+            glVertex3f( faces_t[i][13],faces_t[i][14], faces_t[i][15]);
+            glTexCoord2f( faces_t[i][16], faces_t[i][17]);
+        glEnd();
+    }
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
     

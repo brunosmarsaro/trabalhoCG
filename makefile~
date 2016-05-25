@@ -6,6 +6,7 @@ CC = g++
 LINLIBS = -lm -lGL -lglut -lGLU
 MACLIBS = -framework OpenGL -framework GLUT
 CODE = main.cpp
+#CODE = testeScenario.cpp Scenario/Scenario.cpp Scenario/Tower.cpp Util/Texture.cpp Util/ObjParser.cpp
 EXE = ./main
 
 # - SCRIPT
@@ -13,12 +14,12 @@ EXE = ./main
 OS := $(shell uname)
 ifeq ($(OS),Darwin)
     all:
-	$(CC) -o main $(CODE) $(MACLIBS) -Wno-deprecated-declarations
+	$(CC) $(CODE) -o main $(MACLIBS) -Wno-deprecated-declarations
 	$(EXE)
 	rm main
 else
     all:
-	$(CC) -o main $(CODE) $(LINLIBS)
+	$(CC) $(CODE) -o main $(LINLIBS)
 	$(EXE)
 	rm main
 endif

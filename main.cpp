@@ -154,7 +154,7 @@ void draw( void ){
 	teste.draw();
 	teste2.draw();
     teste3.draw();
-
+    
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
 		//glRotatef(45,0,1,0);
@@ -166,7 +166,7 @@ void draw( void ){
 		tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
-}	
+}
 
 
 void idle( void ){
@@ -256,16 +256,14 @@ void init(void)
     bmp = fopen("Img/scenario.bmp","rb");
     landscape.setObj(objFile);
     landscape.setTex(bmp);
-    //landscape.readObjFile();
-    //landscape.setTexID();
     fclose( objFile );
     fclose( bmp );
 
     // Inicialize Towers
-	/*
+	
     FILE *objtower, *objdiam, *bmptower, *bmpdiam;
-	objtower = fopen("Objs/tower.obj", "r");
-	objdiam = fopen("Objs/diamond.obj", "r");
+	objtower = fopen("Objs/tower.txt", "r");
+	objdiam = fopen("Objs/diamond.txt", "r");
 	bmptower = fopen("Img/metal.bmp", "rb");
 	bmpdiam = fopen("Img/diamond.bmp", "rb");
 	tower1.setObj(objtower, objdiam);
@@ -274,7 +272,7 @@ void init(void)
 	fclose( objdiam );
 	fclose( bmptower );
 	fclose( bmpdiam );
-*/
+
 
     //Inicializa opções do observador
 	angle = 45;
@@ -313,7 +311,7 @@ void reshape(GLsizei w, GLsizei h){
 
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
-	float baseObs = obsZ ;///* cos( rotX*M_PI/180 );
+	float baseObs = obsZ ;/// cos( rotX*M_PI/180 );
 
 	float largMid = 2* baseObs * tan( (45/2)*M_PI/180 ); //pq eu nao sei, é isso
 	//float largMax = largMid*cos(rotX * M_PI/180);
