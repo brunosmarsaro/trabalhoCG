@@ -13,7 +13,7 @@ GLdouble focusX, focusY, focusZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
-Tower tower1;
+Tower tower1,tower2, tower3, tower4;
 
 float escala;
 float dx,dy,dz;
@@ -74,7 +74,7 @@ void gameController(){
 				(*figurant).setScale( 0.3, 0.3, 0.27 );
 				(*figurant).setRotate( 0, 45, 0 );
 				(*figurant).setWalk(true);
-				(*figurant).setPosition( -987.0, 0, -85 + i*5 );
+				(*figurant).setPosition( -987.0, 0, -120 + i*15 );
 				(*figurant).setRadiusCharacterAproximation(4);
 				(*figurant).setRangeAtk(7.0);
 				(*figurant).setTeam(1);
@@ -90,7 +90,7 @@ void gameController(){
 				(*figurant).setScale( 0.3, 0.3, 0.27 );
 				(*figurant).setRotate( 0, 45, 0 );
 				(*figurant).setWalk(true);
-				(*figurant).setPosition( 987.0, 0, -85 + i*5 );
+				(*figurant).setPosition( 987.0, 0, -70 + i*10 );
 				(*figurant).setRadiusCharacterAproximation(4);
 				(*figurant).setRangeAtk(7.0);
 				(*figurant).setTeam(2);
@@ -270,6 +270,7 @@ void init(void)
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
+	teste3.takeDamage(1000);
 
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	// Habilita o modelo de colorização de Gouraud
@@ -560,9 +561,11 @@ int main()
     teste3.setScale( 0.7, 0.5, 0.7 );
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
-    teste3.setPosition( 2000, 2000.0, 1000);
+    teste3.setPosition( 0, 20, 20);
     teste3.setRadiusCharacterAproximation(5);
-   	teste.setTeam(2);
+   	teste3.setTeam(2);
+	teste3.setCharacterMaxLife(1);
+	teste3.setVisibility(false);
 
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
@@ -571,7 +574,7 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( 0, 0, -110 );
+	teste.setPosition( -1000, 0, -110 );
 	teste.setRadiusCharacterAproximation(5);
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);

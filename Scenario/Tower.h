@@ -8,12 +8,19 @@
 
 using namespace std;
 
-class Tower{
+class Tower : public Character{
 	private:
 		GLuint textureID_d;
         vector< vector<float> > faces_d;
 		GLuint textureID_t;
         vector< vector<float> > faces_t;
+		float rotateX;
+		float rotateY;
+		float rotateZ;
+		float r;
+		float g;
+		float b;
+	
 
 	public:
     	Tower(){};
