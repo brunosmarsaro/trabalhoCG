@@ -13,7 +13,7 @@ GLdouble focusX, focusY, focusZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
-Tower tower1;
+//Tower tower1;
 
 float escala;
 float dx,dy,dz;
@@ -154,7 +154,7 @@ void draw( void ){
 	teste.draw();
 	teste2.draw();
     teste3.draw();
-
+    
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
 		//glRotatef(45,0,1,0);
@@ -163,10 +163,10 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
-		tower1.draw();
+		//tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
-}	
+}
 
 
 void idle( void ){
@@ -313,7 +313,7 @@ void reshape(GLsizei w, GLsizei h){
 
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
-	float baseObs = obsZ ;///* cos( rotX*M_PI/180 );
+	float baseObs = obsZ ;/// cos( rotX*M_PI/180 );
 
 	float largMid = 2* baseObs * tan( (45/2)*M_PI/180 ); //pq eu nao sei, é isso
 	//float largMax = largMid*cos(rotX * M_PI/180);

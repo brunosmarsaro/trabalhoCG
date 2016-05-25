@@ -25,6 +25,7 @@ void Tower::draw( void ){
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     
     glPushMatrix();
+    glScalef(150,150,150);
     glColor3f( 1.0f, 1.0f, 1.0f );
     for(i = 0; i < faces_t.size(); i++){
         glNormal3f(faces_t[i][0], faces_t[i][1], faces_t[i][2]);
@@ -39,7 +40,7 @@ void Tower::draw( void ){
     }
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
-
+    /*
 	// Drawing Diamond
     glEnable(GL_TEXTURE_2D);
     glBindTexture (GL_TEXTURE_2D, textureID_d);
@@ -60,4 +61,5 @@ void Tower::draw( void ){
     }
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
+    */
 }
