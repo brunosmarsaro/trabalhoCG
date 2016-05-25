@@ -2,6 +2,7 @@
 #include "Heroes/HumanoidCharacter.cpp"
 #include "Scenario/Scenario.cpp"
 #include "Scenario/Tower.cpp"
+#include "Scenario/Base.cpp"
 
 
 float passoCarinha = 0.5;
@@ -13,7 +14,8 @@ GLdouble focusX, focusY, focusZ;
 
 HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
-Tower tower1,tower2, tower3, tower4;
+Tower tower1, tower2, tower3, tower4;
+Base base1, base2;
 
 float escala;
 float dx,dy,dz;
@@ -69,7 +71,7 @@ void gameController(){
 		if(timeFlag == true){
 			timeFlag = false;
 			minutes++;
-			/*
+			
 			for(int i = 0; i < 4 ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -84,7 +86,7 @@ void gameController(){
 				(*figurant1).setRangeAtk(7.0);
 				(*figurant1).setTeam(1);
 				figurantTeam1.push_back(figurant1);
-			}*/
+			}
 
 			for(int i = 0; i < 4 ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
@@ -95,7 +97,7 @@ void gameController(){
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
 				(*figurant2).setWalk(true);
-				(*figurant2).setPosition( -987.0, 0, -70 + i*10 );
+				(*figurant2).setPosition( 987.0, 0, -70 + i*10 );
 				(*figurant2).setRadiusCharacterAproximation(4);
 				(*figurant2).setRangeAtk(7.0);
 				(*figurant2).setTeam(2);
@@ -199,9 +201,34 @@ void draw( void ){
 	glPopMatrix();
 
 	glPushMatrix();
-		//glScalef(0.06,0.06,0.06);
-		glTranslatef(0,0,-110);
-		//tower1.draw();
+		glTranslatef(0,0,-110);		
+		glPushMatrix();
+			glTranslatef(-700,0,0);
+			tower1.draw();
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(-300,0,0);
+			tower2.draw();
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(700,0,0);
+			tower3.draw();
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(300,0,0);
+			tower4.draw();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(-1000,0,0);
+			base1.draw();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(1000,0,0);
+			base2.draw();
+		glPopMatrix();
+
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -217,16 +244,20 @@ void idle( void ){
 
 	gameController();
     if(difference >= 20){
-		HumanoidCharacter * aux;
-		for(int i = 0; i<figurantTeam1.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam1[i]);
-			(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-		}
-		for(int i = 0; i<figurantTeam2.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam2[i]);
-			(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-		}
+		tower1.controller();
+		tower2.controller();
+		tower3.controller();
+		tower4.controller();
 
+	HumanoidCharacter * aux;
+	for(int i = 0; i<figurantTeam1.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam1[i]);
+		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+	}
+	for(int i = 0; i<figurantTeam2.size();i++ ){
+		aux = (HumanoidCharacter*) (figurantTeam2[i]);
+		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+	}
     	if(focusDecZ) focusZ-=10;
 		if(focusIncZ) focusZ+=10;
 		if(focusDecX) focusX-=10;
@@ -298,17 +329,45 @@ void init(void)
 
     // Inicialize Towers
 	
-    FILE *objtower, *objdiam, *bmptower, *bmpdiam;
+    FILE *objtower, *objdiam, *bmptower;
 	objtower = fopen("Objs/tower.txt", "r");
 	objdiam = fopen("Objs/diamond.txt", "r");
 	bmptower = fopen("Img/metal.bmp", "rb");
-	bmpdiam = fopen("Img/diamond.bmp", "rb");
 	tower1.setObj(objtower, objdiam);
-    tower1.setTex(bmptower, bmpdiam);
+    tower1.setTex(bmptower);
+	tower1.setTeam(1);
+	rewind(objtower);
+	rewind(objdiam);
+	rewind(bmptower);
+	tower2.setObj(objtower, objdiam);
+    tower2.setTex(bmptower);
+	tower2.setTeam(1);
+	rewind(objtower);
+	rewind(objdiam);
+	rewind(bmptower);
+	tower3.setObj(objtower, objdiam);
+    tower3.setTex(bmptower);
+	tower3.setColor(1.0f,0.0f,0.0f);
+	tower3.setTeam(2);	
+	rewind(objtower);
+	rewind(objdiam);
+	rewind(bmptower);
+	tower4.setObj(objtower, objdiam);
+    tower4.setTex(bmptower);
+	tower4.setColor(1.0f,0.0f,0.0f);
+	tower4.setTeam(2);
+	rewind(objdiam);
+	base1.setObj(objdiam);
+	base1.setTeam(1);
+	rewind(objdiam);
+	base2.setObj(objdiam);
+	base2.setTeam(2);
+	base2.setColor(1.0f,0.0f,0.0f);
+
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
-	fclose( bmpdiam );
+
 
 
     //Inicializa opções do observador

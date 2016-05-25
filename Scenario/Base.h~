@@ -4,7 +4,7 @@ using namespace std;
 
 class Base: public Character{
 	private:
-		GLuint textureID;
+		//GLuint textureID;
         vector< vector<float> > faces;
 		float r, g, b;
 

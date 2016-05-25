@@ -2,11 +2,7 @@
 
 Base::~Base(){}
 
-Base::Base(){
-	r = 0.0;
-	g = 0.0;
-	b = 1.0;
-}
+Base::Base(){}
 
 void Base::setTex( FILE *fp ){
 	Texture aux(fp);
