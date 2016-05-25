@@ -22,7 +22,10 @@ private:
 	bool visible;
 	int team;
 	float radiusCharacterAproximation;
+	float height;
 	float sightRadius;
+	bool AI;
+
 public:
 	/*Constructors and destructors*/
 	Character();
@@ -50,6 +53,8 @@ public:
 	int getTeam();
 	float getRadiusCharacterAproximation();
 	float getSightRadius();
+	bool isAI();
+	float getHeight();
 
 	/*Setters*/
 	void setColor3f( float, float, float );
@@ -67,6 +72,8 @@ public:
 	void setTeam( int );
 	void setRadiusCharacterAproximation( float );
 	void setSightRadius( float );
+	void setAI( bool );
+	void setHeight( float );
 
 
 	/*Class methods*/

@@ -17,6 +17,7 @@ Character::Character( void ){
     target = NULL;
     rangeAtk = 5;
     sightRadius = 40;
+    AI = false;
 }
 Character::Character( float r, float g, float b ){
 	//Character constructor
@@ -34,6 +35,7 @@ Character::Character( float r, float g, float b ){
     target = NULL;
     rangeAtk = 5;
     sightRadius = 40;
+    AI = false;
 }
 Character::Character( float r, float g, float b, Position p ){
     //Character constructor
@@ -50,6 +52,7 @@ Character::Character( float r, float g, float b, Position p ){
     target = NULL;
     rangeAtk = 5;
     sightRadius = 40;
+    AI = false;
 }
 
 Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
@@ -68,6 +71,7 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     target = NULL;
     rangeAtk = 5;
     sightRadius = 40;
+    AI = false;
 }
 Character::~Character( void ){
     //Character destructor
@@ -125,6 +129,13 @@ float Character::getRadiusCharacterAproximation(){
 float Character::getSightRadius(){
     return sightRadius;
 }
+bool Character::isAI(){
+    return AI;
+}
+float Character::getHeight(){
+    return height;
+}
+
 /*====================Setters====================*/
 void Character::setColor3f( float r, float g, float b){
     red = r;
@@ -175,6 +186,13 @@ void Character::setRadiusCharacterAproximation( float r ){
 void Character::setSightRadius( float sightR ){
     sightRadius = sightR;
 }
+void Character::setAI( bool ai ){
+    AI = ai;
+}
+void setHeight( float h ){
+    //height = h;
+}
+
 /*====================Class methods====================*/
 void Character::addLevel( int lvl ){
     level += lvl;

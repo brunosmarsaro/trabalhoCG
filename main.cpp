@@ -45,18 +45,23 @@ bool timeFlag = true;
 
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
-	HumanoidCharacter * aux;
+	HumanoidCharacter *aux , *auxFree ;
+
 
 	for(int i = 0; i < figurantTeam1.size() ;i++){
 		aux = (HumanoidCharacter*)figurantTeam1[i];
 		if( (*aux).getCharacterLife() == 0){
+			auxFree = aux;
 			figurantTeam1.erase(figurantTeam1.begin() + i);
+			free(auxFree);
 		}
 	}
 	for(int i = 0; i < figurantTeam2.size() ;i++){
 		aux = (HumanoidCharacter*)figurantTeam2[i];
 		if( (*aux).getCharacterLife() == 0){
+			auxFree = aux;
 			figurantTeam2.erase(figurantTeam2.begin() + i);
+			free(auxFree);
 		}
 	}
 
@@ -64,37 +69,37 @@ void gameController(){
 		if(timeFlag == true){
 			timeFlag = false;
 			minutes++;
-			cout << "aqui " << minutes <<endl;
+			/*
 			for(int i = 0; i < 4 ;i++){
-				HumanoidCharacter* figurant = new HumanoidCharacter ();
-				(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant).setBodyColor( 1.0, 0.0, 0.0 );
-				(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant).setLegColor( 0.0, 0.0, 1.0 );
-				(*figurant).setScale( 0.3, 0.3, 0.27 );
-				(*figurant).setRotate( 0, 45, 0 );
-				(*figurant).setWalk(true);
-				(*figurant).setPosition( -987.0, 0, -120 + i*15 );
-				(*figurant).setRadiusCharacterAproximation(4);
-				(*figurant).setRangeAtk(7.0);
-				(*figurant).setTeam(1);
-				figurantTeam1.push_back(figurant);
-			}
+				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
+				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant1).setBodyColor( 1.0, 0.0, 0.0 );
+				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
+				(*figurant1).setScale( 0.5, 0.5, 0.5 );
+				(*figurant1).setRotate( 0, 45, 0 );
+				(*figurant1).setWalk(true);
+				(*figurant1).setPosition( -987.0, 0, -120 + i*15 );
+				(*figurant1).setRadiusCharacterAproximation(4);
+				(*figurant1).setRangeAtk(7.0);
+				(*figurant1).setTeam(1);
+				figurantTeam1.push_back(figurant1);
+			}*/
 
 			for(int i = 0; i < 4 ;i++){
-				HumanoidCharacter* figurant = new HumanoidCharacter ();
-				(*figurant).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant).setBodyColor( 0.0, 0.0, 1.0 );
-				(*figurant).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant).setLegColor( 0.0, 0.0, 1.0 );
-				(*figurant).setScale( 0.3, 0.3, 0.27 );
-				(*figurant).setRotate( 0, 45, 0 );
-				(*figurant).setWalk(true);
-				(*figurant).setPosition( 987.0, 0, -70 + i*10 );
-				(*figurant).setRadiusCharacterAproximation(4);
-				(*figurant).setRangeAtk(7.0);
-				(*figurant).setTeam(2);
-				figurantTeam2.push_back(figurant);
+				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
+				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant2).setBodyColor( 0.0, 0.0, 1.0 );
+				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
+				(*figurant2).setScale( 0.5, 0.5, 0.5 );
+				(*figurant2).setRotate( 0, 45, 0 );
+				(*figurant2).setWalk(true);
+				(*figurant2).setPosition( -987.0, 0, -70 + i*10 );
+				(*figurant2).setRadiusCharacterAproximation(4);
+				(*figurant2).setRangeAtk(7.0);
+				(*figurant2).setTeam(2);
+				figurantTeam2.push_back(figurant2);
 			}
 		}	
 	}	
@@ -196,7 +201,7 @@ void draw( void ){
 	glPushMatrix();
 		//glScalef(0.06,0.06,0.06);
 		glTranslatef(0,0,-110);
-		tower1.draw();
+		//tower1.draw();
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -211,18 +216,16 @@ void idle( void ){
 
 
 	gameController();
-	
-
     if(difference >= 20){
-	HumanoidCharacter * aux;
-	for(int i = 0; i<figurantTeam1.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam1[i]);
-		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-	}
-	for(int i = 0; i<figurantTeam2.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam2[i]);
-		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-	}
+		HumanoidCharacter * aux;
+		for(int i = 0; i<figurantTeam1.size();i++ ){
+			aux = (HumanoidCharacter*) (figurantTeam1[i]);
+			(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+		}
+		for(int i = 0; i<figurantTeam2.size();i++ ){
+			aux = (HumanoidCharacter*) (figurantTeam2[i]);
+			(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
+		}
 
     	if(focusDecZ) focusZ-=10;
 		if(focusIncZ) focusZ+=10;
@@ -230,11 +233,10 @@ void idle( void ){
 		if(focusIncX) focusX+=10;
 
 
-    	teste.walkToTarget();
-    	teste.atkTarget();
-
-    	teste2.IA(charactersGame, figurantTeam1, figurantTeam2 );
-		teste2.walkAnimation();
+    	teste.controller( charactersGame, figurantTeam1, figurantTeam2 );
+    	teste2.controller( charactersGame, figurantTeam1, figurantTeam2 );
+    	//teste2.IA( charactersGame, figurantTeam1, figurantTeam2 );
+		//teste2.walkAnimation();
     	lastWalkAnimation = currentWalkAnimation;
     }
     positionsObserver();
@@ -270,7 +272,6 @@ void init(void)
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	escala = 0.15;
-	teste3.takeDamage(1000);
 
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	// Habilita o modelo de colorização de Gouraud
@@ -327,7 +328,7 @@ void SpecifiesVisualizationParameters( void ){
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,2000);
+	gluPerspective(angle,fAspect,0.5,500);
 	positionsObserver();
 }
 
@@ -561,11 +562,10 @@ int main()
     teste3.setScale( 0.7, 0.5, 0.7 );
     teste3.setRotate( 0, 45, 0 );
     teste3.setWalk(true);
-    teste3.setPosition( 0, 20, 20);
+    teste3.setPosition( 0, -40, 20);
     teste3.setRadiusCharacterAproximation(5);
    	teste3.setTeam(2);
 	teste3.setCharacterMaxLife(1);
-	teste3.setVisibility(false);
 
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
@@ -586,12 +586,12 @@ int main()
 	teste2.setBodyColor( 0.5, 0.5, 0.5 );
 	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste2.setLegColor( 0.0, 0.0, 1.0 );
-	teste2.setScale( 0.7, 0.5, 0.7 );
+	teste2.setScale( 0.5, 0.5, 0.5 );
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
-	teste2.setPosition( 30, 0.0, -110.0 );
+	teste2.setPosition( 1000, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(5);
-	teste.setRangeAtk(10.0);
+	teste2.setRangeAtk(10.0);
 	teste2.setTeam(2);
     
 	init();
