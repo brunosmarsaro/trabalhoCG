@@ -150,7 +150,6 @@ void HumanoidCharacter::atkTarget(){
                 	setTarget(NULL);
                 	attackingAnimation( 0, 0 );
                 }
-                
         	}
         	/*
             aux = (Character*)getTarget();
