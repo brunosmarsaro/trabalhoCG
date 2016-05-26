@@ -61,4 +61,9 @@ void Tower::draw( void ){
     glPopMatrix();
 }
 
-void Tower::controller(){}
+void Tower::controller(){
+    
+}
+
+
+

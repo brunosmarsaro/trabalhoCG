@@ -256,7 +256,7 @@ void idle( void ){
 
 
 	gameController();
-    if(difference >= 20){
+    if(difference >= 10){
 		tower1.controller();
 		tower2.controller();
 		tower3.controller();
@@ -370,16 +370,28 @@ void init(void)
 	tower4.setColor(1.0f,0.0f,0.0f);
 	tower4.setTeam(2);
 	rewind(objdiam);
-	base1.setObj(objdiam);
+    
+    // Initialize Base
+    FILE *objfence, *bmpfence;
+    objfence = fopen("Objs/fence.txt", "r");
+    bmpfence = fopen("Img/wood.bmp", "rb");
+	base1.setObj(objdiam, objfence);
+    base1.setTex(bmpfence);
 	base1.setTeam(1);
 	rewind(objdiam);
-	base2.setObj(objdiam);
-	base2.setTeam(2);
+    rewind(objfence);
+    rewind(bmpfence);
+	base2.setObj(objdiam, objfence);
+    base2.setTex(bmpfence);
+    base2.setTeam(2);
+    base2.setOp(180);
 	base2.setColor(1.0f,0.0f,0.0f);
-
+    
+    fclose( objfence );
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
+    fclose( bmpfence );
 
 
 
@@ -400,7 +412,7 @@ void SpecifiesVisualizationParameters( void ){
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,500);
+	gluPerspective(angle,fAspect,0.5,2000);
 	positionsObserver();
 }
 
