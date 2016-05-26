@@ -92,6 +92,7 @@ void gameController(){
 				(*figurant1).setAtk(20);
 				(*figurant1).setDef(10);
 				(*figurant1).stop();
+				(*figurant1).setName("Heroi time 1");
 				figurantTeam1.push_back(figurant1);
 			}
 
@@ -256,7 +257,7 @@ void idle( void ){
 
 
 	gameController();
-    if(difference >= 10){
+    if(difference >= 20){
 		tower1.controller();
 		tower2.controller();
 		tower3.controller();
@@ -279,8 +280,6 @@ void idle( void ){
 
     	teste.controller( charactersGame, figurantTeam1, figurantTeam2 );
     	teste2.controller( charactersGame, figurantTeam1, figurantTeam2 );
-    	//teste2.IA( charactersGame, figurantTeam1, figurantTeam2 );
-		//teste2.walkAnimation();
     	lastWalkAnimation = currentWalkAnimation;
     }
     positionsObserver();
@@ -370,28 +369,16 @@ void init(void)
 	tower4.setColor(1.0f,0.0f,0.0f);
 	tower4.setTeam(2);
 	rewind(objdiam);
-    
-    // Initialize Base
-    FILE *objfence, *bmpfence;
-    objfence = fopen("Objs/fence.txt", "r");
-    bmpfence = fopen("Img/wood.bmp", "rb");
-	base1.setObj(objdiam, objfence);
-    base1.setTex(bmpfence);
+	base1.setObj(objdiam);
 	base1.setTeam(1);
 	rewind(objdiam);
-    rewind(objfence);
-    rewind(bmpfence);
-	base2.setObj(objdiam, objfence);
-    base2.setTex(bmpfence);
-    base2.setTeam(2);
-    base2.setOp(180);
+	base2.setObj(objdiam);
+	base2.setTeam(2);
 	base2.setColor(1.0f,0.0f,0.0f);
-    
-    fclose( objfence );
+
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
-    fclose( bmpfence );
 
 
 
@@ -412,7 +399,7 @@ void SpecifiesVisualizationParameters( void ){
 	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,2000);
+	gluPerspective(angle,fAspect,0.5,500);
 	positionsObserver();
 }
 
@@ -666,6 +653,7 @@ int main()
 	teste.heal(1.0);
 	teste.setAtk(30);
 	teste.setDef(20);
+	teste.setAI( false );
 	teste.setName("Heroi time 1");
 	teste.stop();
     
