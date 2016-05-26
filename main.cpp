@@ -329,64 +329,74 @@ void init(void)
 	glEnable(GL_DEPTH_TEST);
 
 	//glEnable(GL_TEXTURE_2D);
-    
-    // Initializes Scenario
-    FILE *objFile, *bmp;
-    objFile = fopen("Objs/scenario.txt","r");
-    bmp = fopen("Img/scenario.bmp","rb");
-    landscape.setObj(objFile);
-    landscape.setTex(bmp);
-    fclose( objFile );
-    fclose( bmp );
 
-    // Inicialize Towers
-	
-    FILE *objtower, *objdiam, *bmptower;
+	// Initializes Scenario
+	FILE *objFile, *bmp;
+	objFile = fopen("Objs/scenario.txt","r");
+	bmp = fopen("Img/scenario.bmp","rb");
+	landscape.setObj(objFile);
+	landscape.setTex(bmp);
+	fclose( objFile );
+	fclose( bmp );
+
+	// Inicialize Towers
+
+	FILE *objtower, *objdiam, *bmptower;
 	objtower = fopen("Objs/tower.txt", "r");
 	objdiam = fopen("Objs/diamond.txt", "r");
 	bmptower = fopen("Img/metal.bmp", "rb");
 	tower1.setObj(objtower, objdiam);
-    tower1.setTex(bmptower);
+	tower1.setTex(bmptower);
 	tower1.setTeam(1);
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
 	tower2.setObj(objtower, objdiam);
-    tower2.setTex(bmptower);
+	tower2.setTex(bmptower);
 	tower2.setTeam(1);
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
 	tower3.setObj(objtower, objdiam);
-    tower3.setTex(bmptower);
+	tower3.setTex(bmptower);
 	tower3.setColor(1.0f,0.0f,0.0f);
 	tower3.setTeam(2);	
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
 	tower4.setObj(objtower, objdiam);
-    tower4.setTex(bmptower);
+	tower4.setTex(bmptower);
 	tower4.setColor(1.0f,0.0f,0.0f);
 	tower4.setTeam(2);
 	rewind(objdiam);
-	base1.setObj(objdiam);
+
+	// Initialize Base
+	FILE *objfence, *bmpfence;
+	objfence = fopen("Objs/fence.txt", "r");
+	bmpfence = fopen("Img/wood.bmp", "rb");
+	base1.setObj(objdiam, objfence);
+	base1.setTex(bmpfence);
 	base1.setTeam(1);
 	rewind(objdiam);
-	base2.setObj(objdiam);
+	rewind(objfence);
+	rewind(bmpfence);
+	base2.setObj(objdiam, objfence);
+	base2.setTex(bmpfence);
 	base2.setTeam(2);
+	base2.setOp(180);
 	base2.setColor(1.0f,0.0f,0.0f);
 
+	fclose( objfence );
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
+	fclose( bmpfence );
 
-
-
-    //Inicializa opções do observador
+	//Inicializa opções do observador
 	angle = 45;
 	rotX = 45;
-    rotY = 0;
-    obsZ = 200;
+	rotY = 0;
+	obsZ = 200;
 }
 
 
