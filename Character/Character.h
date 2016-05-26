@@ -7,6 +7,7 @@ using namespace std;
 class Character{
 	//Atributos
 private:
+	string name;
 	void * target;
 	float rangeAtk;
 	Position position;
@@ -55,6 +56,7 @@ public:
 	float getSightRadius();
 	bool isAI();
 	float getHeight();
+	string getName();
 
 	/*Setters*/
 	void setColor3f( float, float, float );
@@ -74,6 +76,7 @@ public:
 	void setSightRadius( float );
 	void setAI( bool );
 	void setHeight( float );
+	void setName(string);
 
 
 	/*Class methods*/

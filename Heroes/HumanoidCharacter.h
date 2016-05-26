@@ -47,7 +47,6 @@ private:
 
 public:
 	HumanoidCharacter();
-
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
 	void setHeadColor( float, float, float );
@@ -60,10 +59,12 @@ public:
 	bool selectionArea( void*, float, float );
 	void setTargetFromClickedArea( vector<void*>, vector<void*>, vector<void*>, float, float );
 	void atkTarget();
+	void smartWalkTo( float, float );
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
 	void walkToTarget();
 	void walkAnimation();
+	void stop();
 	void attackingAnimation( int, int );
 	bool undefineActions();
 	void IA( vector<void*>, vector<void*>, vector<void*>);

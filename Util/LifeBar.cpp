@@ -112,6 +112,7 @@ void LifeBar::draw( void ){
     glPushMatrix();
     glColor3f( 0.0 , 0.0, 0.0 );
     glLineWidth( 2 );
+    glNormal3f( 0.0f, 0.0f, 1.0f );
     glBegin( GL_POLYGON );
         glVertex3f( -width/2, 0.0, 1 );
         glVertex3f( width/2, 0.0, 1 );
@@ -124,6 +125,7 @@ void LifeBar::draw( void ){
     int lifeWidth = width*( life/(float)max );
     glLineWidth( 2 );
     glColor3f( red , green, blue );
+    glNormal3f( 0.0f, 0.0f, 1.0f );
     glBegin( GL_POLYGON );
         glVertex3f( width/2, 0.0, 0.0 );
         glVertex3f( width/2 - lifeWidth, 0.0, 0.0 );
@@ -135,6 +137,7 @@ void LifeBar::draw( void ){
     glPushMatrix();
     glLineWidth( 3 );
     glColor3f( 1.0 , 1.0, 1.0 );
+    glNormal3f( 0.0f, 0.0f, 1.0f );
     glBegin( GL_LINE_LOOP );
        glVertex3f( -width/2, 0.0, 0.0 );
         glVertex3f( width/2, 0.0, 0.0 );

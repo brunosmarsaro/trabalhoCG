@@ -26,6 +26,7 @@ void HumanoidCharacter::setScale( float sx, float sy, float sz){
 	scaleX = sx;
 	scaleY = sy;
 	scaleZ = sz;
+	setHeight( 30.0 * scaleY );
 	float maior = scaleX;
 	if(scaleY > maior) maior = scaleY;
 	if(scaleZ > maior) scaleZ = maior;
@@ -59,6 +60,9 @@ void HumanoidCharacter::setWalk(bool w){
 bool HumanoidCharacter::isEnemyNear(){
 	Character * aux;
 	aux = (Character*)getTarget();
+	if(aux == NULL){
+		return false;
+	}
 	float enemyDist;
 	float x = getPosition().getX();
 	float z = getPosition().getZ();
@@ -76,27 +80,29 @@ bool HumanoidCharacter::selectionArea( void* enemy, float x, float z ){
 	posx do inimigo + altura =>>>> limite superior
 
 	*/
-	/*
 	Character * aux;
+	aux = ( Character* )enemy;
 	float clickEnemyDist;
+	//Se está na área do raio de oucpação do inimigo do chão
 	clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
 	if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
 		return true;
 	}
 	if( abs(getPosition().getX() - x) <  (*aux).getRadiusCharacterAproximation() ){
-		if(   ((*aux).getPosition().getZ() - z)  <  27.4*)
-	}*/
+		if(   ((*aux).getPosition().getZ() - z)  <  (*aux).getHeight() ){
+			return true;
+		}
+	}
+	return false;
 
 }
 void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2, float x, float z ){
 	Character * aux;
 
 	for(int i = 0; i< charactersGame.size(); i++){
-		float clickEnemyDist; 
 		aux = (Character*)charactersGame[i];
 		if(aux->getTeam() != getTeam()){
-			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+			if( selectionArea( aux, x, z ) ){
 				if( (*aux).getCharacterLife() != 0 ){
 					setTarget(aux);
 					return;
@@ -106,13 +112,11 @@ void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, 
 	}
 
 	for(int i = 0; i< figurants1.size(); i++){
-		float clickEnemyDist; 
 		aux = (Character*)figurants1[i];
 		if(aux->getTeam() != getTeam()){
-			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-			cout << clickEnemyDist << endl;
-			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+			if( selectionArea( aux, x, z ) ){
 				if( (*aux).getCharacterLife() != 0 ){
+					setBodyColor( rand()%1, rand()%1, rand()%1 );
 					setTarget(aux);
 					return;
 				}
@@ -121,13 +125,11 @@ void HumanoidCharacter::setTargetFromClickedArea( vector<void*> charactersGame, 
 	}
 
 	for(int i = 0; i< figurants2.size(); i++){
-		float clickEnemyDist; 
 		aux = (Character*)figurants2[i];
 		if(aux->getTeam() != getTeam()){
-			clickEnemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-			cout << clickEnemyDist << endl;
-			if( clickEnemyDist < (*aux).getRadiusCharacterAproximation() ){
+			if( selectionArea( aux, x, z ) ){
 				if( (*aux).getCharacterLife() != 0 ){
+					setBodyColor( rand()%1, rand()%1, rand()%1 );
 					setTarget(aux);
 					return;
 				}
@@ -143,7 +145,8 @@ void HumanoidCharacter::atkTarget(){
     Character * aux;
     atkCicle--;
     if( atkCicle < 0 ) atkCicle = 0;
-    if( atkCicle < 10 && getTarget() != NULL){
+    if( atkCicle < 7 && getTarget() != NULL){
+
     	
     	aux = (Character*)getTarget();
 		float enemyDist;
@@ -152,7 +155,7 @@ void HumanoidCharacter::atkTarget(){
 		enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
 		if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
 			attacking = true;
-			attackingAnimation( 10, atkCicle );
+			attackingAnimation( 7, atkCicle );
 		}
     }
     if( atkCicle == 0 ){
@@ -209,10 +212,16 @@ void HumanoidCharacter::walkToTarget(){
 	if( abs(walkTargetX - getPosition().getX()) < 1.0 && abs(walkTargetZ - getPosition().getZ()) < 1.0){
 		walkCicle = 0;
 	}else{
-		walkInLineTo( walkTargetX, walkTargetZ );
+		smartWalkTo( walkTargetX, walkTargetZ );
 		walkAnimation();
 	}
 }
+
+void HumanoidCharacter::smartWalkTo( float x, float z  ){
+	walkInLineTo( x, z );
+
+}
+
 void HumanoidCharacter::walkInLineTo( float x, float z ){
 	double oposto, adjascente;
     adjascente = x - getPosition().getX();
@@ -237,6 +246,9 @@ void HumanoidCharacter::walkInLineTo( float x, float z ){
     	walkCicle = 0;
     	setWalk(false);
     }
+}
+void HumanoidCharacter::stop(){
+	walkTo( getPosition().getX(), getPosition().getZ() );
 }
 void HumanoidCharacter::walkAnimation( ){
 	float max = 45;
@@ -322,6 +334,7 @@ void HumanoidCharacter::attackingAnimation( int maxCicle, int actualCicle ){
 	if( maxCicle == 0 && actualCicle == 0 ){
 		leftArm.setRotate( 0.0, 0.0, 0.0 );
 		rightArm.setRotate( 0.0, 0.0, 0.0 );
+		return;
 	}
 	int realCicle = maxCicle - actualCicle;
 	float percentCicle = realCicle/(float)maxCicle;
@@ -345,12 +358,14 @@ void HumanoidCharacter::IA( vector<void*> charactersGame, vector<void*> figurant
 	if(getTarget() == NULL){
 		if(getTeam() == 1){
 			walkTo( 987.0, -110 );
-		}else{
+		}else if(getTeam() == 2){
 			walkTo( -987.0, -110 );
 		}
+	}else{
+		walkToTarget();
+		atkTarget();
 	}
-	atkTarget();
-	walkToTarget();
+	
 }
 
 void HumanoidCharacter::controller( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2 ){

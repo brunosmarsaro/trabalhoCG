@@ -67,28 +67,35 @@ void gameController(){
 		}
 	}
 
-	if((int)seconds%120 == 0) {
+	if((int)seconds%60 == 0) {
 		if(timeFlag == true){
 			timeFlag = false;
 			minutes++;
 			
-			for(int i = 0; i < 4 ;i++){
+			for(int i = 0; i < 5 ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
+
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setBodyColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
 				(*figurant1).setRotate( 0, 45, 0 );
-				(*figurant1).setWalk(true);
 				(*figurant1).setPosition( -987.0, 0, -120 + i*15 );
 				(*figurant1).setRadiusCharacterAproximation(4);
+				(*figurant1).setSightRadius( 20.0 );
 				(*figurant1).setRangeAtk(7.0);
 				(*figurant1).setTeam(1);
+				(*figurant1).setAI(true);
+				(*figurant1).setCharacterMaxLife(100);
+				(*figurant1).heal(1.0);
+				(*figurant1).setAtk(20);
+				(*figurant1).setDef(10);
+				(*figurant1).stop();
 				figurantTeam1.push_back(figurant1);
 			}
 
-			for(int i = 0; i < 4 ;i++){
+			for(int i = 0; i < 5 ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setBodyColor( 0.0, 0.0, 1.0 );
@@ -96,11 +103,17 @@ void gameController(){
 				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
-				(*figurant2).setWalk(true);
 				(*figurant2).setPosition( 987.0, 0, -70 + i*10 );
 				(*figurant2).setRadiusCharacterAproximation(4);
 				(*figurant2).setRangeAtk(7.0);
+				(*figurant2).setSightRadius( 20.0 );
 				(*figurant2).setTeam(2);
+				(*figurant2).setAI(true);
+				(*figurant2).setCharacterMaxLife(100);
+				(*figurant2).heal(1.0);
+				(*figurant2).setAtk(20);
+				(*figurant2).setDef(10);
+				(*figurant2).stop();
 				figurantTeam2.push_back(figurant2);
 			}
 		}	
@@ -182,7 +195,7 @@ void draw( void ){
 
 
 	glPushMatrix();	
-    	teste3.draw();
+    	//teste3.draw();
     glPopMatrix();
 
 	glPushMatrix();	
@@ -521,8 +534,6 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
 		case 'b':
-		if(sqrt( pow(( teste.getPosition().getX() - teste2.getPosition().getX()),2)  + pow(( teste.getPosition().getZ() - teste2.getPosition().getZ()),2) ) < 20.0)
-			teste.toDamage(&teste2);
 			//teste2.takeDamage(20);
 			break;
 		case 27:
@@ -530,7 +541,6 @@ void keyboard(unsigned char key, int x, int y){
 			break;
 		case 'a':
 			teste2.heal(1.0);
-			teste3.heal(1.0);
 			//dx-=1.5;
 			//rotateY = -90;
 			break;
@@ -590,6 +600,8 @@ void Upkeyboard( unsigned char tecla, int x, int y ){
 // Programa Principal
 int main()
 {
+
+	srand(time(NULL));
 	int argc = 0;
 	char *argv[] = { (char *)"gl", 0 };
 
@@ -613,7 +625,7 @@ int main()
 	charactersGame.push_back(&teste);
 	charactersGame.push_back(&teste2);
 
-
+	/*
 	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
     teste3.setBodyColor( 0.5, 0.5, 0.5 );
     teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -625,6 +637,7 @@ int main()
     teste3.setRadiusCharacterAproximation(5);
    	teste3.setTeam(2);
 	teste3.setCharacterMaxLife(1);
+	*/
 
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setBodyColor( 1.0, 0.0, 0.0 );
@@ -634,11 +647,15 @@ int main()
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
 	teste.setPosition( -1000, 0, -110 );
-	teste.setRadiusCharacterAproximation(5);
+	teste.setRadiusCharacterAproximation(3);
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
+	teste.setCharacterMaxLife(400);
+	teste.heal(1.0);
 	teste.setAtk(30);
-	teste.setDef(1000000);
+	teste.setDef(20);
+	teste.setName("Heroi time 1");
+	teste.stop();
     
 
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -649,9 +666,16 @@ int main()
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
 	teste2.setPosition( 1000, 0.0, -110.0 );
-	teste2.setRadiusCharacterAproximation(5);
+	teste2.setRadiusCharacterAproximation(3);
+	teste2.setCharacterMaxLife(400);
+	teste2.heal(1.0);
 	teste2.setRangeAtk(10.0);
 	teste2.setTeam(2);
+	teste2.setAtk(30);
+	teste2.setDef(20);
+	teste.setName("Heroi time 2");
+	teste2.stop();
+	teste2.setAI( true );
     
 	init();
 	glutMainLoop();
