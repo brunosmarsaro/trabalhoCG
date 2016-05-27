@@ -238,7 +238,7 @@ int Character::toDamage( void* target ) {
     ret = aux->takeDamage(atk);
     return ret;
 }
-void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2 ){
+void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2, vector<void*> towers ){
     Character * aux;
     Character * enemyCloser;
     float closerEnemyDist;

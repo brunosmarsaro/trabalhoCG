@@ -12,6 +12,7 @@
 class HumanoidCharacter : public Character{
 
 private:
+
 	float rotateX;
 	float rotateY;
 	float rotateZ;
@@ -45,9 +46,15 @@ private:
 	Position leftCalfPosition;
 	Position rightCalfPosition;
 
+	vector<void*> charactersGame;
+	vector<void*> figurantTeam1;
+	vector<void*> figurantTeam2;
+	vector<void*> towers;
+
 
 public:
 	HumanoidCharacter();
+	void setGame( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
 	void setHeadColor( float, float, float );
@@ -59,18 +66,22 @@ public:
 	void setWalkSpeed( float );
 	bool isEnemyNear();
 	bool selectionArea( void*, float, float );
-	void setTargetFromClickedArea( vector<void*>, vector<void*>, vector<void*>, float, float );
+	void setTargetFromClickedArea( float, float );
 	void atkTarget();
 	void smartWalkTo( float, float );
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
-	void walkToTarget( vector<void*>, vector<void*>, vector<void*> );
+	void walkToTarget();
+	float euclidianDistance( float, float, float, float );
+	float euclidianDistanceFromTarget( float, float );
+	bool therIsSomethingHere( float, float );
+	void chooseBest( float*, float* );
 	void walkAnimation();
 	void stop();
 	void attackingAnimation( int, int );
 	bool undefineActions();
-	void IA( vector<void*>, vector<void*>, vector<void*>);
-	void controller( vector<void*>, vector<void*>, vector<void*> );
+	void AI();
+	void controller();
 	void draw();
 };
 #endif

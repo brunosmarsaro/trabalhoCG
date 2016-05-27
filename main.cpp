@@ -36,6 +36,7 @@ long long minutes;
 vector<void*> charactersGame;
 vector<void*> figurantTeam1;
 vector<void*> figurantTeam2;
+vector<void*> towers;
 vector<int> timeTodisappear;
 
 bool timeFlag = true;
@@ -69,15 +70,16 @@ void gameController(){
 			
 			for(int i = 0; i < 5 ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
+				(*figurant1).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setBodyColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
 				(*figurant1).setRotate( 0, 45, 0 );
-				(*figurant1).setPosition( -987.0, 0, -120 + i*15 );
-				(*figurant1).setRadiusCharacterAproximation(4);
-				(*figurant1).setSightRadius( 50.0 );
+				(*figurant1).setPosition( -987.0, 0, -130 + i*15 );
+				(*figurant1).setRadiusCharacterAproximation(6.0);
+				(*figurant1).setSightRadius( 80.0 );
 				(*figurant1).setRangeAtk(7.0);
 				(*figurant1).setTeam(1);
 				(*figurant1).setAI(true);
@@ -95,16 +97,17 @@ void gameController(){
 
 			for(int i = 0; i < 5 ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
+				(*figurant2).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setBodyColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
-				(*figurant2).setPosition( 987.0, 0, -120 + i*15 );
-				(*figurant2).setRadiusCharacterAproximation(4);
+				(*figurant2).setPosition( 987.0, 0, -130 + i*15 );
+				(*figurant2).setRadiusCharacterAproximation(6.0);
 				(*figurant2).setRangeAtk(7.0);
-				(*figurant2).setSightRadius( 50.0 );
+				(*figurant2).setSightRadius( 80.0 );
 				(*figurant2).setTeam(2);
 				(*figurant2).setAI(true);
 				(*figurant2).setCharacterMaxLife(100);
@@ -273,16 +276,16 @@ void idle( void ){
 		HumanoidCharacter * aux;
 		for(int i = 0; i<figurantTeam1.size();i++ ){
 			aux = (HumanoidCharacter*) (figurantTeam1[i]);
-			(*aux).controller(charactersGame, figurantTeam1, figurantTeam2);
+			(*aux).controller();
 		}
 		for(int i = 0; i<figurantTeam2.size();i++ ){
 			aux = (HumanoidCharacter*) (figurantTeam2[i]);
-			(*aux).controller(charactersGame, figurantTeam1, figurantTeam2);
+			(*aux).controller();
 		}
     	
     	//Heróis
-    	teste.controller( charactersGame, figurantTeam1, figurantTeam2 );
-    	teste2.controller( charactersGame, figurantTeam1, figurantTeam2 );
+    	teste.controller();
+    	teste2.controller();
 
     	//Foco da câmera
     	if(focusDecZ) focusZ-=10;
@@ -348,35 +351,59 @@ void init(void)
 	fclose( bmp );
 
 	// Inicialize Towers
-
 	FILE *objtower, *objdiam, *bmptower;
 	objtower = fopen("Objs/tower.txt", "r");
 	objdiam = fopen("Objs/diamond.txt", "r");
 	bmptower = fopen("Img/metal.bmp", "rb");
+
 	tower1.setObj(objtower, objdiam);
 	tower1.setTex(bmptower);
 	tower1.setTeam(1);
+	tower1.setRadiusCharacterAproximation(20.0);
+	tower1.setPosition(-700, 0, -110);
+	tower1.setSightRadius( 80.0 );
+	tower1.setRangeAtk(100.0);
+	tower1.setAI(false);
+	tower1.setCharacterMaxLife(600);
+	tower1.heal(1.0);
+	tower1.setAtk(40);
+	tower1.setDef(30);
+	tower1.setName("Tower 1");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
+
 	tower2.setObj(objtower, objdiam);
 	tower2.setTex(bmptower);
 	tower2.setTeam(1);
+	tower2.setRadiusCharacterAproximation(20.0);
+	tower2.setPosition(-300, 0, -110);
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
+
 	tower3.setObj(objtower, objdiam);
 	tower3.setTex(bmptower);
 	tower3.setColor(1.0f,0.0f,0.0f);
 	tower3.setTeam(2);	
+	tower3.setRadiusCharacterAproximation(20.0);
+	tower3.setPosition(700, 0, -110);
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
+
 	tower4.setObj(objtower, objdiam);
 	tower4.setTex(bmptower);
 	tower4.setColor(1.0f,0.0f,0.0f);
 	tower4.setTeam(2);
+	tower4.setRadiusCharacterAproximation(20.0);
+	tower4.setPosition(300, 0, -110);
 	rewind(objdiam);
+
+	towers.push_back(&tower1);
+	towers.push_back(&tower2);
+	towers.push_back(&tower3);
+	towers.push_back(&tower4);
 
 	// Initialize Base
 	FILE *objfence, *bmpfence;
@@ -399,6 +426,50 @@ void init(void)
 	fclose( objdiam );
 	fclose( bmptower );
 	fclose( bmpfence );
+
+
+	//Inicializa Heróis
+	teste.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
+	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste.setBodyColor( 1.0, 0.0, 0.0 );
+	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste.setLegColor( 0.0, 0.0, 1.0 );
+	teste.setScale( 0.5, 0.5, 0.5 );
+	teste.setRotate( 0, 45, 0 );
+	teste.setWalk(true);
+	teste.setPosition( -1075, 0, -110 );
+	teste.setRadiusCharacterAproximation(6.0);
+	teste.setRangeAtk(10.0);
+	teste.setTeam(1);
+	teste.setCharacterMaxLife(400);
+	teste.heal(1.0);
+	teste.setAtk(30);
+	teste.setDef(20);
+	teste.setAI( false );
+	teste.setSightRadius( 100.0 );
+	teste.setName("Heroi time 1");
+	teste.stop();
+    
+	teste2.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
+	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setBodyColor( 0.5, 0.5, 0.5 );
+	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
+	teste2.setLegColor( 0.0, 0.0, 1.0 );
+	teste2.setScale( 0.5, 0.5, 0.5 );
+	teste2.setRotate( 0, 45, 0 );
+	teste2.setWalk(true);
+	teste2.setPosition( 1075, 0.0, -110.0 );
+	teste2.setRadiusCharacterAproximation(6.0);
+	teste2.setCharacterMaxLife(400);
+	teste2.heal(1.0);
+	teste2.setRangeAtk(10.0);
+	teste2.setTeam(2);
+	teste2.setAtk(30);
+	teste2.setDef(20);
+	teste2.setSightRadius( 100.0 );
+	teste2.setName("Heroi time 2");
+	teste2.stop();
+	teste2.setAI( true );
 
 	//Inicializa opções do observador
 	angle = 45;
@@ -512,7 +583,7 @@ void mouse(int button, int state, int x, int y){
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
 			teste.walkTo( dx, dz );
-			teste.setTargetFromClickedArea( charactersGame, figurantTeam1, figurantTeam2, dx, dz );
+			teste.setTargetFromClickedArea( dx, dz );
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
@@ -652,46 +723,7 @@ int main()
 	teste3.setCharacterMaxLife(1);
 	*/
 
-	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setBodyColor( 1.0, 0.0, 0.0 );
-	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setLegColor( 0.0, 0.0, 1.0 );
-	teste.setScale( 0.5, 0.5, 0.5 );
-	teste.setRotate( 0, 45, 0 );
-	teste.setWalk(true);
-	teste.setPosition( -1075, 0, -110 );
-	teste.setRadiusCharacterAproximation(3);
-	teste.setRangeAtk(10.0);
-	teste.setTeam(1);
-	teste.setCharacterMaxLife(400);
-	teste.heal(1.0);
-	teste.setAtk(30);
-	teste.setDef(20);
-	teste.setAI( false );
-	teste.setSightRadius( 70.0 );
-	teste.setName("Heroi time 1");
-	teste.stop();
-    
-
-	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste2.setBodyColor( 0.5, 0.5, 0.5 );
-	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste2.setLegColor( 0.0, 0.0, 1.0 );
-	teste2.setScale( 0.5, 0.5, 0.5 );
-	teste2.setRotate( 0, 45, 0 );
-	teste2.setWalk(true);
-	teste2.setPosition( 1075, 0.0, -110.0 );
-	teste2.setRadiusCharacterAproximation(3);
-	teste2.setCharacterMaxLife(400);
-	teste2.heal(1.0);
-	teste2.setRangeAtk(10.0);
-	teste2.setTeam(2);
-	teste2.setAtk(30);
-	teste2.setDef(20);
-	teste2.setSightRadius( 70.0 );
-	teste2.setName("Heroi time 2");
-	teste2.stop();
-	teste2.setAI( true );
+	
     
 	init();
 	glutMainLoop();
