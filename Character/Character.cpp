@@ -232,7 +232,6 @@ int Character::takeDamage ( int opponentAtk ) {
     else return 0;
 }
 int Character::toDamage( void* target ) {
-    cout << "Dano " << endl;
     Character * aux;
     aux = (Character*)target;
     int ret;
@@ -242,14 +241,13 @@ int Character::toDamage( void* target ) {
 void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2 ){
     Character * aux;
     Character * enemyCloser;
+    float closerEnemyDist;
     float x = getPosition().getX();
     float z = getPosition().getZ();
     enemyCloser = NULL;
 
     for(int i = 0; i< figurants1.size(); i++){
         float enemyDist; 
-        float closerEnemyDist;
-
         aux = (Character*)figurants1[i];
         if( (*aux).getCharacterLife() > 0){
             if( (*aux).getTeam() != getTeam() ){
@@ -262,17 +260,20 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
                             enemyCloser = aux;
                         }
                     }
-
                 }
-
             }
         }
     }
+    if(enemyCloser != NULL){
+    	closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+    	if(closerEnemyDist > getSightRadius()){
+    		enemyCloser = NULL;
+    	}
+    }
+    
 
     for(int i = 0; i< figurants2.size(); i++){
         float enemyDist; 
-        float closerEnemyDist;
-
         aux = (Character*)figurants2[i];
         if( (*aux).getCharacterLife() > 0){
             if( (*aux).getTeam() != getTeam() ){
@@ -291,11 +292,15 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
             }
         }
     }
+    if(enemyCloser != NULL){
+    	closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+    	if(closerEnemyDist > getSightRadius()){
+    		enemyCloser = NULL;
+    	}
+    }
 
     for(int i = 0; i< charactersGame.size(); i++){
         float enemyDist; 
-        float closerEnemyDist;
-
         aux = (Character*)charactersGame[i];
         if( (*aux).getCharacterLife() > 0){
             if( (*aux).getTeam() != getTeam() ){
@@ -313,6 +318,12 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 
             }
         }
+    }
+    if(enemyCloser != NULL){
+    	closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+    	if(closerEnemyDist > getSightRadius()){
+    		enemyCloser = NULL;
+    	}
     }
 
     setTarget(enemyCloser);

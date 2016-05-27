@@ -19,3 +19,4 @@
 #include <cstring>
 #include <memory.h>
 #include <string>
+#include <sstream>

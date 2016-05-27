@@ -4,9 +4,6 @@
 #include "Scenario/Tower.cpp"
 #include "Scenario/Base.cpp"
 
-
-float passoCarinha = 0.5;
-
 //Obsercer Params
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
@@ -17,8 +14,6 @@ Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
 
-float escala;
-float dx,dy,dz;
 float rotateY;
 
 int windowsWidth, windowsHeight;
@@ -67,14 +62,13 @@ void gameController(){
 		}
 	}
 
-	if((int)seconds%60 == 0) {
+	if((int)seconds%60 == 1) {
 		if(timeFlag == true){
 			timeFlag = false;
 			minutes++;
 			
 			for(int i = 0; i < 5 ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
-
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setBodyColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -83,7 +77,7 @@ void gameController(){
 				(*figurant1).setRotate( 0, 45, 0 );
 				(*figurant1).setPosition( -987.0, 0, -120 + i*15 );
 				(*figurant1).setRadiusCharacterAproximation(4);
-				(*figurant1).setSightRadius( 20.0 );
+				(*figurant1).setSightRadius( 50.0 );
 				(*figurant1).setRangeAtk(7.0);
 				(*figurant1).setTeam(1);
 				(*figurant1).setAI(true);
@@ -91,8 +85,11 @@ void gameController(){
 				(*figurant1).heal(1.0);
 				(*figurant1).setAtk(20);
 				(*figurant1).setDef(10);
+				(*figurant1).setWalkSpeed(1.0);
 				(*figurant1).stop();
-				(*figurant1).setName("Heroi time 1");
+				stringstream sstm;
+				sstm << "figurantTeam1 " << i;
+				(*figurant1).setName(sstm.str());
 				figurantTeam1.push_back(figurant1);
 			}
 
@@ -104,23 +101,27 @@ void gameController(){
 				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
-				(*figurant2).setPosition( 987.0, 0, -70 + i*10 );
+				(*figurant2).setPosition( 987.0, 0, -120 + i*15 );
 				(*figurant2).setRadiusCharacterAproximation(4);
 				(*figurant2).setRangeAtk(7.0);
-				(*figurant2).setSightRadius( 20.0 );
+				(*figurant2).setSightRadius( 50.0 );
 				(*figurant2).setTeam(2);
 				(*figurant2).setAI(true);
 				(*figurant2).setCharacterMaxLife(100);
 				(*figurant2).heal(1.0);
 				(*figurant2).setAtk(20);
 				(*figurant2).setDef(10);
+				(*figurant2).setWalkSpeed(1.0);
 				(*figurant2).stop();
+				stringstream sstm;
+				sstm << "figurantTeam2 " << i;
+				(*figurant2).setName(sstm.str());
 				figurantTeam2.push_back(figurant2);
 			}
 		}	
 	}	
 
-	if((int)seconds%10 != 0) {
+	if((int)seconds%60 != 1) {
 		timeFlag = true;
 	}
 
@@ -160,7 +161,7 @@ void positionsObserver(void)
 
 	if(observerFollows){
 		focusX = teste.getPosition().getX();
-		focusY = dy;
+		focusY = teste.getPosition().getY();
 		focusZ = teste.getPosition().getZ();
 
 		glTranslatef(-focusX,0,-obsZ);
@@ -249,6 +250,10 @@ void draw( void ){
 
 
 void idle( void ){
+	if(teste.getTarget() != NULL){
+		Character *aux;
+		aux = (Character*)teste.getTarget();
+	}
 	actualTime = glutGet(GLUT_ELAPSED_TIME);
 	
 	//Limitador de tempo
@@ -258,28 +263,32 @@ void idle( void ){
 
 	gameController();
     if(difference >= 20){
+    	//Towers
 		tower1.controller();
 		tower2.controller();
 		tower3.controller();
 		tower4.controller();
 
-	HumanoidCharacter * aux;
-	for(int i = 0; i<figurantTeam1.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam1[i]);
-		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-	}
-	for(int i = 0; i<figurantTeam2.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam2[i]);
-		(*aux).IA(charactersGame, figurantTeam1, figurantTeam2);
-	}
+		//Figurants
+		HumanoidCharacter * aux;
+		for(int i = 0; i<figurantTeam1.size();i++ ){
+			aux = (HumanoidCharacter*) (figurantTeam1[i]);
+			(*aux).controller(charactersGame, figurantTeam1, figurantTeam2);
+		}
+		for(int i = 0; i<figurantTeam2.size();i++ ){
+			aux = (HumanoidCharacter*) (figurantTeam2[i]);
+			(*aux).controller(charactersGame, figurantTeam1, figurantTeam2);
+		}
+    	
+    	//Heróis
+    	teste.controller( charactersGame, figurantTeam1, figurantTeam2 );
+    	teste2.controller( charactersGame, figurantTeam1, figurantTeam2 );
+
+    	//Foco da câmera
     	if(focusDecZ) focusZ-=10;
 		if(focusIncZ) focusZ+=10;
 		if(focusDecX) focusX-=10;
 		if(focusIncX) focusX+=10;
-
-
-    	teste.controller( charactersGame, figurantTeam1, figurantTeam2 );
-    	teste2.controller( charactersGame, figurantTeam1, figurantTeam2 );
     	lastWalkAnimation = currentWalkAnimation;
     }
     positionsObserver();
@@ -314,7 +323,6 @@ void init(void)
 	minutes = 0;
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-	escala = 0.15;
 
 	glClearColor(135/255.0,206/255.0,250/255.0, 0);
 	// Habilita o modelo de colorização de Gouraud
@@ -500,6 +508,7 @@ void mouse(int button, int state, int x, int y){
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
+			float dx,dz;
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
 			teste.walkTo( dx, dz );
@@ -543,33 +552,28 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
 		case 'b':
-			//teste2.takeDamage(20);
 			break;
 		case 27:
 			exit(0);
 			break;
 		case 'a':
 			teste2.heal(1.0);
-			//dx-=1.5;
-			//rotateY = -90;
 			break;
 		case 'd':
-			//dx+=1.5;
-			//rotateY = 90;
+			teste.heal(1.0);
 			break;
         case 'w':
-            //dz-=1.5;
-            //rotateY = 180;
             break;
         case 's':
-            //dz+=1.5	;
-            //rotateY = 0;
             break;
         case 'o':
             obsZ++;
             break;
         case 'i':
             obsZ--;
+            break;
+        case 'h':
+            teste.stop();
             break;
         case 'y':
         	observerFollows = !observerFollows;
@@ -655,7 +659,7 @@ int main()
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
 	teste.setWalk(true);
-	teste.setPosition( -1000, 0, -110 );
+	teste.setPosition( -1075, 0, -110 );
 	teste.setRadiusCharacterAproximation(3);
 	teste.setRangeAtk(10.0);
 	teste.setTeam(1);
@@ -664,6 +668,7 @@ int main()
 	teste.setAtk(30);
 	teste.setDef(20);
 	teste.setAI( false );
+	teste.setSightRadius( 70.0 );
 	teste.setName("Heroi time 1");
 	teste.stop();
     
@@ -675,7 +680,7 @@ int main()
 	teste2.setScale( 0.5, 0.5, 0.5 );
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setWalk(true);
-	teste2.setPosition( 1000, 0.0, -110.0 );
+	teste2.setPosition( 1075, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(3);
 	teste2.setCharacterMaxLife(400);
 	teste2.heal(1.0);
@@ -683,7 +688,8 @@ int main()
 	teste2.setTeam(2);
 	teste2.setAtk(30);
 	teste2.setDef(20);
-	teste.setName("Heroi time 2");
+	teste2.setSightRadius( 70.0 );
+	teste2.setName("Heroi time 2");
 	teste2.stop();
 	teste2.setAI( true );
     

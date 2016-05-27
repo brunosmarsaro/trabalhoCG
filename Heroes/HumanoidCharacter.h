@@ -24,6 +24,7 @@ private:
 	float walkTargetZ;
 	float characterYAngle;
 
+	float walkSpeed;
 	int walkCicle;
 	bool walking;
 	bool upCicle;
@@ -55,6 +56,7 @@ public:
 	void setLegColor( float, float, float );
 	void setIA( bool );
 	void setWalk( bool );
+	void setWalkSpeed( float );
 	bool isEnemyNear();
 	bool selectionArea( void*, float, float );
 	void setTargetFromClickedArea( vector<void*>, vector<void*>, vector<void*>, float, float );
@@ -62,7 +64,7 @@ public:
 	void smartWalkTo( float, float );
 	void walkInLineTo( float, float );
 	void walkTo( float, float );
-	void walkToTarget();
+	void walkToTarget( vector<void*>, vector<void*>, vector<void*> );
 	void walkAnimation();
 	void stop();
 	void attackingAnimation( int, int );
