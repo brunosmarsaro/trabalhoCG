@@ -80,7 +80,7 @@ void gameController(){
 				(*figurant1).setPosition( -987.0, 0, -130 + i*15 );
 				(*figurant1).setRadiusCharacterAproximation(6.0);
 				(*figurant1).setSightRadius( 80.0 );
-				(*figurant1).setRangeAtk(7.0);
+				(*figurant1).setRangeAtk(10.0);
 				(*figurant1).setTeam(1);
 				(*figurant1).setAI(true);
 				(*figurant1).setCharacterMaxLife(100);
@@ -106,7 +106,7 @@ void gameController(){
 				(*figurant2).setRotate( 0, 45, 0 );
 				(*figurant2).setPosition( 987.0, 0, -130 + i*15 );
 				(*figurant2).setRadiusCharacterAproximation(6.0);
-				(*figurant2).setRangeAtk(7.0);
+				(*figurant2).setRangeAtk(10.0);
 				(*figurant2).setSightRadius( 80.0 );
 				(*figurant2).setTeam(2);
 				(*figurant2).setAI(true);
@@ -378,6 +378,14 @@ void init(void)
 	tower2.setTeam(1);
 	tower2.setRadiusCharacterAproximation(20.0);
 	tower2.setPosition(-300, 0, -110);
+	tower2.setSightRadius( 80.0 );
+	tower2.setRangeAtk(100.0);
+	tower2.setAI(false);
+	tower2.setCharacterMaxLife(600);
+	tower2.heal(1.0);
+	tower2.setAtk(40);
+	tower2.setDef(30);
+	tower2.setName("Tower 1");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
@@ -388,6 +396,14 @@ void init(void)
 	tower3.setTeam(2);	
 	tower3.setRadiusCharacterAproximation(20.0);
 	tower3.setPosition(700, 0, -110);
+	tower3.setSightRadius( 80.0 );
+	tower3.setRangeAtk(100.0);
+	tower3.setAI(false);
+	tower3.setCharacterMaxLife(600);
+	tower3.heal(1.0);
+	tower3.setAtk(40);
+	tower3.setDef(30);
+	tower3.setName("Tower 1");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
@@ -398,6 +414,14 @@ void init(void)
 	tower4.setTeam(2);
 	tower4.setRadiusCharacterAproximation(20.0);
 	tower4.setPosition(300, 0, -110);
+	tower4.setSightRadius(80.0);
+	tower4.setRangeAtk(100.0);
+	tower4.setAI(false);
+	tower4.setCharacterMaxLife(600);
+	tower4.heal(1.0);
+	tower4.setAtk(40);
+	tower4.setDef(30);
+	tower4.setName("Tower 1");
 	rewind(objdiam);
 
 	towers.push_back(&tower1);
@@ -439,7 +463,7 @@ void init(void)
 	teste.setWalk(true);
 	teste.setPosition( -1075, 0, -110 );
 	teste.setRadiusCharacterAproximation(6.0);
-	teste.setRangeAtk(10.0);
+	teste.setRangeAtk(12.0);
 	teste.setTeam(1);
 	teste.setCharacterMaxLife(400);
 	teste.heal(1.0);
@@ -447,7 +471,7 @@ void init(void)
 	teste.setDef(20);
 	teste.setAI( false );
 	teste.setSightRadius( 100.0 );
-	teste.setName("Heroi time 1");
+	teste.setName("Hero team 1");
 	teste.stop();
     
 	teste2.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
@@ -462,12 +486,12 @@ void init(void)
 	teste2.setRadiusCharacterAproximation(6.0);
 	teste2.setCharacterMaxLife(400);
 	teste2.heal(1.0);
-	teste2.setRangeAtk(10.0);
+	teste2.setRangeAtk(12.0);
 	teste2.setTeam(2);
 	teste2.setAtk(30);
 	teste2.setDef(20);
 	teste2.setSightRadius( 100.0 );
-	teste2.setName("Heroi time 2");
+	teste2.setName("Hero team 2");
 	teste2.stop();
 	teste2.setAI( true );
 

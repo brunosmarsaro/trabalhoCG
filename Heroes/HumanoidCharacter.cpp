@@ -303,75 +303,7 @@ void HumanoidCharacter::chooseBest( float * x, float * z ){
 				distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
 			}
 		}
-
 	}
-	/*
-	//norte
-	auxX = actualX;
-	auxZ = actualZ - walkSpeed;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-		}
-	}
-	//sul
-	auxX = actualX;
-	auxZ = actualZ + walkSpeed;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-		}
-	}
-
-	//oeste
-	auxX = actualX - walkSpeed;
-	auxZ = actualZ;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-		}
-	}
-	//leste
-	auxX = actualX + walkSpeed;
-	auxZ = actualZ;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-		}
-	}
-
-	//nordeste
-	auxX = actualX + 0.5*walkSpeed;
-	auxZ = actualZ - 0.5*walkSpeed;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-		}
-	}
-
-	//sudeste
-	auxX = actualX + 0.5*walkSpeed;
-	auxZ = actualZ + 0.5*walkSpeed;
-	if(!therIsSomethingHere(auxX,auxZ)){
-		if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
-			(*x) = auxX;
-			(*z) = auxZ;
-			distBestWay = euclidianDistanceFromTarget(auxX,auxZ);
-			
-		}
-	}*/
-
-
 }
 
 void HumanoidCharacter::smartWalkTo( float x, float z  ){
@@ -545,7 +477,10 @@ void HumanoidCharacter::draw(){
 
 		glPushMatrix();
 			glTranslatef( getPosition().getX(), 1/(0.07) + scaleY*15.0 , getPosition().getZ() );
-			glScalef( 0.05 ,0.07 ,0.03 );
+			if(getName().compare(0,4,"Hero") == 0){
+				glScalef( 0.065, 0.10, 0.03 );
+			}else
+				glScalef( 0.05 ,0.05 ,0.03 );
 			setBarLifeRotate( -45, 180, 0 );
 			getLifeBar().draw();
 		glPopMatrix();
