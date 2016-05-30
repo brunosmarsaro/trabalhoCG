@@ -264,7 +264,7 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	gameController();
+	//gameController();
     if(difference >= 20){
     	//Towers
 		tower1.controller();
