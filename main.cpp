@@ -4,6 +4,7 @@
 #include "Scenario/Tower.cpp"
 #include "Scenario/Base.cpp"
 
+//Harry moça
 //Obsercer Params
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
