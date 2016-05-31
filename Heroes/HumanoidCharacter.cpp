@@ -249,7 +249,7 @@ float HumanoidCharacter::euclidianDistanceFromTarget( float x, float z ){
 	return euclidianDistance( x,z, walkTargetX, walkTargetZ );
 }
 
-bool HumanoidCharacter::therIsSomethingHere( float x, float z ){
+bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 	Character * aux;
 
 	for(int i = 0; i<charactersGame.size(); i++){
@@ -296,7 +296,7 @@ void HumanoidCharacter::chooseBest( float * x, float * z ){
 		auxX = actualX + walkSpeed*cos(i);
 		auxZ = actualZ + walkSpeed*sin(i);
 
-		if(!therIsSomethingHere(auxX,auxZ)){
+		if(!isThereSomethingHere(auxX,auxZ)){
 			if( euclidianDistanceFromTarget(auxX,auxZ) < distBestWay ){
 				(*x) = auxX;
 				(*z) = auxZ;
