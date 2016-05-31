@@ -84,10 +84,10 @@ void gameController(){
 				(*figurant1).setRangeAtk(10.0);
 				(*figurant1).setTeam(1);
 				(*figurant1).setAI(true);
-				(*figurant1).setCharacterMaxLife(100);
+				(*figurant1).setCharacterMaxLife(400);
 				(*figurant1).heal(1.0);
-				(*figurant1).setAtk(20);
-				(*figurant1).setDef(10);
+				(*figurant1).setAtk(10);
+				(*figurant1).setDef(0);
 				(*figurant1).setWalkSpeed(1.0);
 				(*figurant1).stop();
 				stringstream sstm;
@@ -111,10 +111,10 @@ void gameController(){
 				(*figurant2).setSightRadius( 80.0 );
 				(*figurant2).setTeam(2);
 				(*figurant2).setAI(true);
-				(*figurant2).setCharacterMaxLife(100);
+				(*figurant2).setCharacterMaxLife(400);
 				(*figurant2).heal(1.0);
-				(*figurant2).setAtk(20);
-				(*figurant2).setDef(10);
+				(*figurant2).setAtk(10);
+				(*figurant2).setDef(0);
 				(*figurant2).setWalkSpeed(1.0);
 				(*figurant2).stop();
 				stringstream sstm;
@@ -386,7 +386,7 @@ void init(void)
 	tower2.heal(1.0);
 	tower2.setAtk(40);
 	tower2.setDef(30);
-	tower2.setName("Tower 1");
+	tower2.setName("Tower 2");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
@@ -404,7 +404,7 @@ void init(void)
 	tower3.heal(1.0);
 	tower3.setAtk(40);
 	tower3.setDef(30);
-	tower3.setName("Tower 1");
+	tower3.setName("Tower 3");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
@@ -422,7 +422,7 @@ void init(void)
 	tower4.heal(1.0);
 	tower4.setAtk(40);
 	tower4.setDef(30);
-	tower4.setName("Tower 1");
+	tower4.setName("Tower 4");
 	rewind(objdiam);
 
 	towers.push_back(&tower1);
@@ -466,9 +466,9 @@ void init(void)
 	teste.setRadiusCharacterAproximation(6.0);
 	teste.setRangeAtk(12.0);
 	teste.setTeam(1);
-	teste.setCharacterMaxLife(400);
+	teste.setCharacterMaxLife(800);
 	teste.heal(1.0);
-	teste.setAtk(30);
+	teste.setAtk(50);
 	teste.setDef(20);
 	teste.setAI( false );
 	teste.setSightRadius( 100.0 );
@@ -485,11 +485,11 @@ void init(void)
 	teste2.setWalk(true);
 	teste2.setPosition( 1075, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(6.0);
-	teste2.setCharacterMaxLife(400);
+	teste2.setCharacterMaxLife(800);
 	teste2.heal(1.0);
 	teste2.setRangeAtk(12.0);
 	teste2.setTeam(2);
-	teste2.setAtk(30);
+	teste2.setAtk(50);
 	teste2.setDef(20);
 	teste2.setSightRadius( 100.0 );
 	teste2.setName("Hero team 2");
