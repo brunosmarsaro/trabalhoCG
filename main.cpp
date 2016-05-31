@@ -270,14 +270,14 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	gameController();
+	//gameController();
 	Character * aux;
 	aux = (Character*)teste.getTarget();
 	if(aux != NULL){
 		cout << (*aux).getName() << endl;	
 	}
 	
-    if(difference >= 20){
+    if(difference >= 30){
     	//Towers
 		tower1.controller();
 		tower2.controller();

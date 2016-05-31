@@ -54,7 +54,7 @@ void Base::draw(){
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         glScalef(10,10,10);
         glTranslatef(-10, 0.8, -1);
-        //glColor3f( 1.0f, 1.0f, 1.0f );
+        glColor3f( 1.0f, 1.0f, 1.0f );
         for(i = 0; i < faces_f.size(); i++){
             glNormal3f(faces_f[i][0], faces_f[i][1], faces_f[i][2]);
             glBegin(GL_TRIANGLES);

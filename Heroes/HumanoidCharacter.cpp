@@ -373,8 +373,8 @@ void HumanoidCharacter::walkAnimation( ){
 		//Rotacionar coxa
 		leftThigh.setRotate( walkCicle, 0, 0 );
 		rightThigh.setRotate( -walkCicle, 0, 0 );
-		leftArm.setRotate( -walkCicle/2.0f, 0, 0 );
-		rightArm.setRotate( walkCicle/2.0f, 0, 0 );
+		leftArm.setRotate( -walkCicle, 0, 0 );
+		rightArm.setRotate( walkCicle, 0, 0 );
 		
 
     	//Movimentar a canela
