@@ -493,7 +493,7 @@ void init(void)
 	teste2.setLegColor( 1.0, 0.0, 0.0 );
 	teste2.setScale( 0.5, 0.5, 0.5 );
 	teste2.setRotate( 0, 45, 0 );
-	teste2.setPosition( 1075, 0.0, -110.0 );
+	teste2.setPosition( -1000, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(6.0);
 	teste2.setCharacterMaxLife(800);
 	teste2.heal(1.0);
@@ -728,7 +728,7 @@ int main()
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
     glutInitWindowPosition(5,5);
-	glutInitWindowSize(1024,720);
+	glutInitWindowSize(1280,800);
 	glutCreateWindow("Hello MOBA");
 	glutFullScreen(); 
 

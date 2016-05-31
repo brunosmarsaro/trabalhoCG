@@ -163,13 +163,15 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 }
 
 void HumanoidCharacter::atkTarget(){
-	if( getCharacterLife() == 0 ) return;
+	if( getCharacterLife() == 0 ) {
+		atkCicle = atkTime;
+		attacking = false;
+		return;
+	}
     Character * aux;
     atkCicle--;
     if( atkCicle < 0 ) atkCicle = 0;
     if( atkCicle < 7 && getTarget() != NULL){
-
-    	
     	aux = (Character*)getTarget();
 		float enemyDist;
 		float x = getPosition().getX();
@@ -192,25 +194,10 @@ void HumanoidCharacter::atkTarget(){
                 atkCicle = atkTime;
                 if(xp != 0){
                 	setTarget(NULL);
+                	stop();
                 	attackingAnimation( 0, 0 );
                 }
         	}
-        	/*
-            aux = (Character*)getTarget();
-            float enemyDist;
-            float x = getPosition().getX();
-            float z = getPosition().getZ();
-            enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-            if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
-            	int xp;
-                xp = toDamage(getTarget());
-                addExperience(xp);
-                attacking = false;
-                atkCicle = atkTime;
-                if(xp != 0){
-                	setTarget(NULL);
-                }
-            }*/
         }
     }  
 }
@@ -233,7 +220,6 @@ void HumanoidCharacter::walkToTarget(){
 
 	if( abs(walkTargetX - getPosition().getX()) <= walkSpeed && abs(walkTargetZ - getPosition().getZ()) <= walkSpeed){
 		stop();
-		walkCicle = 0;
 	}else{
 		smartWalkTo( walkTargetX, walkTargetZ );
 		walkAnimation();
@@ -256,21 +242,21 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 		aux = (Character*)charactersGame[i];
 		float distThingToHere = euclidianDistance( (*aux).getPosition().getX(),(*aux).getPosition().getZ(), x,z );
 		if( distThingToHere < (*aux).getRadiusCharacterAproximation() ){
-			if( getName().compare((*aux).getName())  != 0) return true;
+			if( getName().compare((*aux).getName())  != 0 && ((*aux).getCharacterLife() > 0)) return true;
 		}
 	}
 	for(int i = 0; i<figurantTeam1.size(); i++){
 		aux = (Character*)figurantTeam1[i];
 		float distThingToHere = euclidianDistance( (*aux).getPosition().getX(),(*aux).getPosition().getZ(), x,z );
 		if( distThingToHere < (*aux).getRadiusCharacterAproximation() ){
-			if( getName().compare((*aux).getName())  != 0) return true;
+			if( getName().compare((*aux).getName())  != 0&& ((*aux).getCharacterLife() > 0)) return true;
 		}
 	}
 	for(int i = 0; i<figurantTeam2.size(); i++){
 		aux = (Character*)figurantTeam2[i];
 		float distThingToHere = euclidianDistance( (*aux).getPosition().getX(),(*aux).getPosition().getZ(), x,z );
 		if( distThingToHere < (*aux).getRadiusCharacterAproximation() ){
-			if( getName().compare((*aux).getName())  != 0) return true;
+			if( getName().compare((*aux).getName())  != 0&& ((*aux).getCharacterLife() > 0)) return true;
 		}
 	}
 	for(int i = 0; i<towers.size(); i++){
@@ -312,8 +298,7 @@ void HumanoidCharacter::smartWalkTo( float x, float z  ){
 		chooseBest( &nx, &nz );
 		walkInLineTo( nx, nz );
 	}else{
-		walkCicle = 0;
-    	setWalk(false);
+		stop();
 	}
 
 }
@@ -341,6 +326,8 @@ void HumanoidCharacter::walkInLineTo( float x, float z ){
 void HumanoidCharacter::stop(){
 	walkCicle = 0;
 	walkTo( getPosition().getX(), getPosition().getZ() );
+	setWalk(false);
+	walkAnimation();
 }
 void HumanoidCharacter::walkAnimation( ){
 	float max = 45;
@@ -417,6 +404,8 @@ void HumanoidCharacter::walkAnimation( ){
 	}else{
 		leftThigh.setRotate( 0, 0, 0 );
 		rightThigh.setRotate( 0, 0, 0 );
+		leftCalf.setRotate( 0, 0, 0 );
+		rightCalf.setRotate( 0, 0, 0 );
 		leftArm.setRotate( 0, 0, 0 );
 		rightArm.setRotate( 0, 0, 0 );
 	}
@@ -428,6 +417,17 @@ void HumanoidCharacter::attackingAnimation( int maxCicle, int actualCicle ){
 		rightArm.setRotate( 0.0, 0.0, 0.0 );
 		return;
 	}
+
+	float enemyX = (*((Character*)getTarget())).getPosition().getX();
+	float enemyZ = (*((Character*)getTarget())).getPosition().getZ();
+	double oposto, adjascente;
+    adjascente = enemyX - getPosition().getX();
+    oposto = enemyZ - getPosition().getZ();
+    double aux =  atan(adjascente/oposto) * 180 / M_PI;
+    if(oposto < 0) aux = aux + 180;
+    characterYAngle = aux;
+
+
 	int realCicle = maxCicle - actualCicle;
 	float percentCicle = realCicle/(float)maxCicle;
 	int rotateArmsX = percentCicle*(-89);

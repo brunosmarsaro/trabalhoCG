@@ -74,7 +74,7 @@ public:
 	void walkToTarget();
 	float euclidianDistance( float, float, float, float );
 	float euclidianDistanceFromTarget( float, float );
-	bool therIsSomethingHere( float, float );
+	bool isThereSomethingHere( float, float );
 	void chooseBest( float*, float* );
 	void walkAnimation();
 	void stop();
