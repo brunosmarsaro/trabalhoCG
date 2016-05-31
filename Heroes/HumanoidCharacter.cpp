@@ -459,7 +459,8 @@ void HumanoidCharacter::AI(){
 	
 }
 
-void HumanoidCharacter::controller(){
+void HumanoidCharacter::controller( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
+	setGame(characters,f1,f2,t);
 	if(isAI()){ 
 		AI();
 	}else{

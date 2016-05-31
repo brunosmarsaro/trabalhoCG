@@ -69,11 +69,11 @@ void gameController(){
 			timeFlag = false;
 			minutes++;
 			
-			for(int i = 0; i < 5 ;i++){
+			for(int i = 0; i < 3 ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
 				(*figurant1).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant1).setBodyColor( 1.0, 0.0, 0.0 );
+				(*figurant1).setBodyColor( 0.0, 1.0, 0.0 );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
@@ -96,11 +96,11 @@ void gameController(){
 				figurantTeam1.push_back(figurant1);
 			}
 
-			for(int i = 0; i < 5 ;i++){
+			for(int i = 0; i < 3 ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
 				(*figurant2).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant2).setBodyColor( 0.0, 0.0, 1.0 );
+				(*figurant2).setBodyColor( 1.0, 0.0, 0.0 );
 				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
@@ -265,7 +265,7 @@ void idle( void ){
 	difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	//gameController();
+	gameController();
     if(difference >= 20){
     	//Towers
 		tower1.controller();
@@ -277,16 +277,16 @@ void idle( void ){
 		HumanoidCharacter * aux;
 		for(int i = 0; i<figurantTeam1.size();i++ ){
 			aux = (HumanoidCharacter*) (figurantTeam1[i]);
-			(*aux).controller();
+			(*aux).controller(charactersGame,figurantTeam1,figurantTeam2,towers);
 		}
 		for(int i = 0; i<figurantTeam2.size();i++ ){
 			aux = (HumanoidCharacter*) (figurantTeam2[i]);
-			(*aux).controller();
+			(*aux).controller(charactersGame,figurantTeam1,figurantTeam2,towers);
 		}
     	
     	//Heróis
-    	teste.controller();
-    	teste2.controller();
+    	teste.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+    	teste2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
 
     	//Foco da câmera
     	if(focusDecZ) focusZ-=10;
