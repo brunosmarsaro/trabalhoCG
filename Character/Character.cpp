@@ -261,9 +261,7 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 					enemyCloser = aux;
 					closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
 				}
-
 			}
-
 		}
 	}
 	for(int i = 0; i<figurants2.size(); i++){
@@ -276,12 +274,9 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 					enemyCloser = aux;
 					closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
 				}
-
 			}
-
 		}
 	}
-
 	for(int i = 0; i<charactersGame.size(); i++){
 		float enemyDist;
 		aux = (Character*)charactersGame[i];
@@ -292,12 +287,9 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 					enemyCloser = aux;
 					closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
 				}
-
 			}
-
 		}
 	}
-
 	for(int i = 0; i<towers.size(); i++){
 		float enemyDist;
 		aux = (Character*)towers[i];
@@ -308,15 +300,15 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 					enemyCloser = aux;
 					closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
 				}
-
 			}
-
 		}
 	}
 
-
-
-    setTarget(enemyCloser);
+    if(closerEnemyDist < sightRadius){
+        setTarget(enemyCloser);
+    }else{
+        setTarget(NULL);
+    }
 /*
     for(int i = 0; i< figurants1.size(); i++){
         float enemyDist; 
