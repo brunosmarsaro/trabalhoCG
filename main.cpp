@@ -43,7 +43,7 @@ vector<void*> figurantTeam2;
 vector<void*> towers;
 vector<int> timeTodisappear;
 
-bool timeFlag = false;
+bool timeFlag = true;
 
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
@@ -55,7 +55,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam1.erase(figurantTeam1.begin() + i);
-			free(auxFree);
+			delete(auxFree);
 		}
 	}
 	for(int i = 0; i < figurantTeam2.size() ;i++){
@@ -63,7 +63,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam2.erase(figurantTeam2.begin() + i);
-			free(auxFree);
+			delete(auxFree);
 		}
 	}
 
@@ -259,24 +259,14 @@ void draw( void ){
 
 
 void idle( void ){
-	if(teste.getTarget() != NULL){
-		Character *aux;
-		aux = (Character*)teste.getTarget();
-	}
+
 	actualTime = glutGet(GLUT_ELAPSED_TIME);
-	
 	//Limitador de tempo
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	//gameController();
-	Character * aux;
-	aux = (Character*)teste.getTarget();
-	if(aux != NULL){
-		cout << (*aux).getName() << endl;	
-	}
-	
+	gameController();	
     if(difference >= 30){
     	//Towers
 		tower1.controller();
@@ -493,7 +483,7 @@ void init(void)
 	teste2.setLegColor( 1.0, 0.0, 0.0 );
 	teste2.setScale( 0.5, 0.5, 0.5 );
 	teste2.setRotate( 0, 45, 0 );
-	teste2.setPosition( -1000, 0.0, -110.0 );
+	teste2.setPosition( 1075, 0.0, -110.0 );
 	teste2.setRadiusCharacterAproximation(6.0);
 	teste2.setCharacterMaxLife(800);
 	teste2.heal(1.0);

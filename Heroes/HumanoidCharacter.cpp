@@ -278,7 +278,7 @@ void HumanoidCharacter::chooseBest( float * x, float * z ){
 	float distBestWay = 9999999999;
 
 
-	for(float  i = 0; i < 2*M_PI; i+=0.1 ){
+	for(float  i = 0; i < 2*M_PI; i+=0.01 ){
 		auxX = actualX + walkSpeed*cos(i);
 		auxZ = actualZ + walkSpeed*sin(i);
 
