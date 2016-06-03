@@ -96,8 +96,14 @@ void Tower::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*>
 
 void Tower::drawProjectile(){
 	glPushMatrix();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glTranslatef(projectile.px,projectile.py,projectile.pz);
-		glutSolidTeapot(projectile.radius);
+		glColor4f( r, g, b, 1.0 );
+		glutSolidSphere(projectile.radius,10,10);
+
+		glDisable(GL_BLEND);
 	glPopMatrix();
 }
 
@@ -109,6 +115,10 @@ float Tower::euclidianDistance( float  x1, float  z1, float x2, float z2 ){
 void Tower::projectileController(){
 	Character * aux;
 	aux = (Character*)getTarget();
+	if(getCharacterLife() == 0) {
+		projectile.exist = false;
+		return;
+	}
 	if(aux == NULL) return;
 	if(!projectile.exist) return;
 
@@ -147,7 +157,7 @@ void Tower::controller( vector<void*> &characters, vector<void*> &f1, vector<voi
 	if(projectile.exist == false && getTarget() != NULL){
 		projectile.exist = true;
 		projectile.px = getPosition().getX();
-		projectile.py = getPosition().getY() + 45.0;
+		projectile.py = getPosition().getY() + 50.0;
 		projectile.pz = getPosition().getZ();
 
 	}

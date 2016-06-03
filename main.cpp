@@ -5,7 +5,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 4
+#define quantSoldiersPerCicle 1
 
 //Harry moça
 //Obsercer Params
@@ -634,6 +634,7 @@ void keyboard(unsigned char key, int x, int y){
 			teste.heal(1.0);
 			break;
         case 'w':
+        	teste.setPosition( 250, 0, -110 );
             break;
         case 's':
             break;

@@ -171,6 +171,8 @@ void HumanoidCharacter::atkTarget(){
     Character * aux;
     atkCicle--;
     if( atkCicle < 0 ) atkCicle = 0;
+
+
     if( atkCicle < 7 && getTarget() != NULL){
     	aux = (Character*)getTarget();
 		float enemyDist;
