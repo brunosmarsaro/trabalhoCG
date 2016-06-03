@@ -16,6 +16,15 @@ void Tower::setObj( FILE *fp1, FILE *fp2 ){
 void Tower::draw( void ){
     int i;
 
+    if(projectile.exist){
+    	drawProjectile();
+    }
+    
+
+    glPushMatrix();
+    glTranslatef(getPosition().getX(), getPosition().getY(),getPosition().getZ());
+
+
     glDisable(GL_BLEND);
     glPushMatrix();
 		//glTranslatef( getPosition().getX(), 1/(0.07) + 1.0*(10.0) , getPosition().getZ() );
@@ -73,12 +82,76 @@ void Tower::draw( void ){
 	    glPopMatrix();
 
 	}
-	
+
+	glPopMatrix();
     
 }
 
-void Tower::controller(){
-    
+void Tower::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
+	charactersGame = characters;
+	figurantTeam1 = f1;
+	figurantTeam2 = f2;
+	towers = t;
+}
+
+void Tower::drawProjectile(){
+	glPushMatrix();
+		glTranslatef(projectile.px,projectile.py,projectile.pz);
+		glutSolidTeapot(projectile.radius);
+	glPopMatrix();
+}
+
+float Tower::euclidianDistance( float  x1, float  z1, float x2, float z2 ){
+	return sqrt( pow((x1 - x2 ),2.0f ) + (pow((z1 - z2 ),2.0f )));
+
+}
+
+void Tower::projectileController(){
+	Character * aux;
+	aux = (Character*)getTarget();
+	if(aux == NULL) return;
+	if(!projectile.exist) return;
+
+	float distX = -(projectile.px - (*aux).getPosition().getX());
+	float distY = -(projectile.py - (*aux).getPosition().getY() - 10);
+	float distZ = -(projectile.pz - (*aux).getPosition().getZ());
+	float modulo = sqrt( pow(distX,2) + pow(distY,2) + pow(distZ,2) );
+
+	float deslcX = projectile.passo*distX/modulo;
+	float deslcY = projectile.passo*distY/modulo;
+	float deslcZ = projectile.passo*distZ/modulo;
+
+	projectile.px = ( projectile.px + deslcX );
+	projectile.py = ( projectile.py + deslcY );
+	projectile.pz = ( projectile.pz + deslcZ );
+
+	float x1,z1,x2,z2;
+	x1 = (*aux).getPosition().getX();
+	z1 = (*aux).getPosition().getZ();
+	x2 = projectile.px;
+	z2 = projectile.pz;
+	float enemyRadius = (*aux).getRadiusCharacterAproximation();
+	if( euclidianDistance (x1,z1,x2,z2) < enemyRadius + projectile.radius){
+		toDamage(aux);
+		projectile.exist = false;
+	}
+}
+
+
+void Tower::controller( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
+	setGame(characters,f1,f2,t);
+	if(!projectile.exist){
+		setTargetFromSightRadius( charactersGame, figurantTeam1, figurantTeam2, towers );
+	}
+	
+	if(projectile.exist == false && getTarget() != NULL){
+		projectile.exist = true;
+		projectile.px = getPosition().getX();
+		projectile.py = getPosition().getY() + 45.0;
+		projectile.pz = getPosition().getZ();
+
+	}
+	projectileController();
 }
 
 

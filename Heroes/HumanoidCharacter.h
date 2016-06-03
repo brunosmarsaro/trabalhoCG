@@ -81,7 +81,7 @@ public:
 	void attackingAnimation( int, int );
 	bool undefineActions();
 	void AI();
-	void controller(vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>&);
+	void controller( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
 	void draw();
 };
 #endif

@@ -4,8 +4,8 @@
 #include "Scenario/Tower.cpp"
 #include "Scenario/Base.cpp"
 
-#define armyBornTime 30
-#define quantSoldiersPerCicle 5
+#define armyBornTime 45
+#define quantSoldiersPerCicle 4
 
 //Harry moça
 //Obsercer Params
@@ -129,7 +129,6 @@ void gameController(){
 			}
 		}	
 	}	
-
 	if((int)seconds%armyBornTime != 1) {
 		timeFlag = true;
 	}
@@ -204,56 +203,30 @@ void draw( void ){
 		(*aux).draw();
 	}
 
-
-	glPushMatrix();	
-    	//teste3.draw();
-    glPopMatrix();
-
-	glPushMatrix();	
-		teste.draw();
-	glPopMatrix();
-
-	glPushMatrix();	
-		teste2.draw();
-	glPopMatrix();
-
 	glPushMatrix();
 		glRotatef(180,0,1,0); 
-		//glRotatef(45,0,1,0);
 		glScalef(150,150,150);
 		landscape.draw();
 	glPopMatrix();
 
+	teste.draw();
+	teste2.draw();
+	tower1.draw();
+	tower2.draw();
+	tower3.draw();
+	tower4.draw();
+
 	glPushMatrix();
-		glTranslatef(0,0,-110);		
-		glPushMatrix();
-			glTranslatef(-700,0,0);
-			tower1.draw();
-		glPopMatrix();
-		glPushMatrix();
-			glTranslatef(-300,0,0);
-			tower2.draw();
-		glPopMatrix();
-		glPushMatrix();
-			glTranslatef(700,0,0);
-			tower3.draw();
-		glPopMatrix();
-		glPushMatrix();
-			glTranslatef(300,0,0);
-			tower4.draw();
-		glPopMatrix();
-
-		glPushMatrix();
-			glTranslatef(-1000,0,0);
-			base1.draw();
-		glPopMatrix();
-
-		glPushMatrix();
-			glTranslatef(1000,0,0);
-			base2.draw();
-		glPopMatrix();
-
+		glTranslatef(-1000,0,-110);
+		base1.draw();
 	glPopMatrix();
+
+	glPushMatrix();
+		glTranslatef(1000,0,-110);
+		base2.draw();
+	glPopMatrix();
+
+
 	glutSwapBuffers();
 }
 
@@ -269,10 +242,10 @@ void idle( void ){
 	gameController();	
     if(difference >= 30){
     	//Towers
-		tower1.controller();
-		tower2.controller();
-		tower3.controller();
-		tower4.controller();
+		tower1.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+		tower2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+		tower3.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+		tower4.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
 
 		//Figurants
 		HumanoidCharacter * aux;
@@ -284,6 +257,7 @@ void idle( void ){
 			aux = (HumanoidCharacter*) (figurantTeam2[i]);
 			(*aux).controller(charactersGame,figurantTeam1,figurantTeam2,towers);
 		}
+		
     	
     	//Heróis
     	teste.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
@@ -363,12 +337,12 @@ void init(void)
 	tower1.setTeam(1);
 	tower1.setRadiusCharacterAproximation(20.0);
 	tower1.setPosition(-700, 0, -110);
-	tower1.setSightRadius( 80.0 );
+	tower1.setSightRadius( 100.0 );
 	tower1.setRangeAtk(100.0);
 	tower1.setAI(false);
-	tower1.setCharacterMaxLife(600);
+	tower1.setCharacterMaxLife(800);
 	tower1.heal(1.0);
-	tower1.setAtk(40);
+	tower1.setAtk(100);
 	tower1.setDef(30);
 	tower1.setName("Tower 1");
 	rewind(objtower);
@@ -380,12 +354,12 @@ void init(void)
 	tower2.setTeam(1);
 	tower2.setRadiusCharacterAproximation(20.0);
 	tower2.setPosition(-300, 0, -110);
-	tower2.setSightRadius( 80.0 );
+	tower2.setSightRadius( 100.0 );
 	tower2.setRangeAtk(100.0);
 	tower2.setAI(false);
-	tower2.setCharacterMaxLife(600);
+	tower2.setCharacterMaxLife(800);
 	tower2.heal(1.0);
-	tower2.setAtk(40);
+	tower2.setAtk(100);
 	tower2.setDef(30);
 	tower2.setName("Tower 2");
 	rewind(objtower);
@@ -398,12 +372,12 @@ void init(void)
 	tower3.setTeam(2);	
 	tower3.setRadiusCharacterAproximation(20.0);
 	tower3.setPosition(700, 0, -110);
-	tower3.setSightRadius( 80.0 );
+	tower3.setSightRadius( 100.0 );
 	tower3.setRangeAtk(100.0);
 	tower3.setAI(false);
-	tower3.setCharacterMaxLife(600);
+	tower3.setCharacterMaxLife(800);
 	tower3.heal(1.0);
-	tower3.setAtk(40);
+	tower3.setAtk(100);
 	tower3.setDef(30);
 	tower3.setName("Tower 3");
 	rewind(objtower);
@@ -416,12 +390,12 @@ void init(void)
 	tower4.setTeam(2);
 	tower4.setRadiusCharacterAproximation(20.0);
 	tower4.setPosition(300, 0, -110);
-	tower4.setSightRadius(80.0);
+	tower4.setSightRadius(100.0);
 	tower4.setRangeAtk(100.0);
 	tower4.setAI(false);
-	tower4.setCharacterMaxLife(600);
+	tower4.setCharacterMaxLife(800);
 	tower4.heal(1.0);
-	tower4.setAtk(40);
+	tower4.setAtk(100);
 	tower4.setDef(30);
 	tower4.setName("Tower 4");
 	rewind(objdiam);

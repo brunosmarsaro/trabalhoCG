@@ -1,6 +1,4 @@
 #include "gLib.h"
-#include "Heroes/HumanoidCharacter.cpp"
-
 
 using namespace std;
 typedef struct position SPosition;
@@ -9,13 +7,7 @@ struct position
     float x, y, z;  
 };
 
-//LifeBar life;
-HumanoidCharacter hero;
-HumanoidCharacter atakerHero;
-
-
 GLfloat angle, fAspect;
-
 
 FILE * fp;
 FILE * saida;
@@ -26,12 +18,12 @@ vector<Position> texture;
 int theta;
 int dx,dy;
 
-        //int angle;
-        // Inicializa as variáveis usadas para alterar a posição do 
-        // observador virtual
-        int rotX ;
-        int rotY ;
-        int obsZ ; 
+//int angle;
+// Inicializa as variáveis usadas para alterar a posição do 
+// observador virtual
+int rotX ;
+int rotY ;
+int obsZ ; 
 
 /*
 rodrigo-silveira.com/opengl-tutorial-parsing-obj-file-blender/#.UoWD4HWJAQM
@@ -61,35 +53,9 @@ void DefineIluminacao (void){
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );   
 }
 
-
-void linesBackground( void ){
-    glColor3f( 0.3, 0.3, 0.3 );
-    glBegin( GL_LINES );
-        for(float i = -349 ;i < 350; i=i+20){
-            glVertex3f( -350.0, i, 0.0 );
-            glVertex3f( 350.0, i, 0.0 ); 
-        }
-        for(float i = -349 ;i < 350; i=i+20){
-            glVertex3f( i, -350.0, 0.0 );
-            glVertex3f( i, 350.0, 0.0 ); 
-        }
-    glEnd();
-}
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT );
-    //linesBackground();
-    glPushMatrix();
-        glTranslatef( dx, 0, -dy );
-       // hero.draw();
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef( 2.0 , 5.0, 0 );
-        glRotatef(theta,1,0,0);
-        //atakerHero.draw();
-    glPopMatrix();
-
 
 
 
@@ -152,7 +118,6 @@ void display( void )
                 tj--;
                 tk--;
 				
-                
 		fprintf(saida, "glNormal3f( %f, %f, %f );\n", normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
 		fprintf(saida, "glBegin(GL_TRIANGLES);\n");
 		fprintf(saida, "\tglVertex3f( %f, %f, %f);\n",vertices[i].getX(),vertices[i].getY() ,vertices[i].getZ());
@@ -164,11 +129,11 @@ void display( void )
                 glNormal3f(normals[ni].getX(), normals[nj].getY(), normals[nk].getZ());
                 glBegin(GL_TRIANGLES);
                 glColor3f(r,g,b);
-		//glTexCoord3f( texture[ti].getX(), texture[ti].getY(), texture[ti].getZ());
-		glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
-		//glTexCoord3f( texture[tj].getX(), texture[tj].getY(), texture[tj].getZ());
+        		//glTexCoord3f( texture[ti].getX(), texture[ti].getY(), texture[ti].getZ());
+        		glVertex3f( vertices[i].getX(),vertices[i].getY(), vertices[i].getZ());
+        		//glTexCoord3f( texture[tj].getX(), texture[tj].getY(), texture[tj].getZ());
                 glVertex3f( vertices[j].getX(),vertices[j].getY(), vertices[j].getZ());
-		//glTexCoord3f( texture[tk].getX(), texture[tk].getY(), texture[tk].getZ());
+		          //glTexCoord3f( texture[tk].getX(), texture[tk].getY(), texture[tk].getZ());
                 glVertex3f( vertices[k].getX(),vertices[k].getY(), vertices[k].getZ());
                 glEnd();               
 
@@ -243,17 +208,6 @@ void init( void )
 }    
 
 void keyboard(unsigned char tecla, int x, int y){
-	if(tecla == 27) exit(0);
-	if(tecla == 122) {
-		int xp = atakerHero.toDamage( &hero );
-		if( xp != 0 ){
-		    hero.setVisibility( false );
-		}
-	}
-    if(tecla == 'a') {dx-=10;theta+=10;}
-    if(tecla == 'd') dx+=10;
-    if(tecla == 'w') dy+=10;
-    if(tecla == 's') dy-=10;
 	glutPostRedisplay();
 }
 
@@ -288,10 +242,6 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 
 int main(int argc, char *argv[])
 {
-
-    hero.setCharacterMaxLife( 1000 );
-    hero.setDef( 100 );
-    atakerHero.setAtk( 10 );
     //EspecificaParametrosVisualizacao(); 
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB );
