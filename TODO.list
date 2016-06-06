@@ -1,0 +1,31 @@
+- TASKS:
+Limitar o caminho -> adicionar as propriedados do limite no cenario;
+                  -> fazer um metodo para retornar se o pode ir ou nao para certo lugar;
+                  -> usar estes metodos nos personagens.
+
+Regenerar vida na base -> definir limitacoes da base na calasse base;
+                       -> passar info para os herois.
+                       
+Settar base ataque a partir do cristal da base -> copiar codigo da torre.
+
+Characters -> fazer compras (mudar as roupas);
+           -> consertar o ataque.
+           
+Viewport -> Mapa - cada carinha sera representado por uma bolinha na cor do time;
+                 - os characters tem a posicao x y como atributo
+         -> Camera do Heroi - no lado esquerdo inferior da tela seria setado uma camera no rosto do heroi
+                            - do lado direito da camera (encostado) teria uma barra vertical com a experiencia e o level do lado
+         -> Info do Jogo - no meio inferior da tela com os dados de atk, def, vel de movimento, vel de atk;
+                         - na parte de baixo, uma barra de vida do heroi tomando toda a parte inferior
+         -> Tempo - no canto superior direito;
+         ________________________________________
+          |                               timer |
+          |                                     |
+          |                                     |
+          |                                     |
+          |                                     |
+          |______       ____________      _____ |
+          | cam |      |    info    |     | map |
+          _____________________________________ |
+                                                
+Mouse -> consertar.
