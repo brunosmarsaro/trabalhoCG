@@ -87,12 +87,14 @@ void Tower::draw( void ){
     
 }
 
+/*
 void Tower::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
 	charactersGame = characters;
 	figurantTeam1 = f1;
 	figurantTeam2 = f2;
 	towers = t;
 }
+*/
 
 void Tower::drawProjectile(){
 	glPushMatrix();
@@ -141,17 +143,17 @@ void Tower::projectileController(){
 	x2 = projectile.px;
 	z2 = projectile.pz;
 	float enemyRadius = (*aux).getRadiusCharacterAproximation();
-	if( euclidianDistance (x1,z1,x2,z2) < enemyRadius + projectile.radius){
+	if( euclidianDistance (x1,z1,x2,z2) <  projectile.radius* 0.8 ){
 		toDamage(aux);
 		projectile.exist = false;
 	}
 }
 
 
-void Tower::controller( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
-	setGame(characters,f1,f2,t);
+void Tower::controller(){
+	//setGame(characters,f1,f2,t);
 	if(!projectile.exist){
-		setTargetFromSightRadius( charactersGame, figurantTeam1, figurantTeam2, towers );
+		setTargetFromSightRadius( );
 	}
 	
 	if(projectile.exist == false && getTarget() != NULL){

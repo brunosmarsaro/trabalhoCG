@@ -243,7 +243,7 @@ int Character::toDamage( void* target ) {
     ret = aux->takeDamage(atk);
     return ret;
 }
-void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<void*> figurants1, vector<void*> figurants2, vector<void*> towers ){
+void Character::setTargetFromSightRadius( ){
     Character * aux;
     Character * enemyCloser;
     float closerEnemyDist = 99999999;
@@ -251,9 +251,9 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
     float z = getPosition().getZ();
     enemyCloser = NULL;
 
-	for(int i = 0; i<figurants1.size(); i++){
+	for(int i = 0; i<figurantTeam1.size(); i++){
 		float enemyDist;
-		aux = (Character*)figurants1[i];
+		aux = (Character*)figurantTeam1[i];
 		if((*aux).getCharacterLife() > 0){
 			if((*aux).getTeam() != getTeam()){
 				enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
@@ -264,9 +264,9 @@ void Character::setTargetFromSightRadius( vector<void*> charactersGame, vector<v
 			}
 		}
 	}
-	for(int i = 0; i<figurants2.size(); i++){
+	for(int i = 0; i<figurantTeam2.size(); i++){
 		float enemyDist;
-		aux = (Character*)figurants2[i];
+		aux = (Character*)figurantTeam2[i];
 		if((*aux).getCharacterLife() > 0){
 			if((*aux).getTeam() != getTeam()){
 				enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );

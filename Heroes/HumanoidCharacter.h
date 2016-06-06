@@ -45,16 +45,17 @@ private:
 
 	Position leftCalfPosition;
 	Position rightCalfPosition;
-
+	/*
 	vector<void*> charactersGame;
 	vector<void*> figurantTeam1;
 	vector<void*> figurantTeam2;
 	vector<void*> towers;
+	*/
 
 
 public:
 	HumanoidCharacter();
-	void setGame( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
+	//void setGame( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
 	void setRotate( float, float, float );
 	void setScale( float, float, float );
 	void setHeadColor( float, float, float );
@@ -81,7 +82,7 @@ public:
 	void attackingAnimation( int, int );
 	bool undefineActions();
 	void AI();
-	void controller( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
+	void controller( );
 	void draw();
 };
 #endif

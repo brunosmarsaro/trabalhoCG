@@ -27,10 +27,12 @@ class Tower : public Character{
 		float r, g, b;
 
 		Projectile projectile;
+		/*
 		vector<void*> charactersGame;
 		vector<void*> figurantTeam1;
 		vector<void*> figurantTeam2;
 		vector<void*> towers;
+		*/
 
 	
 
@@ -41,7 +43,7 @@ class Tower : public Character{
 			b = 1.0;
 			projectile.exist = false;
 			projectile.passo = 2.0;
-			projectile.radius = 5.0;
+			projectile.radius = 3.5;
 		};
     	~Tower(){};
 
@@ -49,11 +51,11 @@ class Tower : public Character{
 		void setColor(float x, float y, float z){ r=x; g=y; b=z;}
 
     	// TOWER followed by DIAMOND and Projectile.
-		void controller( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
+		void controller();
 		void setTex( FILE * );
 		void setObj( FILE *, FILE * );
     	void draw( void );
-    	void setGame( vector<void*>&, vector<void*>&, vector<void*>&, vector<void*>& );
+    	//void setGame( );
     	float euclidianDistance( float, float, float, float );
     	void projectileController();
     	void drawProjectile( void );

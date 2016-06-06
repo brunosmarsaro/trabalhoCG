@@ -11,19 +11,22 @@ HumanoidCharacter::HumanoidCharacter(){
 	walking = false;
 	atkTime = 30;
 	walkSpeed = 1.5;
+	attacking = false;
 	leftCalfPosition.setX( 3.15 );
 	leftCalfPosition.setY( -18.5 );
 	leftCalfPosition.setZ( -0.5 );
 	rightCalfPosition.setX( -3.15 );
 	rightCalfPosition.setY( -18.5 );
 	rightCalfPosition.setZ( -0.5 );
+	atkCicle = atkTime;
 }
+/*
 void HumanoidCharacter::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
 	charactersGame = characters;
 	figurantTeam1 = f1;
 	figurantTeam2 = f2;
 	towers = t;
-}
+}*/
 void HumanoidCharacter::setRotate( float rx, float ry, float rz){
 	rotateX = rx;
 	rotateY = ry;
@@ -78,7 +81,7 @@ bool HumanoidCharacter::isEnemyNear(){
 	float z = getPosition().getZ();
 	float rngAtk = getRangeAtk();
 	enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2.0)  +  pow( (z - (*aux).getPosition().getZ()) ,2.0) );
-	if( enemyDist < rngAtk/2.0 + ((*aux).getRadiusCharacterAproximation() )){
+	if( enemyDist < rngAtk/3.0 + ((*aux).getRadiusCharacterAproximation() )){
 		return true;
 	}else{
 		return false;
@@ -184,6 +187,7 @@ void HumanoidCharacter::atkTarget(){
 			attackingAnimation( 7, atkCicle );
 		}
     }
+    
     if( atkCicle == 0 ){
         if( getTarget() != NULL ){
         	aux = (Character*)getTarget();
@@ -448,7 +452,11 @@ bool HumanoidCharacter::undefineActions(){
 }
 
 void HumanoidCharacter::AI(){
-	setTargetFromSightRadius( charactersGame, figurantTeam1, figurantTeam2, towers );
+	bool wasNull = false;
+
+	//if(getTarget() == NULL) wasNull = true;
+	setTargetFromSightRadius();
+	//if(getTarget() && wasNull) atkCicle = 7;
 	if(getTarget() == NULL){
 		if(getTeam() == 1){
 			walkTo( 987.0, -110 );
@@ -461,15 +469,15 @@ void HumanoidCharacter::AI(){
 	
 }
 
-void HumanoidCharacter::controller( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
-	setGame(characters,f1,f2,t);
+void HumanoidCharacter::controller(){
+	//setGame(characters,f1,f2,t);
 	if(isAI()){ 
 		AI();
 	}else{
 		walkToTarget();
 		atkTarget();
 		if( undefineActions() ){
-			setTargetFromSightRadius( charactersGame, figurantTeam1, figurantTeam2, towers );
+			setTargetFromSightRadius( );
 		}
 	}
 }

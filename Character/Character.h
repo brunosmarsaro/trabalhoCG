@@ -85,6 +85,6 @@ public:
 	void heal( float );
 	int toDamage( void* );
 	int takeDamage( int );
-	void setTargetFromSightRadius( vector<void*>, vector<void*>, vector<void*>, vector<void*> );
+	void setTargetFromSightRadius( );
 
 };
