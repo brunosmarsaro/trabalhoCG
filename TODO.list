@@ -9,6 +9,7 @@ Regenerar vida na base -> definir limitacoes da base na calasse base;
 Settar base ataque a partir do cristal da base -> copiar codigo da torre.
 
 Characters -> fazer compras (mudar as roupas);
+           -> quando o alvo deles morre, eles bugam; a caminhada fica zuada;
            -> consertar o ataque.
            
 Viewport -> Mapa - cada carinha sera representado por uma bolinha na cor do time;
