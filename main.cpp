@@ -71,7 +71,7 @@ void gameController(){
 	if((int)seconds%armyBornTime == 1) {
 
 		if(timeFlag == true){
-			teste2.setAI( true );
+			//teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
 			
@@ -84,7 +84,7 @@ void gameController(){
 				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
 				(*figurant1).setRotate( 0, 45, 0 );
-				(*figurant1).setPosition( -50.0, 0, -130 + i*15 );
+				(*figurant1).setPosition( -1000.0, 0, -130 + i*15 );
 				(*figurant1).setRadiusCharacterAproximation(6.0);
 				(*figurant1).setSightRadius( 80.0 );
 				(*figurant1).setRangeAtk(12.0);
@@ -111,7 +111,7 @@ void gameController(){
 				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
-				(*figurant2).setPosition( 50.0, 0, -130 + i*15 );
+				(*figurant2).setPosition( 1000.0, 0, -130 + i*15 );
 				(*figurant2).setRadiusCharacterAproximation(6.0);
 				(*figurant2).setRangeAtk(12.0);
 				(*figurant2).setSightRadius( 80.0 );
@@ -443,7 +443,7 @@ void init(void)
 	teste.setLegColor( 0.0, 0.0, 1.0 );
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, 45, 0 );
-	teste.setPosition( -75, 0, -110 );
+	teste.setPosition( -1075, 0, -110 );
 	teste.setRadiusCharacterAproximation(6.0);
 	teste.setRangeAtk(12.0);
 	teste.setTeam(1);
