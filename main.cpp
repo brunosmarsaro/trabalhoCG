@@ -117,7 +117,7 @@ void gameController(){
 				(*figurant2).setSightRadius( 80.0 );
 				(*figurant2).setTeam(2);
 				(*figurant2).setAI(true);
-				(*figurant2).setCharacterMaxLife(400);
+				(*figurant2).setCharacterMaxLife(200);
 				(*figurant2).heal(1.0);
 				(*figurant2).setAtk(10);
 				(*figurant2).setDef(0);
