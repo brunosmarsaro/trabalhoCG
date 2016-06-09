@@ -44,7 +44,11 @@ vector<void*> figurantTeam2;
 vector<void*> towers;
 vector<int> timeTodisappear;
 */
+
 bool timeFlag = true;
+bool pause = false;
+
+void SpecifiesVisualizationParameters( void );
 
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
@@ -187,97 +191,122 @@ void positionsObserver(void)
 	defineIlumination();
 }
 
+void viewport1( void ){
+    HumanoidCharacter * aux;
+    for(int i = 0; i<figurantTeam1.size();i++ ){
+        aux = (HumanoidCharacter*) (figurantTeam1[i]);
+        (*aux).draw();
+    }
+    for(int i = 0; i<figurantTeam2.size();i++ ){
+        aux = (HumanoidCharacter*) (figurantTeam2[i]);
+        (*aux).draw();
+    }
 
+    glPushMatrix();
+    glRotatef(180,0,1,0);
+    glScalef(150,150,150);
+    landscape.draw();
+    glPopMatrix();
+
+    teste.draw();
+    teste2.draw();
+    tower1.draw();
+    tower2.draw();
+    tower3.draw();
+    tower4.draw();
+
+    glPushMatrix();
+    glTranslatef(-1000,0,-110);
+    base1.draw();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(1000,0,-110);
+    base2.draw();
+    glPopMatrix();
+
+
+}
+
+void viewport2( void ){
+    glScalef(500,500,1);
+    glColor3f(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex3f(0,0, 0);
+        glVertex3f(5,0,0);
+        glVertex3f(-5, -2,0);
+        glVertex3f(0, -2, 0);
+    glEnd();
+}
 
 void draw( void ){
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
 
-	HumanoidCharacter * aux;
-	for(int i = 0; i<figurantTeam1.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam1[i]);
-		(*aux).draw();
-	}
-	for(int i = 0; i<figurantTeam2.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam2[i]);
-		(*aux).draw();
-	}
+    glViewport(0,0,windowsWidth, windowsHeight);
+    SpecifiesVisualizationParameters();
+    viewport1();
 
-	glPushMatrix();
-		glRotatef(180,0,1,0); 
-		glScalef(150,150,150);
-		landscape.draw();
-	glPopMatrix();
+    glViewport(0,0,windowsWidth, windowsHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, windowsWidth, windowsHeight, 0);
+    glMatrixMode(GL_MODELVIEW);
 
-	teste.draw();
-	teste2.draw();
-	tower1.draw();
-	tower2.draw();
-	tower3.draw();
-	tower4.draw();
-
-	glPushMatrix();
-		glTranslatef(-1000,0,-110);
-		base1.draw();
-	glPopMatrix();
-
-	glPushMatrix();
-		glTranslatef(1000,0,-110);
-		base2.draw();
-	glPopMatrix();
-
-
+    viewport2();
 	glutSwapBuffers();
 }
 
 
 void idle( void ){
 
-	actualTime = glutGet(GLUT_ELAPSED_TIME);
-	//Limitador de tempo
-	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-	difference = currentWalkAnimation - lastWalkAnimation;
+    if(!pause) {
+        actualTime = glutGet(GLUT_ELAPSED_TIME);
+        //Limitador de tempo
+        currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+        difference = currentWalkAnimation - lastWalkAnimation;
 
 
-	gameController();	
-    if(difference >= 30){
-    	//Towers
-    	/*
-		tower1.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower3.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower4.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		*/
-		tower1.controller();
-		tower2.controller();
-		tower3.controller();
-		tower4.controller();
+        gameController();
+        if (difference >= 30) {
+            //Towers
+            /*
+            tower1.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+            tower2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+            tower3.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+            tower4.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
+            */
+            tower1.controller();
+            tower2.controller();
+            tower3.controller();
+            tower4.controller();
 
-		//Figurants
-		HumanoidCharacter * aux;
-		for(int i = 0; i<figurantTeam1.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam1[i]);
-			(*aux).controller();
-		}
-		for(int i = 0; i<figurantTeam2.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam2[i]);
-			(*aux).controller();
-		}
-		
-    	
-    	//Heróis
-    	teste.controller();
-    	teste2.controller();
+            //Figurants
+            HumanoidCharacter *aux;
+            for (int i = 0; i < figurantTeam1.size(); i++) {
+                aux = (HumanoidCharacter *) (figurantTeam1[i]);
+                (*aux).controller();
+            }
+            for (int i = 0; i < figurantTeam2.size(); i++) {
+                aux = (HumanoidCharacter *) (figurantTeam2[i]);
+                (*aux).controller();
+            }
 
-    	//Foco da câmera
-    	if(focusDecZ) focusZ-=10;
-		if(focusIncZ) focusZ+=10;
-		if(focusDecX) focusX-=10;
-		if(focusIncX) focusX+=10;
-    	lastWalkAnimation = currentWalkAnimation;
+
+            //Heróis
+            teste.controller();
+            teste2.controller();
+
+            //Foco da câmera
+            if (focusDecZ) focusZ -= 10;
+            if (focusIncZ) focusZ += 10;
+            if (focusDecX) focusX -= 10;
+            if (focusIncX) focusX += 10;
+            lastWalkAnimation = currentWalkAnimation;
+        }
+        positionsObserver();
     }
-    positionsObserver();
     glutPostRedisplay();
 }
 
@@ -486,8 +515,6 @@ void init(void)
 }
 
 
-
-
 // Função usada para especificar o volume de visualização
 void SpecifiesVisualizationParameters( void ){
 	// Especifica sistema de coordenadas de projeção
@@ -496,6 +523,7 @@ void SpecifiesVisualizationParameters( void ){
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
 	gluPerspective(angle,fAspect,0.5,500);
+
 	positionsObserver();
 }
 
@@ -509,6 +537,11 @@ void reshape(GLsizei w, GLsizei h){
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
+    glViewport(0,0,w,h);
+   glOrtho(-w/2, w/2, -h/2, h/2, 100, -100);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+
 }
 
 /*
@@ -620,12 +653,15 @@ void SpecialKeys (int tecla, int x, int y){
 		case GLUT_KEY_END:
 			obsZ--;
 			break;
+        case GLUT_KEY_F10:
+            pause = !pause;
         default:
             break;
 	}
 	positionsObserver();
 	glutPostRedisplay();
 }
+
 void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
