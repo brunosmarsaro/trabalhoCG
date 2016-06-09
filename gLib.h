@@ -20,3 +20,4 @@
 #include <memory.h>
 #include <string>
 #include <sstream>
+#include <stdarg.h>

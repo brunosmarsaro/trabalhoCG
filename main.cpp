@@ -46,6 +46,8 @@ vector<int> timeTodisappear;
 */
 bool timeFlag = true;
 
+GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
+
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
@@ -187,46 +189,70 @@ void positionsObserver(void)
 	defineIlumination();
 }
 
+void viewport1( void ){
+    HumanoidCharacter * aux;
+    for(int i = 0; i<figurantTeam1.size();i++ ){
+        aux = (HumanoidCharacter*) (figurantTeam1[i]);
+        (*aux).draw();
+    }
+    for(int i = 0; i<figurantTeam2.size();i++ ){
+        aux = (HumanoidCharacter*) (figurantTeam2[i]);
+        (*aux).draw();
+    }
+    
+    glPushMatrix();
+    glRotatef(180,0,1,0);
+    glScalef(150,150,150);
+    landscape.draw();
+    glPopMatrix();
+    
+    teste.draw();
+    teste2.draw();
+    tower1.draw();
+    tower2.draw();
+    tower3.draw();
+    tower4.draw();
+    
+    glPushMatrix();
+    glTranslatef(-1000,0,-110);
+    base1.draw();
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(1000,0,-110);
+    base2.draw();
+    glPopMatrix();
+    
+}
 
+
+void viewport2( void ){
+    //glScalef(1000,1000, 1);
+    glColor3f(1,0,0);
+    
+    glRasterPos2f(-100, 100);
+    char txt[5] = {'H','E','L','L','O'};
+    for(int i = 0; i <5; i++){
+        glutBitmapCharacter(font_style, txt[i]);
+    }
+     /*
+    glBegin( GL_LINES );
+    glVertex2f(-10,10);
+    glVertex2f(-10, 20);
+    glEnd();*/
+    
+}
 
 void draw( void ){
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
 
-	HumanoidCharacter * aux;
-	for(int i = 0; i<figurantTeam1.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam1[i]);
-		(*aux).draw();
-	}
-	for(int i = 0; i<figurantTeam2.size();i++ ){
-		aux = (HumanoidCharacter*) (figurantTeam2[i]);
-		(*aux).draw();
-	}
-
-	glPushMatrix();
-		glRotatef(180,0,1,0); 
-		glScalef(150,150,150);
-		landscape.draw();
-	glPopMatrix();
-
-	teste.draw();
-	teste2.draw();
-	tower1.draw();
-	tower2.draw();
-	tower3.draw();
-	tower4.draw();
-
-	glPushMatrix();
-		glTranslatef(-1000,0,-110);
-		base1.draw();
-	glPopMatrix();
-
-	glPushMatrix();
-		glTranslatef(1000,0,-110);
-		base2.draw();
-	glPopMatrix();
-
+    glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+    viewport1();
+	
+    glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+    viewport2();
 
 	glutSwapBuffers();
 }
@@ -509,6 +535,7 @@ void reshape(GLsizei w, GLsizei h){
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
+    glViewport(0,0,w,h);
 }
 
 /*
