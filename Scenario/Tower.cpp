@@ -16,9 +16,9 @@ void Tower::setObj( FILE *fp1, FILE *fp2 ){
 void Tower::draw( void ){
     int i;
 
-    if(projectile.exist){
-    	drawProjectile();
-    }
+	if(projectile.exist){
+		drawProjectile();
+	}
     
 
     glPushMatrix();
