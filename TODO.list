@@ -1,7 +1,5 @@
 - TASKS:
-Limitar o caminho -> adicionar as propriedados do limite no cenario;
-                  -> fazer um metodo para retornar se o pode ir ou nao para certo lugar;
-                  -> usar estes metodos nos personagens.
+Limitar o caminho -> usar estes metodos nos personagens.
 
 Regenerar vida na base -> definir limitacoes da base na calasse base;
                        -> passar info para os herois.
