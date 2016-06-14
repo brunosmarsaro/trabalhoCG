@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 4
+#define quantSoldiersPerCicle 0
 
 //Harry moça
 //Obsercer Params
@@ -37,13 +37,6 @@ bool focusIncX = false;
 GLdouble beginTime;
 GLdouble actualTime;
 long long minutes;
-/*
-vector<void*> charactersGame;
-vector<void*> figurantTeam1;
-vector<void*> figurantTeam2;
-vector<void*> towers;
-vector<int> timeTodisappear;
-*/
 
 bool timeFlag = true;
 bool pause = false;
@@ -75,7 +68,7 @@ void gameController(){
 	if((int)seconds%armyBornTime == 1) {
 
 		if(timeFlag == true){
-			//teste2.setAI( true );
+			teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
 			
@@ -214,18 +207,12 @@ void viewport1( void ){
     tower2.draw();
     tower3.draw();
     tower4.draw();
-
     glPushMatrix();
-    glTranslatef(-1000,0,-110);
     base1.draw();
-    glPopMatrix();
-
+	glPopMatrix();
     glPushMatrix();
-    glTranslatef(1000,0,-110);
     base2.draw();
     glPopMatrix();
-
-
 }
 
 void viewport2( void ){
@@ -260,23 +247,14 @@ void draw( void ){
 
 
 void idle( void ){
+	 actualTime = glutGet(GLUT_ELAPSED_TIME);
+	//Limitador de tempo
+	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+	difference = currentWalkAnimation - lastWalkAnimation;
 
     if(!pause) {
-        actualTime = glutGet(GLUT_ELAPSED_TIME);
-        //Limitador de tempo
-        currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-        difference = currentWalkAnimation - lastWalkAnimation;
-
-
         gameController();
         if (difference >= 30) {
-            //Towers
-            /*
-            tower1.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-            tower2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-            tower3.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-            tower4.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-            */
             tower1.controller();
             tower2.controller();
             tower3.controller();
@@ -293,10 +271,13 @@ void idle( void ){
                 (*aux).controller();
             }
 
-
             //Heróis
             teste.controller();
             teste2.controller();
+
+            //Bases
+            base1.controller();
+            base2.controller();
 
             //Foco da câmera
             if (focusDecZ) focusZ -= 10;
@@ -448,14 +429,36 @@ void init(void)
 	base1.setObj(objdiam, objfence);
 	base1.setTex(bmpfence);
 	base1.setTeam(1);
+	base1.setPosition( -1000, 0, -110 );
+	base1.setRadiusCharacterAproximation(20.0);
+	base1.setSightRadius(100.0);
+	base1.setRangeAtk(100.0);
+	base1.setAI(false);
+	base1.setCharacterMaxLife(800);
+	base1.heal(1.0);
+	base1.setAtk(100);
+	base1.setDef(30);
+	base1.setName("Base 1");
+
 	rewind(objdiam);
 	rewind(objfence);
 	rewind(bmpfence);
+
 	base2.setObj(objdiam, objfence);
 	base2.setTex(bmpfence);
 	base2.setTeam(2);
+	base2.setPosition( 1000, 0, -110 );
 	base2.setOp(180);
 	base2.setColor(1.0f,0.0f,0.0f);
+	base2.setRadiusCharacterAproximation(20.0);
+	base2.setSightRadius(100.0);
+	base2.setRangeAtk(100.0);
+	base2.setAI(false);
+	base2.setCharacterMaxLife(800);
+	base2.heal(1.0);
+	base2.setAtk(100);
+	base2.setDef(30);
+	base2.setName("Base 2");
 
 	fclose( objfence );
 	fclose( objtower );
@@ -679,7 +682,7 @@ void keyboard(unsigned char key, int x, int y){
 			teste.heal(1.0);
 			break;
         case 'w':
-        	teste.setPosition( 250, 0, -110 );
+        	teste.setPosition( 950, 0, -110 );
             break;
         case 's':
             break;

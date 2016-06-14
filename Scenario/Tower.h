@@ -27,13 +27,6 @@ class Tower : public Character{
 		float r, g, b;
 
 		Projectile projectile;
-		/*
-		vector<void*> charactersGame;
-		vector<void*> figurantTeam1;
-		vector<void*> figurantTeam2;
-		vector<void*> towers;
-		*/
-
 	
 
 	public:
