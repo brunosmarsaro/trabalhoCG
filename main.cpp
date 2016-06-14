@@ -622,8 +622,10 @@ void mouse(int button, int state, int x, int y){
 			float dx,dz;
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
-			teste.walkTo( dx, dz );
-			teste.setTargetFromClickedArea( dx, dz );
+            if(landscape.canIGoThere(dx, dz)) {
+                teste.walkTo(dx, dz);
+                teste.setTargetFromClickedArea(dx, dz);
+            }
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();

@@ -1,7 +1,12 @@
 #include "Scenario.h"
 
 /*==================== Constructors and Destructor ====================*/
-Scenario::Scenario( void ){}
+Scenario::Scenario( void ){
+    x1 = -1100.0;
+    x2 = 1100.0;
+    z1 = -38.0;
+    z2 = -182.0;
+}
 
 Scenario::~Scenario( void ){}
 /*==================== Class Methods ====================*/
@@ -37,4 +42,10 @@ void Scenario::draw( void ){
     }
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
+}
+
+bool Scenario::canIGoThere(int x, int z) {
+    if(x >= x1 && x <=x2 && z <= z1 && z >= z2) return true;
+    return false;
+
 }
