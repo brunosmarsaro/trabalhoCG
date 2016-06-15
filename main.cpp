@@ -43,6 +43,8 @@ bool pause = false;
 
 void SpecifiesVisualizationParameters( void );
 
+GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
+
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
@@ -194,7 +196,7 @@ void viewport1( void ){
         aux = (HumanoidCharacter*) (figurantTeam2[i]);
         (*aux).draw();
     }
-
+    
     glPushMatrix();
     glRotatef(180,0,1,0);
     glScalef(150,150,150);
@@ -207,6 +209,7 @@ void viewport1( void ){
     tower2.draw();
     tower3.draw();
     tower4.draw();
+
     glPushMatrix();
     base1.draw();
 	glPopMatrix();
@@ -216,14 +219,27 @@ void viewport1( void ){
 }
 
 void viewport2( void ){
-    glScalef(500,500,1);
-    glColor3f(0,0,0);
-    glBegin(GL_POLYGON);
-        glVertex3f(0,0, 0);
-        glVertex3f(5,0,0);
-        glVertex3f(-5, -2,0);
-        glVertex3f(0, -2, 0);
-    glEnd();
+    glPushMatrix();
+        glScalef(500,500,1);
+        glColor3f(0,0,0);
+        glBegin(GL_POLYGON);
+            glVertex3f(0,0, 0);
+            glVertex3f(5,0,0);
+            glVertex3f(-5, -2,0);
+            glVertex3f(0, -2, 0);
+        glEnd();
+    glPopMatrix();
+    
+    glPushMatrix();
+        //glScalef(1000,1000, 1);
+        glColor3f(1,0,0);
+    
+        glRasterPos2f(-100, 100);
+        char txt[5] = {'H','E','L','L','O'};
+        for(int i = 0; i <5; i++){
+            glutBitmapCharacter(font_style, txt[i]);
+        }
+    glPopMatrix();
 }
 
 void draw( void ){
@@ -240,8 +256,8 @@ void draw( void ){
     glLoadIdentity();
     gluOrtho2D(0, windowsWidth, windowsHeight, 0);
     glMatrixMode(GL_MODELVIEW);
-
     viewport2();
+    
 	glutSwapBuffers();
 }
 
@@ -541,9 +557,6 @@ void reshape(GLsizei w, GLsizei h){
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
     glViewport(0,0,w,h);
-   glOrtho(-w/2, w/2, -h/2, h/2, 100, -100);
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
 
 }
 
@@ -757,22 +770,6 @@ int main()
 
 	charactersGame.push_back(&teste);
 	charactersGame.push_back(&teste2);
-
-	/*
-	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setBodyColor( 0.5, 0.5, 0.5 );
-    teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setLegColor( 0.0, 0.0, 1.0 );
-    teste3.setScale( 0.7, 0.5, 0.7 );
-    teste3.setRotate( 0, 45, 0 );
-    teste3.setWalk(true);
-    teste3.setPosition( 0, -40, 20);
-    teste3.setRadiusCharacterAproximation(5);
-   	teste3.setTeam(2);
-	teste3.setCharacterMaxLife(1);
-	*/
-
-	
     
 	init();
 	glutMainLoop();
