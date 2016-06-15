@@ -196,75 +196,50 @@ void viewport1( void ){
         aux = (HumanoidCharacter*) (figurantTeam2[i]);
         (*aux).draw();
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 841300637107739054b93b5d81899d824e2971cd
     glPushMatrix();
     glRotatef(180,0,1,0);
     glScalef(150,150,150);
     landscape.draw();
     glPopMatrix();
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 841300637107739054b93b5d81899d824e2971cd
     teste.draw();
     teste2.draw();
     tower1.draw();
     tower2.draw();
     tower3.draw();
     tower4.draw();
-<<<<<<< HEAD
-    
-    glPushMatrix();
-    glTranslatef(-1000,0,-110);
-    base1.draw();
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(1000,0,-110);
-    base2.draw();
-    glPopMatrix();
-    
-=======
+
     glPushMatrix();
     base1.draw();
 	glPopMatrix();
     glPushMatrix();
     base2.draw();
     glPopMatrix();
->>>>>>> 841300637107739054b93b5d81899d824e2971cd
 }
 
 void viewport2( void ){
-    glScalef(500,500,1);
-    glColor3f(0,0,0);
-    glBegin(GL_POLYGON);
-        glVertex3f(0,0, 0);
-        glVertex3f(5,0,0);
-        glVertex3f(-5, -2,0);
-        glVertex3f(0, -2, 0);
-    glEnd();
-}
-
-void viewport2( void ){
-    //glScalef(1000,1000, 1);
-    glColor3f(1,0,0);
+    glPushMatrix();
+        glScalef(500,500,1);
+        glColor3f(0,0,0);
+        glBegin(GL_POLYGON);
+            glVertex3f(0,0, 0);
+            glVertex3f(5,0,0);
+            glVertex3f(-5, -2,0);
+            glVertex3f(0, -2, 0);
+        glEnd();
+    glPopMatrix();
     
-    glRasterPos2f(-100, 100);
-    char txt[5] = {'H','E','L','L','O'};
-    for(int i = 0; i <5; i++){
-        glutBitmapCharacter(font_style, txt[i]);
-    }
-     /*
-    glBegin( GL_LINES );
-    glVertex2f(-10,10);
-    glVertex2f(-10, 20);
-    glEnd();*/
+    glPushMatrix();
+        //glScalef(1000,1000, 1);
+        glColor3f(1,0,0);
     
+        glRasterPos2f(-100, 100);
+        char txt[5] = {'H','E','L','L','O'};
+        for(int i = 0; i <5; i++){
+            glutBitmapCharacter(font_style, txt[i]);
+        }
+    glPopMatrix();
 }
 
 void draw( void ){
@@ -272,13 +247,6 @@ void draw( void ){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
 
-<<<<<<< HEAD
-    glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
-    viewport1();
-	
-    glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
-    viewport2();
-=======
     glViewport(0,0,windowsWidth, windowsHeight);
     SpecifiesVisualizationParameters();
     viewport1();
@@ -288,9 +256,8 @@ void draw( void ){
     glLoadIdentity();
     gluOrtho2D(0, windowsWidth, windowsHeight, 0);
     glMatrixMode(GL_MODELVIEW);
->>>>>>> 841300637107739054b93b5d81899d824e2971cd
-
     viewport2();
+    
 	glutSwapBuffers();
 }
 
@@ -590,13 +557,7 @@ void reshape(GLsizei w, GLsizei h){
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
     glViewport(0,0,w,h);
-<<<<<<< HEAD
-=======
-   glOrtho(-w/2, w/2, -h/2, h/2, 100, -100);
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
 
->>>>>>> 841300637107739054b93b5d81899d824e2971cd
 }
 
 /*
@@ -809,22 +770,6 @@ int main()
 
 	charactersGame.push_back(&teste);
 	charactersGame.push_back(&teste2);
-
-	/*
-	teste3.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setBodyColor( 0.5, 0.5, 0.5 );
-    teste3.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-    teste3.setLegColor( 0.0, 0.0, 1.0 );
-    teste3.setScale( 0.7, 0.5, 0.7 );
-    teste3.setRotate( 0, 45, 0 );
-    teste3.setWalk(true);
-    teste3.setPosition( 0, -40, 20);
-    teste3.setRadiusCharacterAproximation(5);
-   	teste3.setTeam(2);
-	teste3.setCharacterMaxLife(1);
-	*/
-
-	
     
 	init();
 	glutMainLoop();
