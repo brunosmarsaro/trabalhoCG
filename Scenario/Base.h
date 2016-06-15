@@ -1,5 +1,4 @@
 #include "../gLib.h"
-
 using namespace std;
 
 class Base: public Character{
@@ -9,6 +8,7 @@ class Base: public Character{
         vector< vector<float> > faces_f;
 		float r, g, b;
         int th;
+        Projectile projectile;
 
     public:
     /* Constructors and Destructors */
@@ -22,4 +22,8 @@ class Base: public Character{
         void draw( void );
 		void setTex( FILE * );
 		void setObj( FILE *, FILE * );
+        void controller();
+        float euclidianDistance( float, float, float, float );
+        void projectileController();
+        void drawProjectile( void );
 };

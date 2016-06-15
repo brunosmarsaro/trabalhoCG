@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 4
+#define quantSoldiersPerCicle 0
 
 //Harry moça
 //Obsercer Params
@@ -37,14 +37,11 @@ bool focusIncX = false;
 GLdouble beginTime;
 GLdouble actualTime;
 long long minutes;
-/*
-vector<void*> charactersGame;
-vector<void*> figurantTeam1;
-vector<void*> figurantTeam2;
-vector<void*> towers;
-vector<int> timeTodisappear;
-*/
+
 bool timeFlag = true;
+bool pause = false;
+
+void SpecifiesVisualizationParameters( void );
 
 GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 
@@ -73,7 +70,7 @@ void gameController(){
 	if((int)seconds%armyBornTime == 1) {
 
 		if(timeFlag == true){
-			//teste2.setAI( true );
+			teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
 			
@@ -199,19 +196,28 @@ void viewport1( void ){
         aux = (HumanoidCharacter*) (figurantTeam2[i]);
         (*aux).draw();
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 841300637107739054b93b5d81899d824e2971cd
     glPushMatrix();
     glRotatef(180,0,1,0);
     glScalef(150,150,150);
     landscape.draw();
     glPopMatrix();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 841300637107739054b93b5d81899d824e2971cd
     teste.draw();
     teste2.draw();
     tower1.draw();
     tower2.draw();
     tower3.draw();
     tower4.draw();
+<<<<<<< HEAD
     
     glPushMatrix();
     glTranslatef(-1000,0,-110);
@@ -223,8 +229,26 @@ void viewport1( void ){
     base2.draw();
     glPopMatrix();
     
+=======
+    glPushMatrix();
+    base1.draw();
+	glPopMatrix();
+    glPushMatrix();
+    base2.draw();
+    glPopMatrix();
+>>>>>>> 841300637107739054b93b5d81899d824e2971cd
 }
 
+void viewport2( void ){
+    glScalef(500,500,1);
+    glColor3f(0,0,0);
+    glBegin(GL_POLYGON);
+        glVertex3f(0,0, 0);
+        glVertex3f(5,0,0);
+        glVertex3f(-5, -2,0);
+        glVertex3f(0, -2, 0);
+    glEnd();
+}
 
 void viewport2( void ){
     //glScalef(1000,1000, 1);
@@ -248,62 +272,71 @@ void draw( void ){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
 
+<<<<<<< HEAD
     glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
     viewport1();
 	
     glViewport(0,0,glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
     viewport2();
+=======
+    glViewport(0,0,windowsWidth, windowsHeight);
+    SpecifiesVisualizationParameters();
+    viewport1();
 
+    glViewport(0,0,windowsWidth, windowsHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, windowsWidth, windowsHeight, 0);
+    glMatrixMode(GL_MODELVIEW);
+>>>>>>> 841300637107739054b93b5d81899d824e2971cd
+
+    viewport2();
 	glutSwapBuffers();
 }
 
 
 void idle( void ){
-
-	actualTime = glutGet(GLUT_ELAPSED_TIME);
+	 actualTime = glutGet(GLUT_ELAPSED_TIME);
 	//Limitador de tempo
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 
+    if(!pause) {
+        gameController();
+        if (difference >= 30) {
+            tower1.controller();
+            tower2.controller();
+            tower3.controller();
+            tower4.controller();
 
-	gameController();	
-    if(difference >= 30){
-    	//Towers
-    	/*
-		tower1.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower2.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower3.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		tower4.controller(charactersGame,figurantTeam1,figurantTeam2,towers);
-		*/
-		tower1.controller();
-		tower2.controller();
-		tower3.controller();
-		tower4.controller();
+            //Figurants
+            HumanoidCharacter *aux;
+            for (int i = 0; i < figurantTeam1.size(); i++) {
+                aux = (HumanoidCharacter *) (figurantTeam1[i]);
+                (*aux).controller();
+            }
+            for (int i = 0; i < figurantTeam2.size(); i++) {
+                aux = (HumanoidCharacter *) (figurantTeam2[i]);
+                (*aux).controller();
+            }
 
-		//Figurants
-		HumanoidCharacter * aux;
-		for(int i = 0; i<figurantTeam1.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam1[i]);
-			(*aux).controller();
-		}
-		for(int i = 0; i<figurantTeam2.size();i++ ){
-			aux = (HumanoidCharacter*) (figurantTeam2[i]);
-			(*aux).controller();
-		}
-		
-    	
-    	//Heróis
-    	teste.controller();
-    	teste2.controller();
+            //Heróis
+            teste.controller();
+            teste2.controller();
 
-    	//Foco da câmera
-    	if(focusDecZ) focusZ-=10;
-		if(focusIncZ) focusZ+=10;
-		if(focusDecX) focusX-=10;
-		if(focusIncX) focusX+=10;
-    	lastWalkAnimation = currentWalkAnimation;
+            //Bases
+            base1.controller();
+            base2.controller();
+
+            //Foco da câmera
+            if (focusDecZ) focusZ -= 10;
+            if (focusIncZ) focusZ += 10;
+            if (focusDecX) focusX -= 10;
+            if (focusIncX) focusX += 10;
+            lastWalkAnimation = currentWalkAnimation;
+        }
+        positionsObserver();
     }
-    positionsObserver();
     glutPostRedisplay();
 }
 
@@ -445,14 +478,36 @@ void init(void)
 	base1.setObj(objdiam, objfence);
 	base1.setTex(bmpfence);
 	base1.setTeam(1);
+	base1.setPosition( -1000, 0, -110 );
+	base1.setRadiusCharacterAproximation(20.0);
+	base1.setSightRadius(100.0);
+	base1.setRangeAtk(100.0);
+	base1.setAI(false);
+	base1.setCharacterMaxLife(800);
+	base1.heal(1.0);
+	base1.setAtk(100);
+	base1.setDef(30);
+	base1.setName("Base 1");
+
 	rewind(objdiam);
 	rewind(objfence);
 	rewind(bmpfence);
+
 	base2.setObj(objdiam, objfence);
 	base2.setTex(bmpfence);
 	base2.setTeam(2);
+	base2.setPosition( 1000, 0, -110 );
 	base2.setOp(180);
 	base2.setColor(1.0f,0.0f,0.0f);
+	base2.setRadiusCharacterAproximation(20.0);
+	base2.setSightRadius(100.0);
+	base2.setRangeAtk(100.0);
+	base2.setAI(false);
+	base2.setCharacterMaxLife(800);
+	base2.heal(1.0);
+	base2.setAtk(100);
+	base2.setDef(30);
+	base2.setName("Base 2");
 
 	fclose( objfence );
 	fclose( objtower );
@@ -512,8 +567,6 @@ void init(void)
 }
 
 
-
-
 // Função usada para especificar o volume de visualização
 void SpecifiesVisualizationParameters( void ){
 	// Especifica sistema de coordenadas de projeção
@@ -522,6 +575,7 @@ void SpecifiesVisualizationParameters( void ){
 	glLoadIdentity();
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
 	gluPerspective(angle,fAspect,0.5,500);
+
 	positionsObserver();
 }
 
@@ -536,6 +590,13 @@ void reshape(GLsizei w, GLsizei h){
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
     glViewport(0,0,w,h);
+<<<<<<< HEAD
+=======
+   glOrtho(-w/2, w/2, -h/2, h/2, 100, -100);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+
+>>>>>>> 841300637107739054b93b5d81899d824e2971cd
 }
 
 /*
@@ -616,8 +677,10 @@ void mouse(int button, int state, int x, int y){
 			float dx,dz;
 			dx = x3DMouse( x, y );
 			dz = y3DMouse( x, y );
-			teste.walkTo( dx, dz );
-			teste.setTargetFromClickedArea( dx, dz );
+            if(landscape.canIGoThere(dx, dz)) {
+                teste.walkTo(dx, dz);
+                teste.setTargetFromClickedArea(dx, dz);
+            }
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
@@ -647,12 +710,15 @@ void SpecialKeys (int tecla, int x, int y){
 		case GLUT_KEY_END:
 			obsZ--;
 			break;
+        case GLUT_KEY_F10:
+            pause = !pause;
         default:
             break;
 	}
 	positionsObserver();
 	glutPostRedisplay();
 }
+
 void keyboard(unsigned char key, int x, int y){
 	
     switch (key){	
@@ -668,7 +734,7 @@ void keyboard(unsigned char key, int x, int y){
 			teste.heal(1.0);
 			break;
         case 'w':
-        	teste.setPosition( 250, 0, -110 );
+        	teste.setPosition( 950, 0, -110 );
             break;
         case 's':
             break;
