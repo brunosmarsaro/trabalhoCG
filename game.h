@@ -6,4 +6,5 @@ vector<void*> charactersGame;
 vector<void*> figurantTeam1;
 vector<void*> figurantTeam2;
 vector<void*> towers;
+vector<void*> bases;
 vector<int> timeToDisappear;
