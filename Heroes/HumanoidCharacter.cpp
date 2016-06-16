@@ -160,6 +160,18 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 		}
 	}
 
+	for(int i = 0; i< bases.size(); i++){
+		aux = (Character*)bases[i];
+		if(aux->getTeam() != getTeam()){
+			if( selectionArea( aux, x, z ) ){
+				if( (*aux).getCharacterLife() != 0 ){
+					setTarget(aux);
+					return;
+				}
+			}
+		}
+	}
+
 
 	attacking = false;
 	setTarget(NULL);
@@ -267,6 +279,27 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 	}
 	for(int i = 0; i<towers.size(); i++){
 		aux = (Character*)towers[i];
+		float distThingToHere = euclidianDistance( (*aux).getPosition().getX(),(*aux).getPosition().getZ(), x,z );
+		if( distThingToHere < (*aux).getRadiusCharacterAproximation() ){
+			if( getName().compare((*aux).getName())  != 0) return true;
+		}
+	}
+	Character baseC1;
+    Character baseC2;
+    baseC1.setPosition(-1000,0,-110);
+    baseC1.setRadiusCharacterAproximation(20.0f);
+    baseC1.setTeam(1);
+    baseC1.setName("b1");
+    baseC2.setPosition(1000,0,-110);
+    baseC2.setRadiusCharacterAproximation(20.0f);
+    baseC2.setTeam(2);
+    baseC2.setName("b2");
+    vector<void*> CBases;
+    CBases.push_back(&baseC1);
+    CBases.push_back(&baseC2);
+
+	for(int i = 0; i<CBases.size(); i++){
+		aux = (Character*)CBases[i];	
 		float distThingToHere = euclidianDistance( (*aux).getPosition().getX(),(*aux).getPosition().getZ(), x,z );
 		if( distThingToHere < (*aux).getRadiusCharacterAproximation() ){
 			if( getName().compare((*aux).getName())  != 0) return true;

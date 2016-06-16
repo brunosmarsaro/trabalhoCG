@@ -488,6 +488,9 @@ void init(void)
 	fclose( bmptower );
 	fclose( bmpfence );
 
+	bases.push_back(&base1);
+	bases.push_back(&base2);
+
 
 	//Inicializa Heróis
 	//teste.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
