@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 0
+#define quantSoldiersPerCicle 1
 
 //Harry moça
 //Obsercer Params
@@ -220,16 +220,16 @@ void viewport1( void ){
 
 void viewport2( void ){
     glPushMatrix();
-        glScalef(500,500,1);
+        //glScalef(10,10,1);
         glColor3f(0,0,0);
         glBegin(GL_POLYGON);
             glVertex3f(0,0, 0);
-            glVertex3f(5,0,0);
-            glVertex3f(-5, -2,0);
-            glVertex3f(0, -2, 0);
+            glVertex3f(50,0,0);
+            glVertex3f(50, 50,0);
+            glVertex3f(0, 50, 0);
         glEnd();
     glPopMatrix();
-    
+    /*
     glPushMatrix();
         //glScalef(1000,1000, 1);
         glColor3f(1,0,0);
@@ -239,26 +239,32 @@ void viewport2( void ){
         for(int i = 0; i <5; i++){
             glutBitmapCharacter(font_style, txt[i]);
         }
-    glPopMatrix();
+    glPopMatrix();*/
 }
 
 void draw( void ){
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	defineIlumination();
+    
+    
 
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+        glLoadIdentity();
+        //cout << windowsWidth << " " << windowsHeight << endl;
+        gluOrtho2D(-windowsWidth/2.0, windowsWidth/2.0, -windowsHeight/2.0, windowsHeight/2.0);
+        glDisable(GL_LIGHTING);
+        viewport2();
+    glEnable(GL_LIGHTING);
+
+    glPopMatrix();
+    
     glViewport(0,0,windowsWidth, windowsHeight);
     SpecifiesVisualizationParameters();
     viewport1();
-
-    glViewport(0,0,windowsWidth, windowsHeight);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, windowsWidth, windowsHeight, 0);
-    glMatrixMode(GL_MODELVIEW);
-    viewport2();
-    
-	glutSwapBuffers();
+ 
+    glutSwapBuffers();
 }
 
 
