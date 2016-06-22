@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 0
+#define quantSoldiersPerCicle 3
 
 //Harry moça
 //Obsercer Params
@@ -52,6 +52,9 @@ GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 void gameController(){
 	GLdouble seconds = actualTime/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
+
+	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
+    if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
 
 
 	for(int i = 0; i < figurantTeam1.size() ;i++){
@@ -197,7 +200,7 @@ void SpecifiesVisualizationParameters( void ){
     // Inicializa sistema de coordenadas de projeção
     glLoadIdentity();
     // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-    gluPerspective(angle,fAspect,0.5,500);
+    gluPerspective(angle,fAspect,0.5,1000);
     
     positionsObserver();
 }
@@ -300,7 +303,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(teste.getCharacterLife() > 0) glColor3f(0,0,1);
-            else glColor3f(0,0,0.3);
+            else glColor3f(0,0,0.7);
             
             glPointSize(5.0f);
             glBegin( GL_POINTS );
@@ -323,7 +326,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(teste2.getCharacterLife() > 0) glColor3f(1,0,0);
-            else glColor3f(0.3,0,0);
+            else glColor3f(0.7,0,0);
             
             glPointSize(5.0f);
             glBegin( GL_POINTS );
@@ -346,7 +349,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(tower1.getCharacterLife() > 0) glColor3f(0,0,1);
-            else glColor3f(0,0,0.3);
+            else glColor3f(0,0,0.7);
             
             glPointSize(7.0f);
             glBegin( GL_POINTS );
@@ -363,7 +366,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(tower2.getCharacterLife() > 0) glColor3f(0,0,1);
-            else glColor3f(0,0,0.3);
+            else glColor3f(0,0,0.7);
             
             glPointSize(7.0f);
             glBegin( GL_POINTS );
@@ -380,7 +383,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(tower3.getCharacterLife() > 0) glColor3f(1,0,0);
-            else glColor3f(0.3,0,0);
+            else glColor3f(0.7,0,0);
             
             glPointSize(7.0f);
             glBegin( GL_POINTS );
@@ -397,7 +400,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(tower4.getCharacterLife() > 0) glColor3f(1,0,0);
-            else glColor3f(0.3,0,0);
+            else glColor3f(0.7,0,0);
             
             glPointSize(7.0f);
             glBegin( GL_POINTS );
@@ -414,7 +417,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(base1.getCharacterLife() > 0) glColor3f(0,0,1);
-            else glColor3f(0,0,0.3);
+            else glColor3f(0,0,0.7);
             
             glPointSize(10.0f);
             glBegin( GL_POINTS );
@@ -431,7 +434,7 @@ void viewport2( void ){
             y = -y - 10;
             
             if(base2.getCharacterLife() > 0) glColor3f(1,0,0);
-            else glColor3f(0.3,0,0);
+            else glColor3f(0.7,0,0);
             
             glPointSize(10.0f);
             glBegin( GL_POINTS );
@@ -461,13 +464,16 @@ void viewport2( void ){
         
         
         glPushMatrix();{
-            glColor3f(1,1,1);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glColor4f(1,1,1,0.5);
             glBegin(GL_POLYGON);
                 glVertex3f(-10,0, 0);
                 glVertex3f(310,0,0);
                 glVertex3f(310, 200,0);
                 glVertex3f(-10,200, 0);
             glEnd();
+			glDisable(GL_BLEND);
         }glPopMatrix();
         
         
@@ -654,8 +660,7 @@ void idle( void ){
             
             // cout << teste.getPosition().getX() << " " << teste.getPosition().getZ() << endl;
             
-            if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
-            if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
+            
 
             //Bases
             base1.controller();
