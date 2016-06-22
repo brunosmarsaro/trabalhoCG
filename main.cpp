@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 3
+#define quantSoldiersPerCicle 0
 
 //Harry moça
 //Obsercer Params
@@ -74,7 +74,7 @@ void gameController(){
 	if((int)seconds%armyBornTime == 1) {
 
 		if(timeFlag == true){
-			teste2.setAI( true );
+			//teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
 			
@@ -624,7 +624,7 @@ void draw( void ){
 
 
 void idle( void ){
-	 actualTime = glutGet(GLUT_ELAPSED_TIME);
+	actualTime = glutGet(GLUT_ELAPSED_TIME);
 	//Limitador de tempo
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
@@ -667,6 +667,11 @@ void idle( void ){
             if (focusDecX) focusX -= 10;
             if (focusIncX) focusX += 10;
             lastWalkAnimation = currentWalkAnimation;
+            if(teste.getTarget() !=NULL){
+                //Character *aux = (Character*)teste.getTarget();
+                //cout << (*aux).getName() << endl;
+            }
+
         }
         positionsObserver();
     }

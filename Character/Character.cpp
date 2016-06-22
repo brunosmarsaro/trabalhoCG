@@ -320,19 +320,28 @@ void Character::setTargetFromSightRadius( ){
     baseC1.setName("b1");
     baseC2.setPosition(1000,0,-110);
     baseC2.setTeam(2);
-    baseC1.setName("b2");
+    baseC2.setName("b2");
     vector<void*> CBases;
     CBases.push_back(&baseC1);
     CBases.push_back(&baseC2);
 
     
     for(int i = 0; i<CBases.size(); i++){
+    	float xEnemyBase,zEnemyBase;
         float enemyDist;
         aux = (Character*)CBases[i];
 
         if((*aux).getCharacterLife() > 0){
             if((*aux).getTeam() != getTeam()){
-                enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+            	if(getTeam() == 1){
+            		xEnemyBase = 1000;
+            		zEnemyBase = -110;
+            	}else if(getTeam() == 2){
+            		xEnemyBase = -1000;
+            		zEnemyBase = -110;
+            	}
+
+            	enemyDist = sqrt( pow(x-xEnemyBase,2.0)  +  pow( z - zEnemyBase ,2.0) );
                 if( enemyDist < closerEnemyDist){
                     if(i == 0){
                         enemyCloser = (Character*)bases[0]; 
@@ -340,14 +349,22 @@ void Character::setTargetFromSightRadius( ){
                     else{
                         enemyCloser = (Character*)bases[1];
                     }
-                    closerEnemyDist = sqrt( pow(( x - (*enemyCloser).getPosition().getX()),2)  +  pow( (z - (*enemyCloser).getPosition().getZ()) ,2) );
+                    closerEnemyDist = sqrt( pow(x - xEnemyBase,2)  +  pow( (z - zEnemyBase) ,2) );
                 }
             }
         }
     }
 
+    if(getName() == "Hero team 1"){
+    	if(getTarget() != NULL){
+    		//cout << "e aqui \n";
+        	//cout << "enemyName: " << enemyCloser->getName() << endl;
+    	}
+    }
+
     if(closerEnemyDist < sightRadius){
         setTarget(enemyCloser);
+
     }else{
         setTarget(NULL);
     }
