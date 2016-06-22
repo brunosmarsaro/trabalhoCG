@@ -34,6 +34,7 @@ public:
 	float getColorG();
 	float getColorB();
 	Position getPosition();
+    float getHeight();
 
 	/*Setters*/
 	void setColor3f( float, float, float );

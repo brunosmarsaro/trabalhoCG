@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 1
+#define quantSoldiersPerCicle 3
 
 //Harry moça
 //Obsercer Params
@@ -18,6 +18,10 @@ HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
+
+LifeBar level;
+GLuint heroTexID;
+GLuint iconTexID;
 
 float rotateY;
 
@@ -186,6 +190,18 @@ void positionsObserver(void)
 	defineIlumination();
 }
 
+// Função usada para especificar o volume de visualização
+void SpecifiesVisualizationParameters( void ){
+    // Especifica sistema de coordenadas de projeção
+    glMatrixMode(GL_PROJECTION);
+    // Inicializa sistema de coordenadas de projeção
+    glLoadIdentity();
+    // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
+    gluPerspective(angle,fAspect,0.5,500);
+    
+    positionsObserver();
+}
+
 void viewport1( void ){
     HumanoidCharacter * aux;
     for(int i = 0; i<figurantTeam1.size();i++ ){
@@ -219,51 +235,390 @@ void viewport1( void ){
 }
 
 void viewport2( void ){
+    
+    glPushMatrix();{
+        
+        glTranslatef(windowsWidth/2 - 300, -windowsHeight/2.0 + 5, 0);
+        
+        HumanoidCharacter * aux;
+        for(int i = 0; i<figurantTeam1.size();i++ ){
+            aux = (HumanoidCharacter*) (figurantTeam1[i]);
+            
+            glPushMatrix();{
+                float x = (*aux).getPosition().getX();
+                float y = (*aux).getPosition().getZ();
+                
+                x = x/7.0 + 150.0;
+                y = -y - 10;
+                
+                glColor3f(1,1,1);
+                
+                glPointSize(3.5f);
+                glBegin( GL_POINTS );
+                glVertex3f( x, y, 0.0 );
+                glEnd();
+                
+                glColor3f(0,0,1);
+                glPointSize(7.0f);
+                glBegin( GL_POINTS );
+                glVertex3f( x, y, 0.0 );
+                glEnd();
+                
+            }glPopMatrix();
+        }
+        for(int i = 0; i<figurantTeam2.size();i++ ){
+            aux = (HumanoidCharacter*) (figurantTeam2[i]);
+            glPushMatrix();{
+                float x = (*aux).getPosition().getX();
+                float y = (*aux).getPosition().getZ();
+                
+                x = x/7.0 + 150.0;
+                y = -y - 10;
+                
+                glColor3f(1,1,1);
+                
+                glPointSize(3.5f);
+                glBegin( GL_POINTS );
+                glVertex3f( x, y, 0.0 );
+                glEnd();
+                
+                glColor3f(1,0,0);
+                glPointSize(7.0f);
+                glBegin( GL_POINTS );
+                glVertex3f( x, y, 0.0 );
+                glEnd();
+                
+            }glPopMatrix();
+        }
+        
+        
+        glPushMatrix();{
+            float x = teste.getPosition().getX();
+            float y = teste.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(teste.getCharacterLife() > 0) glColor3f(0,0,1);
+            else glColor3f(0,0,0.3);
+            
+            glPointSize(5.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+            glColor3f(0,0,0);
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = teste2.getPosition().getX();
+            float y = teste2.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(teste2.getCharacterLife() > 0) glColor3f(1,0,0);
+            else glColor3f(0.3,0,0);
+            
+            glPointSize(5.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+            glColor3f(0,0,0);
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = tower1.getPosition().getX();
+            float y = tower1.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(tower1.getCharacterLife() > 0) glColor3f(0,0,1);
+            else glColor3f(0,0,0.3);
+            
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = tower2.getPosition().getX();
+            float y = tower2.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(tower2.getCharacterLife() > 0) glColor3f(0,0,1);
+            else glColor3f(0,0,0.3);
+            
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = tower3.getPosition().getX();
+            float y = tower3.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(tower3.getCharacterLife() > 0) glColor3f(1,0,0);
+            else glColor3f(0.3,0,0);
+            
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = tower4.getPosition().getX();
+            float y = tower4.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(tower4.getCharacterLife() > 0) glColor3f(1,0,0);
+            else glColor3f(0.3,0,0);
+            
+            glPointSize(7.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = base1.getPosition().getX();
+            float y = base1.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(base1.getCharacterLife() > 0) glColor3f(0,0,1);
+            else glColor3f(0,0,0.3);
+            
+            glPointSize(10.0f);
+            glBegin( GL_POINTS );
+            glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            float x = base2.getPosition().getX();
+            float y = base2.getPosition().getZ();
+            
+            x = x/7.0 + 150.0;
+            y = -y - 10;
+            
+            if(base2.getCharacterLife() > 0) glColor3f(1,0,0);
+            else glColor3f(0.3,0,0);
+            
+            glPointSize(10.0f);
+            glBegin( GL_POINTS );
+                glVertex3f( x, y, 0.0 );
+            glEnd();
+            
+        }glPopMatrix();
+        
+        glPushMatrix();{
+            glColor3f(0,0,0);
+            glEnable(GL_LINE_STIPPLE);
+            glLineStipple(2, 0XAAAA);
+            
+            glBegin( GL_LINES );
+            glVertex3f( -10, 28, 0.0 );
+            glVertex3f( 310, 28, 0.0 );
+            glEnd();
+
+            glBegin( GL_LINES );
+            glVertex3f( -10, 172, 0.0 );
+            glVertex3f( 310, 172, 0.0 );
+            glEnd();
+
+            
+            glDisable(GL_LINE_STIPPLE);
+        }glPopMatrix();
+        
+        
+        glPushMatrix();{
+            glColor3f(1,1,1);
+            glBegin(GL_POLYGON);
+                glVertex3f(-10,0, 0);
+                glVertex3f(310,0,0);
+                glVertex3f(310, 200,0);
+                glVertex3f(-10,200, 0);
+            glEnd();
+        }glPopMatrix();
+        
+        
+    }glPopMatrix();
+    
     glPushMatrix();
-        //glScalef(10,10,1);
+    
+    glPushMatrix();{
         glColor3f(0,0,0);
+        glPushMatrix();{
+        glRasterPos2f(-60, -windowsHeight/2.0 + teste.getLifeBar().getHeight() + 20);
+        int n = log10(teste.getAtk()) + 1;
+        char atk[n];
+        sprintf(atk,"%d", teste.getAtk());
+        for(int i = 0; i <n; i++){
+            glutBitmapCharacter(font_style, atk[i]);
+        }
+        }
+        glPopMatrix();
+        
+        glPushMatrix();{
+            glRasterPos2f(50, -windowsHeight/2.0 + teste.getLifeBar().getHeight() + 20);
+            int n = log10(teste.getDef()) + 1;
+            char def[n];
+            sprintf(def,"%d", teste.getDef());
+            for(int i = 0; i <n; i++){
+                glutBitmapCharacter(font_style, def[i]);
+            }
+        }
+        glPopMatrix();
+        
+    }
+    glPopMatrix();
+    
+    glPushMatrix();{
+        glColor3f(1,1,1);
+        glTranslatef(-106,-windowsHeight/2.0 + teste.getLifeBar().getHeight(), 0);
+        glScalef(0.8,0.8,1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture (GL_TEXTURE_2D, iconTexID);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glBegin(GL_POLYGON);
+            glTexCoord2i(0,0); glVertex3f(0,0, 0);
+            glTexCoord2i(1,0); glVertex3f(265,0,0);
+            glTexCoord2i(1,1); glVertex3f(265,79,0);
+            glTexCoord2i(0,1); glVertex3f(0,79, 0);
+        glEnd();
+    
+        glDisable(GL_TEXTURE_2D);
+    }
+    glPopMatrix();
+    
+    glPushMatrix();{
+        glTranslatef(0, -windowsHeight/2.0 + 1, 0); // teste.getLifeBar().getHeight()
+        glScalef( 1.5, 1, 1);
+        teste.setBarLifeRotate( 0, 180, 0 );
+        teste.getLifeBar().draw();
+    }
+    glPopMatrix();
+    
+    glPopMatrix();
+    
+    glPushMatrix();{
+        glTranslatef(-windowsWidth/2 + 162, -windowsHeight/2.0 + 167, 0);
+        //glColor3f(0,0,0);
+        glPushMatrix();
+        //glScalef(1000,1000, 1);
+        glColor3f(0,0,0);
+        glRasterPos2f(9, 6);
+        int n = log10(teste.getLevel()) + 1;
+        char lev[n];
+        sprintf(lev,"%d", teste.getLevel());
+        for(int i = 0; i <n; i++){
+            glutBitmapCharacter(font_style, lev[i]);
+        }
+        glPopMatrix();
+        
+        glColor3f(1,1,1);
         glBegin(GL_POLYGON);
             glVertex3f(0,0, 0);
-            glVertex3f(50,0,0);
-            glVertex3f(50, 50,0);
-            glVertex3f(0, 50, 0);
+            glVertex3f(30,0,0);
+            glVertex3f(30, 30,0);
+            glVertex3f(0,30, 0);
         glEnd();
+    }
     glPopMatrix();
-    /*
-    glPushMatrix();
-        //glScalef(1000,1000, 1);
-        glColor3f(1,0,0);
     
-        glRasterPos2f(-100, 100);
-        char txt[5] = {'H','E','L','L','O'};
-        for(int i = 0; i <5; i++){
-            glutBitmapCharacter(font_style, txt[i]);
-        }
-    glPopMatrix();*/
+    glPushMatrix();
+        glTranslatef(-windowsWidth/2 + 8, -windowsHeight/2.0 + 13, 0);
+        glScalef(0.36, 0.36, 1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture (GL_TEXTURE_2D, heroTexID);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    
+        glBegin(GL_POLYGON);
+            glTexCoord2i(0,0); glVertex3f(0,0, 0);
+            glTexCoord2i(1,0); glVertex3f(512,0,0);
+            glTexCoord2i(1,1); glVertex3f(512,512,0);
+            glTexCoord2i(0,1); glVertex3f(0,512, 0);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+    
+    glPushMatrix();
+        glPushMatrix();
+            glTranslatef(-windowsWidth/2, -windowsHeight/2.0 + 5, 0);
+            glBegin(GL_POLYGON);
+                glVertex3f(0,0, 0);
+                glVertex3f(200,0,0);
+                glVertex3f(200, 200,0);
+                glVertex3f(0,200, 0);
+            glEnd();
+        glPopMatrix();
+    
+    
+    
+    glPushMatrix();
+            level.setMaxLife(teste.getInterval());
+            level.setLife(teste.getExperience());
+            level.setColor3f(0,0.4,0.5);
+            level.setWidth(200);
+            level.setRotate(0, 180, -90 );
+            glTranslatef(-windowsWidth/2 + 230, -windowsHeight/2.0 + 105, 0);
+            level.draw();
+    
+        glPopMatrix();
+    glPopMatrix();
 }
 
 void draw( void ){
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	defineIlumination();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    defineIlumination();
+    SpecifiesVisualizationParameters();
+    viewport1();
     
     
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
         glLoadIdentity();
-        //cout << windowsWidth << " " << windowsHeight << endl;
         gluOrtho2D(-windowsWidth/2.0, windowsWidth/2.0, -windowsHeight/2.0, windowsHeight/2.0);
+        glPushAttrib(GL_ENABLE_BIT);
         glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         viewport2();
-    glEnable(GL_LIGHTING);
-
+        glPopAttrib();
     glPopMatrix();
-    
-    glViewport(0,0,windowsWidth, windowsHeight);
-    SpecifiesVisualizationParameters();
-    viewport1();
- 
+
     glutSwapBuffers();
 }
 
@@ -296,6 +651,11 @@ void idle( void ){
             //Heróis
             teste.controller();
             teste2.controller();
+            
+            // cout << teste.getPosition().getX() << " " << teste.getPosition().getZ() << endl;
+            
+            if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
+            if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
 
             //Bases
             base1.controller();
@@ -534,6 +894,16 @@ void init(void)
 	teste2.setName("Hero team 2");
 	teste2.stop();
 	teste2.setAI( false );
+    
+    // Texturas para a draw::
+    FILE *bmphero = fopen("Img/hero.bmp", "rb");
+    Texture heroTex(bmphero);
+    heroTexID = heroTex.getTexID();
+    
+    FILE *bmpicon = fopen("Img/icons.bmp", "rb");
+    Texture iconTex(bmpicon);
+    iconTexID = iconTex.getTexID();
+    
 
 	//Inicializa opções do observador
 	angle = 45;
@@ -543,29 +913,21 @@ void init(void)
 }
 
 
-// Função usada para especificar o volume de visualização
-void SpecifiesVisualizationParameters( void ){
-	// Especifica sistema de coordenadas de projeção
-	glMatrixMode(GL_PROJECTION);
-	// Inicializa sistema de coordenadas de projeção
-	glLoadIdentity();
-	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	gluPerspective(angle,fAspect,0.5,500);
 
-	positionsObserver();
-}
 
 void reshape(GLsizei w, GLsizei h){	
 	windowsHeight = h;
     windowsWidth = w;
 	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
+    
 	// Especifica as dimensões da viewport
 	glViewport(0, 0, w, h);
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
-    glViewport(0,0,w,h);
+    //glViewport(0,0,w,h);
+    
 
 }
 

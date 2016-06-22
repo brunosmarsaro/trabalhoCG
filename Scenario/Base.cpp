@@ -158,3 +158,13 @@ void Base::controller(){
     }
     projectileController();
 }
+
+bool Base::isIn(Position pos){
+    if(getTeam() == 1){
+        if(pos.getX() >= -1100 && pos.getX() <=-1050 && pos.getZ() <= -70 && pos.getZ() >= -150) return true;
+    }
+    else if(getTeam() == 2){
+        if(pos.getX() >= 1100 && pos.getX() <=1050 && pos.getZ() <= -70 && pos.getZ() >= -150) return true;
+    }
+    return false;
+}

@@ -50,6 +50,10 @@ Position LifeBar::getPosition(){
     return position;
 }
 
+float LifeBar::getHeight(){
+    return height;
+}
+
 /*====================Setters====================*/
 void LifeBar::setColor3f( float r, float g, float b ){
     red = r;

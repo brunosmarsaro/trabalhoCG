@@ -26,4 +26,5 @@ class Base: public Character{
         float euclidianDistance( float, float, float, float );
         void projectileController();
         void drawProjectile( void );
+        bool isIn(Position pos);
 };

@@ -10,6 +10,7 @@ Character::Character( void ){
     position.setY( 0.0 );
     level = 1;
     experience = 0;
+    interval = 30;
     atk = 10;
     def = 10;
     vulnerableExperience = 10;
@@ -28,6 +29,7 @@ Character::Character( float r, float g, float b ){
     position.setY( 0.0 );
     level = 1;
     experience = 0;
+    interval = 30;
     atk = 10;
     def = 10;
     vulnerableExperience = 10;
@@ -45,6 +47,7 @@ Character::Character( float r, float g, float b, Position p ){
     position = p;
     level = 1;
     experience = 0;
+    interval = 30;
     atk = 10;
     def = 10;
     vulnerableExperience = 10;
@@ -64,6 +67,7 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     characterLife = lifeBar;
     level = 1;
     experience = 0;
+    interval = 30;
     atk = 10;
     def = 10;
     vulnerableExperience = 10;
@@ -72,6 +76,7 @@ Character::Character( float r, float g, float b, Position p, LifeBar lifeBar){
     rangeAtk = 5;
     sightRadius = 40;
     AI = false;
+    
 }
 Character::~Character( void ){
     //Character destructor
@@ -104,6 +109,9 @@ LifeBar Character::getLifeBar(){
 }
 int Character::getExperience(){
     return experience;
+}
+int Character::getInterval(){
+    return interval;
 }
 int Character::getCharacterMaxLife(){
     return characterLife.getMaxLife();
@@ -211,11 +219,12 @@ void Character::addLevel( int lvl ){
     def += def*(0.25)*lvl;
     int maxLife = characterLife.getMaxLife();
     setCharacterMaxLife( (int)(maxLife + maxLife*lvl*(0.183)));
+    interval += interval*0.4;
+    experience = 0;
 }
 void Character::addExperience( int exp ){
-    int interval = 20;
     experience += exp;
-    if(experience/interval > level) addLevel(1);
+    if(experience/interval == 1) addLevel(1);
 }
 void Character::heal( float perCentHeal ){
     float aux;

@@ -19,6 +19,7 @@ private:
 	int level;
 	int experience;
 	int vulnerableExperience;
+    int interval;
 	LifeBar characterLife;
 	bool visible;
 	int team;
@@ -44,6 +45,7 @@ public:
 	int getDef();
 	int getLevel();
 	int getExperience();
+    int getInterval();
 	int getCharacterMaxLife();
 	int getCharacterLife();
 	Position getPosition();
