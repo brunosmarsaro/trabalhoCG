@@ -51,22 +51,59 @@ GLdouble beginTime;
 GLdouble actualTime;
 long long minutes;
 
+bool exploding = false;
 bool timeFlag = true;
 bool pause = false;
 bool beginGame = false;
 bool endGame = false;
 int winner;
+float whiteEndAlpha;
+int endGameAnimationCycle = 0;
 
 void SpecifiesVisualizationParameters( void );
 
 GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 
 void endGameAnimation(){
-	if (winner == 1){
+	float destXCam,destZCam;
+	float speedXCamera = 30;
+	float speedZCamera = 30;
+	destZCam = -110;
 
+	if (winner == 1){
+		destXCam = 1000;
+	}else{
+		destXCam = -1000;
 	}
-	float speedCamera = 12;
-	
+	speedXCamera = abs(destXCam - focusX) * 0.1;
+
+	if(focusX > destXCam) speedXCamera = -speedXCamera;
+	if(focusZ > destZCam) speedZCamera = -speedZCamera;
+
+	if(abs(focusX-destXCam) < 20){
+		speedXCamera = 0;
+	}
+	if(abs(focusZ-destZCam) < 20){
+		speedZCamera = 0;
+	}
+	if(speedZCamera == 0 && speedXCamera == 0) {
+		exploding = true;
+		endGameAnimationCycle++;
+	}
+	if(endGameAnimationCycle <= 10){
+		whiteEndAlpha = endGameAnimationCycle/10.0f;
+	}else if(endGameAnimationCycle > 10 && endGameAnimationCycle <= 40){
+		whiteEndAlpha = 1.0f;
+		if(winner == 1) base2.setVisibility(false);
+		if(winner == 2) base1.setVisibility(false);
+	}else if(endGameAnimationCycle >40 && endGameAnimationCycle < 60){
+		whiteEndAlpha = 1.0f - (endGameAnimationCycle-40)/20.0f;
+		cout << whiteEndAlpha << endl;
+	}else{
+		whiteEndAlpha = 0.0f
+	}
+	focusX += speedXCamera;
+	focusZ += speedZCamera;
 }
 
 void gameController(){
@@ -85,7 +122,7 @@ void gameController(){
 		teste2.setTarget(NULL);
 	}
 
-
+	//Reborn hero when he dies
 	if(player1Dead && ((actualTime - lastDeathPlayer1) > 10000) ){
 		teste.setPosition( -1075, 0,-110 );
 		teste.stop();
@@ -99,7 +136,7 @@ void gameController(){
 		teste2.heal(1.0f);
 	}
 
-
+	//End of game
 	if(base1.getCharacterLife() == 0){
 		endGame = true;
 		winner = 2;
@@ -109,7 +146,25 @@ void gameController(){
 		winner = 1;
 		endGameAnimation();
 	}
+	if(endGame){
+		//no bugs when game is over.
+		teste.setDef(999999);
+		teste2.setDef(999999);
+		for(int i = 0; i < figurantTeam1.size() ;i++){
+			((HumanoidCharacter*)figurantTeam1[i])->setDef(999999);
+		}
+		for(int i = 0; i < figurantTeam2.size() ;i++){
+			((HumanoidCharacter*)figurantTeam2[i])->setDef(999999);
+		}
+		for(int i = 0; i < towers.size() ;i++){
+			((Character*)towers[i])->setDef(999999);
+		}
+		charactersBase1.setDef(999999);
+		charactersBase2.setDef(999999);
+	}
 
+
+	//Rest of game
 	GLdouble seconds = (actualTime - beginTime)/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
 
@@ -120,6 +175,7 @@ void gameController(){
     base2.setLifeBar(charactersBase2.getLifeBar());
 
 
+    //Delete dead soldiers
 	for(int i = 0; i < figurantTeam1.size() ;i++){
 		aux = (HumanoidCharacter*)figurantTeam1[i];
 		if( (*aux).getCharacterLife() == 0){
@@ -139,13 +195,12 @@ void gameController(){
 		}
 	}
 
+	//Create new soldiers
 	if((int)seconds%armyBornTime == 1) {
-
 		if(timeFlag == true){
 			teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
-			
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -171,7 +226,6 @@ void gameController(){
 				(*figurant1).setName(sstm.str());
 				figurantTeam1.push_back(figurant1);
 			}
-
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -202,7 +256,6 @@ void gameController(){
 	if((int)seconds%armyBornTime != 1) {
 		timeFlag = true;
 	}
-
 }
 
 
@@ -255,22 +308,22 @@ void positionsObserver(void)
         glRotatef(rotY,0,1,0);
         glTranslatef(0,0,-focusZ);
     }else{
-	if(observerFollows){
-		focusX = teste.getPosition().getX();
-		focusY = teste.getPosition().getY();
-		focusZ = teste.getPosition().getZ();
+		if(observerFollows && !endGame){
+			focusX = teste.getPosition().getX();
+			focusY = teste.getPosition().getY();
+			focusZ = teste.getPosition().getZ();
 
-		glTranslatef(-focusX,0,-obsZ);
-		glRotatef(rotX,1,0,0);
-		glRotatef(rotY,0,1,0);
-		glTranslatef(0,0,-focusZ);
+			glTranslatef(-focusX,0,-obsZ);
+			glRotatef(rotX,1,0,0);
+			glRotatef(rotY,0,1,0);
+			glTranslatef(0,0,-focusZ);
 
-	}else{
-		glTranslatef(-focusX,0,-obsZ);
-		glRotatef(rotX,1,0,0);
-		glRotatef(rotY,0,1,0);
-		glTranslatef(0,0,-focusZ);
-	}
+		}else{
+			glTranslatef(-focusX,0,-obsZ);
+			glRotatef(rotX,1,0,0);
+			glRotatef(rotY,0,1,0);
+			glTranslatef(0,0,-focusZ);
+		}
     }
 	defineIlumination();
 }
@@ -353,7 +406,7 @@ void menuInicial( void ){
 
 void viewport2( void ){
     if(!beginGame) menuInicial();
-    else{
+    else if(beginGame && !endGame){
     
     glPushMatrix();{
         if (pause) {
@@ -806,7 +859,22 @@ void viewport2( void ){
     
         glPopMatrix();
     glPopMatrix();
+    }else if(endGame && exploding){
+    	glEnable(GL_BLEND);
+    	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    	glColor4f( 1.0f, 1.0f ,1.0f ,whiteEndAlpha );
+    	glPushMatrix();{
+    		glBegin(GL_POLYGON);
+                glVertex3f( -windowsWidth/2.0f ,-windowsHeight/2.0f, 0.0f );
+                glVertex3f( windowsWidth/2.0f, -windowsHeight/2.0f, 0.0f );
+                glVertex3f( windowsWidth/2.0f, windowsHeight/2.0f ,0.0f );
+                glVertex3f( -windowsWidth/2.0f, windowsHeight/2.0f, 0.0f );
+            glEnd();
+    	}glPopMatrix();
+    	glDisable(GL_BLEND);
     }
+
+
 }
 
 void draw( void ){
@@ -838,57 +906,58 @@ void idle( void ){
         teste.setRotate(0,rotateY,0);
 
     }
-    else{
-    
-    actualTime = glutGet(GLUT_ELAPSED_TIME);
-	//Limitador de tempo
-	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
-	difference = currentWalkAnimation - lastWalkAnimation;
+    if(!endGame){
+	    actualTime = glutGet(GLUT_ELAPSED_TIME);
+		//Limitador de tempo
+		currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
+		difference = currentWalkAnimation - lastWalkAnimation;
 
-	if(pause){
-		if (difference >= 30) {
-			//Foco da câmera quando pausado
-            if (focusDecZ) focusZ -= 10;
-            if (focusIncZ) focusZ += 10;
-            if (focusDecX) focusX -= 10;
-            if (focusIncX) focusX += 10;
-            lastWalkAnimation = currentWalkAnimation;
+		if(pause){
+			if (difference >= 30) {
+				//Foco da câmera quando pausado
+	            if (focusDecZ) focusZ -= 10;
+	            if (focusIncZ) focusZ += 10;
+	            if (focusDecX) focusX -= 10;
+	            if (focusIncX) focusX += 10;
+	            lastWalkAnimation = currentWalkAnimation;
+			}
 		}
-	}
-    else{
-        gameController();
-        if (difference >= 30) {
-            tower1.controller();
-            tower2.controller();
-            tower3.controller();
-            tower4.controller();
+	    else{
+	        gameController();
+	        if (difference >= 30) {
+	            tower1.controller();
+	            tower2.controller();
+	            tower3.controller();
+	            tower4.controller();
 
-            //Figurants
-            HumanoidCharacter *aux;
-            for (int i = 0; i < figurantTeam1.size(); i++) {
-                aux = (HumanoidCharacter *) (figurantTeam1[i]);
-                (*aux).controller();
-            }
-            for (int i = 0; i < figurantTeam2.size(); i++) {
-                aux = (HumanoidCharacter *) (figurantTeam2[i]);
-                (*aux).controller();
-            }
-            //Heróis
-            teste.controller();
-            teste2.controller();
-            //Bases
-            base1.controller();
-            base2.controller();
+	            //Figurants
+	            HumanoidCharacter *aux;
+	            for (int i = 0; i < figurantTeam1.size(); i++) {
+	                aux = (HumanoidCharacter *) (figurantTeam1[i]);
+	                (*aux).controller();
+	            }
+	            for (int i = 0; i < figurantTeam2.size(); i++) {
+	                aux = (HumanoidCharacter *) (figurantTeam2[i]);
+	                (*aux).controller();
+	            }
+	            //Heróis
+	            teste.controller();
+	            teste2.controller();
+	            //Bases
+	            base1.controller();
+	            base2.controller();
 
-            //Foco da câmera
-            if (focusDecZ) focusZ -= 10;
-            if (focusIncZ) focusZ += 10;
-            if (focusDecX) focusX -= 10;
-            if (focusIncX) focusX += 10;
+	            //Foco da câmera
+	            if (focusDecZ) focusZ -= 10;
+	            if (focusIncZ) focusZ += 10;
+	            if (focusDecX) focusX -= 10;
+	            if (focusIncX) focusX += 10;
 
-            lastWalkAnimation = currentWalkAnimation;
-        }
-    }
+	            lastWalkAnimation = currentWalkAnimation;
+	        }
+	    }
+    }if(endGame){
+    	endGameAnimation();
     }
     positionsObserver();
     glutPostRedisplay();
@@ -918,7 +987,9 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
+	whiteEndAlpha = 0.5f;
 	player1Dead = iaPlayerDead = false;
+	endGame = false;
 	perspectiveID = 2;
 	rotX = 30;
 	beginTime = glutGet(GLUT_ELAPSED_TIME);
@@ -1188,31 +1259,6 @@ void reshape(GLsizei w, GLsizei h){
 
 }
 
-/*
-
-float x3DMouse( int x, int y ){
-//Cálculo da posição do clique no eixo x
-	float baseObs = obsZ ;/// cos( rotX*M_PI/180 );
-
-	float largMid = 2* baseObs * tan( (45/2)*M_PI/180 ); //pq eu nao sei, é isso
-	//float largMax = largMid*cos(rotX * M_PI/180);
-	float largMax = 2* (baseObs + 200)* tan( (45/2)*M_PI/180 );
-	float largMin = largMid*cos(rotX * M_PI/180);
-	float differenceLarg = largMax - largMin;
-	float largX = largMax - ( differenceLarg*y )/windowsHeight;
-	float mouseXReal = x - windowsWidth/2.0f;
-
-	cout << "largMid " << largMid << endl;
-	cout << "largMax " << largMax << endl;
-	cout << "largMin " << largMin << endl;
-	cout << "differenceLarg " << differenceLarg << endl;
-	cout << "mouseXReal " << mouseXReal << endl;
-	cout << "largX " << largX << endl;
-	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
-	return largX*(mouseXReal/windowsWidth);
-
-}
-*/
 
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
@@ -1381,7 +1427,10 @@ void keyboard(unsigned char key, int x, int y){
             beginGame = !beginGame;
             if(pause && sair) exit(0);
             else if(pause && !sair) pause = !pause;
+            break;
 		case 'a':
+			endGame = true;
+			winner = 1;
 			break;
 		case 'd':
 			break;
@@ -1418,7 +1467,7 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void passiveMotion(int x, int y){
-    if(!observerFollows){
+    if(!observerFollows && beginGame && !endGame){
     	if((windowsHeight - y) < 5) focusIncZ = true;
     	else focusIncZ = false;
 
