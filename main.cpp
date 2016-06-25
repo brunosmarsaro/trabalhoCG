@@ -54,6 +54,20 @@ void gameController(){
 	GLdouble seconds = actualTime/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
 
+
+    /*
+    if(pause) {
+        glDisable(GL_COLOR_MATERIAL);
+		glDisable(GL_LIGHTING);  
+		glDisable(GL_LIGHT0);
+    }
+    else {
+		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_LIGHTING);  
+		glEnable(GL_LIGHT0);
+		glEnable(GL_DEPTH_TEST);
+    }*/
+
 	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
     if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
 
@@ -150,35 +164,45 @@ void gameController(){
 
 
 void defineIlumination ( void ){
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};          // "cor" 
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+    GLfloat luzDifusa[4];
+    GLfloat luzEspecular[4];
+    GLfloat luzAmbiente[4];
+    if(!pause){
+        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.9;
+        luzDifusa[3] = 1.0;
+        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.5;
+        luzEspecular[3] = 1.0;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.15;
+        luzAmbiente[3] = 1.0;
+    }else{
+        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.1;
+        luzDifusa[3] = 1.0;
+        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.0;
+        luzEspecular[3] = 1.0;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.03;
+        luzAmbiente[3] = 1.0;
+    }
+    
 	GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
-	// Capacidade de brilho do material
 	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
 	GLint especMaterial = 60;
-	// Define a refletância do material 
+
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
 	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-	// Ativa o uso da luz ambiente 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-	// Define os parâmetros da luz de número 0
+	
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );  
-
+	
 }
 
-// Função usada para especificar a posição do observador virtual
 void positionsObserver(void)
 {
-	// Especifica sistema de coordenadas do modelo
+
 	glMatrixMode(GL_MODELVIEW);
-	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
-	// Especifica posição do observador e do alvo
 
 	if(observerFollows){
 		focusX = teste.getPosition().getX();
@@ -221,7 +245,6 @@ void viewport1( void ){
         aux = (HumanoidCharacter*) (figurantTeam2[i]);
         (*aux).draw();
     }
-    
     glPushMatrix();
     glRotatef(180,0,1,0);
     glScalef(150,150,150);
@@ -241,8 +264,7 @@ void viewport1( void ){
     glPushMatrix();
     base2.draw();
     glPopMatrix();
-    charactersBase1.draw();
-    charactersBase2.draw();
+
 }
 
 void viewport2( void ){
@@ -618,8 +640,6 @@ void draw( void ){
     SpecifiesVisualizationParameters();
     viewport1();
     
-    
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
         glLoadIdentity();
@@ -643,7 +663,17 @@ void idle( void ){
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 
-    if(!pause) {
+	if(pause){
+		if (difference >= 30) {
+			//Foco da câmera quando pausado
+            if (focusDecZ) focusZ -= 10;
+            if (focusIncZ) focusZ += 10;
+            if (focusDecX) focusX -= 10;
+            if (focusIncX) focusX += 10;
+            lastWalkAnimation = currentWalkAnimation;
+		}
+	}
+    else{
         gameController();
         if (difference >= 30) {
             tower1.controller();
@@ -661,15 +691,9 @@ void idle( void ){
                 aux = (HumanoidCharacter *) (figurantTeam2[i]);
                 (*aux).controller();
             }
-
             //Heróis
             teste.controller();
             teste2.controller();
-            
-            // cout << teste.getPosition().getX() << " " << teste.getPosition().getZ() << endl;
-            
-            
-
             //Bases
             base1.controller();
             base2.controller();
@@ -679,15 +703,11 @@ void idle( void ){
             if (focusIncZ) focusZ += 10;
             if (focusDecX) focusX -= 10;
             if (focusIncX) focusX += 10;
-            lastWalkAnimation = currentWalkAnimation;
-            if(teste.getTarget() !=NULL){
-                //Character *aux = (Character*)teste.getTarget();
-                //cout << (*aux).getName() << endl;
-            }
 
+            lastWalkAnimation = currentWalkAnimation;
         }
-        positionsObserver();
     }
+    positionsObserver();
     glutPostRedisplay();
 }
 
