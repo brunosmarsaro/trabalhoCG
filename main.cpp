@@ -6,10 +6,10 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 3
+#define quantSoldiersPerCicle 0
 
-//Harry moça
-//Obsercer Params
+int perspectiveID;
+
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 GLdouble focusX, focusY, focusZ;
@@ -96,7 +96,6 @@ void gameController(){
 			
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
-				//(*figurant1).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setBodyColor( 0.0, 0.0, 1.0 );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -123,7 +122,6 @@ void gameController(){
 
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
-				//(*figurant2).setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setBodyColor( 1.0, 0.0, 0.0 );
 				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
@@ -852,7 +850,9 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
-	
+	perspectiveID = 2;
+	rotX = 30;
+	beginTime = glutGet(GLUT_ELAPSED_TIME);
 	minutes = 0;
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
@@ -1094,7 +1094,7 @@ void init(void)
 
 	//Inicializa opções do observador
 	angle = 45;
-	rotX = 45;
+	rotX = 30;
 	rotY = 0;
 	obsZ = 200;
     
@@ -1149,40 +1149,80 @@ float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
 //Essa função calcula o valor aproximado do valor de x no plano xz referente ao clique na tela
 //Só funciona com o ângulo padrão e o zoom padrão.
-	float mouseYReal = windowsHeight/2.0 - y;
-	float mouseXReal = x - windowsWidth/2.0f;
+	if(perspectiveID == 1){
+		float mouseYReal = windowsHeight/2.0 - y;
+		float mouseXReal = x - windowsWidth/2.0f;
 
-	float largMid = 264;
-	//float largMax = largMid*cos(rotX * M_PI/180);
-	float largMax = 444;
-	float largMin = largMid*cos(rotX * M_PI/180);
-	float differenceLarg;
-	float largX;
-	
-	//Dividido em duas partes pra melhorar a precisão
-	//Quanto mais divisões melhor a precisão
-	if(y > windowsHeight/2){
-		differenceLarg = largMid - largMin;
-		largX = largMid - (differenceLarg*(-mouseYReal)*2.0f)/windowsHeight;
+		float largMid = 264;
+		//float largMax = largMid*cos(rotX * M_PI/180);
+		float largMax = 444;
+		float largMin = largMid*cos(rotX * M_PI/180);
+		float differenceLarg;
+		float largX;
+		
+		//Dividido em duas partes pra melhorar a precisão
+		//Quanto mais divisões melhor a precisão
+		if(y > windowsHeight/2){
+			differenceLarg = largMid - largMin;
+			largX = largMid - (differenceLarg*(-mouseYReal)*2.0f)/windowsHeight;
+		}else{
+			differenceLarg = largMax - largMid;
+			largX = largMid + (differenceLarg*(mouseYReal)*2.0f)/windowsHeight;
+		}
+
+		//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
+		return focusX + largX*(mouseXReal/windowsWidth);
 	}else{
-		differenceLarg = largMax - largMid;
-		largX = largMid + (differenceLarg*(mouseYReal)*2.0f)/windowsHeight;
-	}
 
-	//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
-	return focusX + largX*(mouseXReal/windowsWidth);
+		float mouseYReal = windowsHeight/2.0 - y;
+		float mouseXReal = x - windowsWidth/2.0f;
+
+		float largMid = 264;
+		//float largMax = largMid*cos(rotX * M_PI/180);
+		float largMax = 550;
+		float largMin = 154;
+		float differenceLarg;
+		float largX;
+		
+		//Dividido em duas partes pra melhorar a precisão
+		//Quanto mais divisões melhor a precisão
+		if(y > windowsHeight/2){
+			differenceLarg = largMid - largMin;
+			largX = largMid - (differenceLarg*(-mouseYReal)*2.0f)/windowsHeight;
+		}else{
+			differenceLarg = largMax - largMid;
+			largX = largMid + (differenceLarg*(mouseYReal)*2.0f)/windowsHeight;
+		}
+
+		//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
+		return focusX + largX*(mouseXReal/windowsWidth);
+	}
+	
 
 }
 
 float y3DMouse( int x, int y ){
-	float baseObs = -obsZ * cos( rotX*M_PI/180 );
-	float obsH = obsZ * sin( rotX*M_PI/180 );
-	float mouseY = windowsHeight/2.0 - y;
-	float YFangle = -mouseY*45.0/windowsHeight + 45;
-	float w2 = obsH/tan( YFangle*M_PI/180 );
+	if(perspectiveID == 1){
+		float baseObs = -obsZ * cos( rotX*M_PI/180 );
+		float obsH = obsZ * sin( rotX*M_PI/180 );
+		float mouseY = windowsHeight/2.0 - y;
+		float YFangle = -mouseY*45.0/windowsHeight + 45;
+		float w2 = obsH/tan( YFangle*M_PI/180 );
 
-	// return (foco do obsvervador em z) - (w2 + baseObs);
-	return focusZ -(w2 + baseObs);
+		// return (foco do obsvervador em z) - (w2 + baseObs);
+		return focusZ -(w2 + baseObs);
+	}else{
+		float baseObs = -obsZ * cos( rotX*M_PI/180 );
+		float obsH = obsZ * sin( rotX*M_PI/180 );
+		float mouseY = windowsHeight/2.0 - y;
+		float YFangle = -mouseY*45.0/windowsHeight + 30.0f;
+		float w2 = obsH/tan( YFangle*M_PI/180 );
+
+		// return (foco do obsvervador em z) - (w2 + baseObs);
+		return focusZ -(w2 + baseObs);
+
+	}
+	
 }
 
 
@@ -1250,7 +1290,19 @@ void SpecialKeys (int tecla, int x, int y){
 
 void keyboard(unsigned char key, int x, int y){
 	
-    switch (key){	
+    switch (key){
+    	case '1':
+    		if(beginGame) {
+    			perspectiveID = 1;
+    			rotX = 45;
+    		}
+    		break;
+    	case '2':
+    		if(beginGame) {
+    			perspectiveID = 2;
+    			rotX = 30;
+    		}
+    		break;
 		case 'b':
 			break;
 		case 27:
@@ -1261,13 +1313,10 @@ void keyboard(unsigned char key, int x, int y){
             if(pause && sair) exit(0);
             else if(pause && !sair) pause = !pause;
 		case 'a':
-			teste2.heal(1.0);
 			break;
 		case 'd':
-			teste.heal(1.0);
 			break;
         case 'w':
-        	teste.setPosition( 950, 0, -110 );
             break;
         case 's':
             break;
@@ -1354,4 +1403,5 @@ int main()
 	init();
 	glutMainLoop();
 }
+
 
