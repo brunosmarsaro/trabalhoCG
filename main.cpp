@@ -848,7 +848,8 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
-	perspectiveID = 1;
+	perspectiveID = 2;
+	rotX = 30;
 	beginTime = glutGet(GLUT_ELAPSED_TIME);
 	minutes = 0;
 	//dx = dy = 0;
@@ -1176,7 +1177,7 @@ float x3DMouse( int x, int y ){
 
 		float largMid = 264;
 		//float largMax = largMid*cos(rotX * M_PI/180);
-		float largMax = 835;
+		float largMax = 550;
 		float largMin = 154;
 		float differenceLarg;
 		float largX;
@@ -1212,7 +1213,7 @@ float y3DMouse( int x, int y ){
 		float baseObs = -obsZ * cos( rotX*M_PI/180 );
 		float obsH = obsZ * sin( rotX*M_PI/180 );
 		float mouseY = windowsHeight/2.0 - y;
-		float YFangle = -mouseY*30.0/windowsHeight + 30;
+		float YFangle = -mouseY*45.0/windowsHeight + 30.0f;
 		float w2 = obsH/tan( YFangle*M_PI/180 );
 
 		// return (foco do obsvervador em z) - (w2 + baseObs);
@@ -1278,10 +1279,16 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){
     	case '1':
-    		if(beginGame) perspectiveID = 1;
+    		if(beginGame) {
+    			perspectiveID = 1;
+    			rotX = 45;
+    		}
     		break;
     	case '2':
-    		if(beginGame) perspectiveID = 2;
+    		if(beginGame) {
+    			perspectiveID = 2;
+    			rotX = 30;
+    		}
     		break;
 		case 'b':
 			break;
@@ -1293,28 +1300,12 @@ void keyboard(unsigned char key, int x, int y){
             if(pause && sair) exit(0);
             else if(pause && !sair) pause = !pause;
 		case 'a':
-			teste.setPosition(teste.getPosition().getX() - 1, teste.getPosition().getY(), teste.getPosition().getZ());
-			teste.stop();
-			cout << "x: " << teste.getPosition().getX() << endl;
-			cout << "y: " << teste.getPosition().getZ() << endl << endl;
 			break;
 		case 'd':
-			teste.setPosition(teste.getPosition().getX() + 1, teste.getPosition().getY(), teste.getPosition().getZ());
-			teste.stop();
-			cout << "x: " << teste.getPosition().getX() << endl;
-			cout << "y: " << teste.getPosition().getZ() << endl << endl;
 			break;
         case 'w':
-        	teste.setPosition(teste.getPosition().getX(), teste.getPosition().getY(), teste.getPosition().getZ() -1);
-        	teste.stop();
-        	cout << "x: " << teste.getPosition().getX() << endl;
-			cout << "y: " << teste.getPosition().getZ() << endl << endl;
             break;
         case 's':
-        	teste.setPosition(teste.getPosition().getX(), teste.getPosition().getY(), teste.getPosition().getZ() +1);
-        	teste.stop();
-        	cout << "x: " << teste.getPosition().getX() << endl;
-			cout << "y: " << teste.getPosition().getZ() << endl << endl;
             break;
         case 'o':
             obsZ++;
