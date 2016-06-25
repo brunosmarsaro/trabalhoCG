@@ -80,7 +80,7 @@ void gameController(){
 	}
 	if(teste2.getCharacterLife() == 0 && !iaPlayerDead){
 		iaPlayerDead = true;
-		lastDeathPlayer1 = actualTime;
+		lastDeathPlayerIA = actualTime;
 		teste2.stop();
 		teste2.setTarget(NULL);
 	}
@@ -88,11 +88,13 @@ void gameController(){
 
 	if(player1Dead && ((actualTime - lastDeathPlayer1) > 10000) ){
 		teste.setPosition( -1075, 0,-110 );
+		teste.stop();
 		player1Dead = false;
 		teste.heal(1.0f);
 	}
 	if(iaPlayerDead && ((actualTime - lastDeathPlayerIA) > 10000) ){
 		teste2.setPosition( 1075, 0,-110 );
+		teste2.stop();
 		iaPlayerDead = false;
 		teste2.heal(1.0f);
 	}
