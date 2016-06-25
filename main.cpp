@@ -162,14 +162,14 @@ void defineIlumination ( void ){
         luzDifusa[3] = 1.0;
         luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.5;
         luzEspecular[3] = 1.0;
-        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.15;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.2;
         luzAmbiente[3] = 1.0;
     }else{
-        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.1;
+        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.3;
         luzDifusa[3] = 1.0;
-        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.0;
+        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.05;
         luzEspecular[3] = 1.0;
-        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.03;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.08;
         luzAmbiente[3] = 1.0;
     }
     
