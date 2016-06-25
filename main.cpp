@@ -28,7 +28,7 @@ GLuint woodTexID;
 int sair = 0;
 bool enter = false;
 
-float rotateY;
+float rotateY = 20;
 
 int windowsWidth, windowsHeight;
 
@@ -193,7 +193,16 @@ void positionsObserver(void)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
+    if(!beginGame){
+        focusX = teste.getPosition().getX() + 13;
+        focusY = teste.getPosition().getY();
+        focusZ = teste.getPosition().getZ() - 15;
+        
+        glTranslatef(-focusX,0,-50);
+        glRotatef(30,1,0,0);
+        glRotatef(rotY,0,1,0);
+        glTranslatef(0,0,-focusZ);
+    }else{
 	if(observerFollows){
 		focusX = teste.getPosition().getX();
 		focusY = teste.getPosition().getY();
@@ -210,6 +219,7 @@ void positionsObserver(void)
 		glRotatef(rotY,0,1,0);
 		glTranslatef(0,0,-focusZ);
 	}
+    }
 	defineIlumination();
 }
 
@@ -254,7 +264,29 @@ void viewport1( void ){
 
 }
 
+void menuInicial( void ){
+    glPushMatrix();{
+        
+        
+        
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(0,0,1,0.5);
+        glBegin(GL_POLYGON);
+            glVertex3f(-150,-370, 0);
+            glVertex3f(600,-370,0);
+            glVertex3f(600, 250,0);
+            glVertex3f(-150,250, 0);
+        glEnd();
+        glDisable(GL_BLEND);
+    }glPopMatrix();
+    
+}
+
 void viewport2( void ){
+    if(!beginGame) menuInicial();
+    else{
+    
     glPushMatrix();{
         if (pause) {
             
@@ -706,6 +738,7 @@ void viewport2( void ){
     
         glPopMatrix();
     glPopMatrix();
+    }
 }
 
 void draw( void ){
@@ -732,7 +765,11 @@ void draw( void ){
 
 
 void idle( void ){
-    if(!beginGame) beginTime = glutGet(GLUT_ELAPSED_TIME);
+    if(!beginGame) {
+        beginTime = glutGet(GLUT_ELAPSED_TIME);
+        teste.setRotate(0,rotateY,0);
+
+    }
     else{
     
     actualTime = glutGet(GLUT_ELAPSED_TIME);
@@ -829,8 +866,6 @@ void init(void)
 	glEnable(GL_LIGHT0);
 	// Habilita o depth-buffering
 	glEnable(GL_DEPTH_TEST);
-
-	//glEnable(GL_TEXTURE_2D);
 
 	// Initializes Scenario
 	FILE *objFile, *bmp;
@@ -951,7 +986,6 @@ void init(void)
     charactersBase1.setWalkSpeed(0.0f);
     charactersBase1.setName("Base 1");
 
-
 	rewind(objdiam);
 	rewind(objfence);
 	rewind(bmpfence);
@@ -989,11 +1023,9 @@ void init(void)
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
-	//fclose( bmpfence );
-
+    
 	bases.push_back(&base1);
 	bases.push_back(&base2);
-
 
 	//Inicializa Heróis
 	//teste.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
@@ -1002,7 +1034,7 @@ void init(void)
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 	teste.setLegColor( 0.0, 0.0, 1.0 );
 	teste.setScale( 0.5, 0.5, 0.5 );
-	teste.setRotate( 0, 45, 0 );
+	teste.setRotate( 0, rotateY, 0 );
 	teste.setPosition( -1075, 0, -110 );
 	teste.setRadiusCharacterAproximation(6.0);
 	teste.setRangeAtk(12.0);
@@ -1056,7 +1088,6 @@ void init(void)
     Texture woodTex(bmpfence);
     woodTexID = woodTex.getTexID();
     
-    
     fclose( bmpfence );
 
 	//Inicializa opções do observador
@@ -1064,6 +1095,7 @@ void init(void)
 	rotX = 45;
 	rotY = 0;
 	obsZ = 200;
+    
 }
 
 
@@ -1209,9 +1241,10 @@ void keyboard(unsigned char key, int x, int y){
 		case 'b':
 			break;
 		case 27:
-			pause = !pause;
+			if(beginGame) pause = !pause;
 			break;
         case 13:
+            beginGame = !beginGame;
             if(pause && sair) exit(0);
             else if(pause && !sair) pause = !pause;
 		case 'a':
@@ -1239,6 +1272,13 @@ void keyboard(unsigned char key, int x, int y){
         	break;
         case 'e':
             exit(0);
+            break;
+        case 'j':
+            if(!beginGame)rotateY++;
+            break;
+        case 'k':
+            if(!beginGame) rotateY--;
+            break;
         default:
             break;
     }
