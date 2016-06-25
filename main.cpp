@@ -80,10 +80,10 @@ void endGameAnimation(){
 	if(focusX > destXCam) speedXCamera = -speedXCamera;
 	if(focusZ > destZCam) speedZCamera = -speedZCamera;
 
-	if(abs(focusX-destXCam) < 20){
+	if(abs(focusX-destXCam) < 15){
 		speedXCamera = 0;
 	}
-	if(abs(focusZ-destZCam) < 20){
+	if(abs(focusZ-destZCam) < 15){
 		speedZCamera = 0;
 	}
 	if(speedZCamera == 0 && speedXCamera == 0) {
@@ -98,7 +98,6 @@ void endGameAnimation(){
 		if(winner == 2) base1.setVisibility(false);
 	}else if(endGameAnimationCycle >40 && endGameAnimationCycle < 60){
 		whiteEndAlpha = 1.0f - (endGameAnimationCycle-40)/20.0f;
-		cout << whiteEndAlpha << endl;
 	}else{
         whiteEndAlpha = 0.0f;
 	}
