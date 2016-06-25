@@ -100,7 +100,7 @@ void endGameAnimation(){
 		whiteEndAlpha = 1.0f - (endGameAnimationCycle-40)/20.0f;
 		cout << whiteEndAlpha << endl;
 	}else{
-		whiteEndAlpha = 0.0f
+        whiteEndAlpha = 0.0f;
 	}
 	focusX += speedXCamera;
 	focusZ += speedZCamera;
