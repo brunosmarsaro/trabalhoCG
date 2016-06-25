@@ -22,6 +22,10 @@ Base base1, base2;
 LifeBar level;
 GLuint heroTexID;
 GLuint iconTexID;
+GLuint woodTexID;
+
+int sair = 0;
+bool enter = false;
 
 float rotateY;
 
@@ -62,7 +66,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam1.erase(figurantTeam1.begin() + i);
-			delete(auxFree);
+			//delete(auxFree);
             free(auxFree);
 		}
 	}
@@ -71,7 +75,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam2.erase(figurantTeam2.begin() + i);
-			delete(auxFree);
+			//delete(auxFree);
             free(auxFree);
 		}
 	}
@@ -240,6 +244,95 @@ void viewport1( void ){
 }
 
 void viewport2( void ){
+    glPushMatrix();{
+        if (pause) {
+            
+            glPushMatrix();{
+                glRasterPos2f(-60,45);
+                char msg[13];
+                strcpy(msg,"Deseja Sair?");
+                for(int i = 0; i <13; i++){
+                    glutBitmapCharacter(font_style, msg[i]);
+                }
+                
+                char sim[4];
+                strcpy(sim,"SIM");
+                char nao[4];
+                strcpy(nao,"NAO");
+               
+                if(sair){
+                    glColor3f(0,0,1);
+                    glRasterPos2f(-100,-80);
+                    for(int i = 0; i <4; i++){
+                        glutBitmapCharacter(font_style, sim[i]);
+                    }
+                    glColor3f(1,1,1);
+                    glRasterPos2f(50,-80);
+                    for(int i = 0; i <4; i++){
+                        glutBitmapCharacter(font_style, nao[i]);
+                    }
+                    
+                }else{
+                    glColor3f(1,1,1);
+                    glRasterPos2f(-100,-80);
+                    for(int i = 0; i <4; i++){
+                        glutBitmapCharacter(font_style, sim[i]);
+                    }
+                    glColor3f(0,0,1);
+                    glRasterPos2f(50,-80);
+                    for(int i = 0; i <4; i++){
+                        glutBitmapCharacter(font_style, nao[i]);
+                    }
+                    
+                }
+            
+            }
+            glPopMatrix();
+            
+            glPushMatrix();{
+                glColor3f(1,1,1);
+                glLineWidth( 7.0f );
+                glBegin(GL_LINE_LOOP);
+                glVertex3f(-200, 100, 0);
+                glVertex3f(200, 100,0);
+                glVertex3f(200, 0, 0);
+                glVertex3f(-200, 0, 0);
+                glEnd();
+                
+                glLineWidth( 5.0f );
+                glBegin(GL_LINE_LOOP);
+                glVertex3f(25, -50, 0);
+                glVertex3f(25, -100,0);
+                glVertex3f(125, -100, 0);
+                glVertex3f(125, -50, 0);
+                glEnd();
+                
+                glLineWidth( 5.0f );
+                glBegin(GL_LINE_LOOP);
+                glVertex3f(-25, -50, 0);
+                glVertex3f(-25, -100,0);
+                glVertex3f(-125, -100, 0);
+                glVertex3f(-125, -50, 0);
+                glEnd();
+                
+                
+            }glPopMatrix();
+            
+            glPushMatrix();
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glColor4f(0,0,1,0.5);
+            glBegin(GL_POLYGON);
+                glVertex3f(-250,-150, 0);
+                glVertex3f(250,-150,0);
+                glVertex3f(250, 150,0);
+                glVertex3f(-250,150, 0);
+            glEnd();
+            glDisable(GL_BLEND);
+            glPopMatrix();
+        }
+        
+    }glPopMatrix();
     
     glPushMatrix();{
         
@@ -590,8 +683,6 @@ void viewport2( void ){
             glEnd();
         glPopMatrix();
     
-    
-    
     glPushMatrix();
             level.setMaxLife(teste.getInterval());
             level.setLife(teste.getExperience());
@@ -611,8 +702,6 @@ void draw( void ){
     defineIlumination();
     SpecifiesVisualizationParameters();
     viewport1();
-    
-    
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -858,7 +947,7 @@ void init(void)
 	fclose( objtower );
 	fclose( objdiam );
 	fclose( bmptower );
-	fclose( bmpfence );
+	//fclose( bmpfence );
 
 	bases.push_back(&base1);
 	bases.push_back(&base2);
@@ -916,6 +1005,12 @@ void init(void)
     Texture iconTex(bmpicon);
     iconTexID = iconTex.getTexID();
     
+    rewind(bmpfence);
+    Texture woodTex(bmpfence);
+    woodTexID = woodTex.getTexID();
+    
+    
+    fclose( bmpfence );
 
 	//Inicializa opções do observador
 	angle = 45;
@@ -1037,10 +1132,10 @@ void SpecialKeys (int tecla, int x, int y){
 			focusZ = teste.getPosition().getZ();
 			break;
 		case GLUT_KEY_LEFT:	
-			rotY--;
+            sair = 1;
 			break;
 		case GLUT_KEY_RIGHT:
-			rotY++;
+            sair = 0;
 			break;
 		case GLUT_KEY_UP:
 			rotX++;
@@ -1054,8 +1149,6 @@ void SpecialKeys (int tecla, int x, int y){
 		case GLUT_KEY_END:
 			obsZ--;
 			break;
-        case GLUT_KEY_F10:
-            pause = !pause;
         default:
             break;
 	}
@@ -1069,8 +1162,11 @@ void keyboard(unsigned char key, int x, int y){
 		case 'b':
 			break;
 		case 27:
-			exit(0);
+			pause = !pause;
 			break;
+        case 13:
+            if(pause && sair) exit(0);
+            else if(pause && !sair) pause = !pause;
 		case 'a':
 			teste2.heal(1.0);
 			break;
@@ -1094,6 +1190,8 @@ void keyboard(unsigned char key, int x, int y){
         case 'y':
         	observerFollows = !observerFollows;
         	break;
+        case 'e':
+            exit(0);
         default:
             break;
     }
