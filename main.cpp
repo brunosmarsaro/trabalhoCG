@@ -605,24 +605,38 @@ void viewport2( void ){
         
         
         glPushMatrix();{
+            glTranslatef(-windowsWidth/2.0 + 150, windowsHeight/2.0 - 100, 0);
             if(teste.getTarget() != NULL){
-            string targetName = ((Character* )teste.getTarget())->getName();
-            cout << targetName << endl;
-                print(targetName, 0,0);
+                Character *target = ((Character* )teste.getTarget());
+                string targetName = target->getName();
+                glColor3f(0,0,0);
+                print("ALVO:", -130,70);
+                print(targetName, -55,70);
+                stringstream sstm;
+                sstm << "Atk: "<< target->getAtk() << " Def: " << target->getDef();
+                if(targetName[0] == 'H') sstm  << " Lvl: " << target->getLevel();
+                string data = sstm.str();
+                print(data, -130, 40);
+                glPushMatrix();
+                glTranslatef(-20,-15,0);
+                    glScalef( 0.7, 1, 1);
+                    target->setBarLifeRotate( 0, 180, 0 );
+                    target->getLifeBar().draw();
+                glPopMatrix();
                 
+                glPushMatrix();
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glColor4f(1,1,1,0.5);
+                    glBegin(GL_POLYGON);
+                        glVertex3f(-150,20, 0);
+                        glVertex3f(110,20,0);
+                        glVertex3f(110, 100,0);
+                        glVertex3f(-150,100, 0);
+                    glEnd();
+                    glDisable(GL_BLEND);
+                glPopMatrix();
             }
-            glPushMatrix();
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                glColor4f(1,1,1,0.5);
-                glBegin(GL_POLYGON);
-                    glVertex3f(-150,-100, 0);
-                    glVertex3f(150,-100,0);
-                    glVertex3f(150, 100,0);
-                    glVertex3f(-150,100, 0);
-                glEnd();
-                glDisable(GL_BLEND);
-            glPopMatrix();
         }glPopMatrix();
     
     glPushMatrix();{
