@@ -18,6 +18,7 @@ HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
+HumanoidCharacter charactersBase1,charactersBase2;
 
 LifeBar level;
 GLuint heroTexID;
@@ -55,6 +56,9 @@ void gameController(){
 
 	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
     if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
+
+    base1.setLifeBar(charactersBase1.getLifeBar());
+    base2.setLifeBar(charactersBase2.getLifeBar());
 
 
 	for(int i = 0; i < figurantTeam1.size() ;i++){
@@ -237,6 +241,8 @@ void viewport1( void ){
     glPushMatrix();
     base2.draw();
     glPopMatrix();
+    charactersBase1.draw();
+    charactersBase2.draw();
 }
 
 void viewport2( void ){
@@ -834,6 +840,20 @@ void init(void)
 	base1.setDef(30);
 	base1.setName("Base 1");
 
+    charactersBase1.setTeam(1);
+    charactersBase1.setPosition( -1000, 0, -110 );
+    charactersBase1.setRadiusCharacterAproximation(20.0);
+    charactersBase1.setSightRadius(100.0);
+    charactersBase1.setRangeAtk(100.0);
+    charactersBase1.setAI(false);
+    charactersBase1.setCharacterMaxLife(800);
+    charactersBase1.heal(1.0);
+    charactersBase1.setAtk(100);
+    charactersBase1.setDef(30);
+    charactersBase1.setWalkSpeed(0.0f);
+    charactersBase1.setName("Base 1");
+
+
 	rewind(objdiam);
 	rewind(objfence);
 	rewind(bmpfence);
@@ -853,6 +873,19 @@ void init(void)
 	base2.setAtk(100);
 	base2.setDef(30);
 	base2.setName("Base 2");
+
+    charactersBase2.setTeam(2);
+    charactersBase2.setPosition( 1000, 0, -110 );
+    charactersBase2.setRadiusCharacterAproximation(20.0);
+    charactersBase2.setSightRadius(100.0);
+    charactersBase2.setRangeAtk(100.0);
+    charactersBase2.setAI(false);
+    charactersBase2.setCharacterMaxLife(800);
+    charactersBase2.heal(1.0);
+    charactersBase2.setAtk(100);
+    charactersBase2.setDef(30);
+    charactersBase2.setWalkSpeed(0.0f);
+    charactersBase2.setName("Base 2");
 
 	fclose( objfence );
 	fclose( objtower );
@@ -906,6 +939,11 @@ void init(void)
 	teste2.setName("Hero team 2");
 	teste2.stop();
 	teste2.setAI( false );
+
+    charactersGame.push_back(&teste);
+    charactersGame.push_back(&teste2);
+    charactersGame.push_back(&charactersBase1);
+    charactersGame.push_back(&charactersBase2);
     
     // Texturas para a draw::
     FILE *bmphero = fopen("Img/hero.bmp", "rb");
@@ -1151,8 +1189,7 @@ int main()
 
 	glutIdleFunc( idle );
 
-	charactersGame.push_back(&teste);
-	charactersGame.push_back(&teste2);
+	
     
 	init();
 	glutMainLoop();

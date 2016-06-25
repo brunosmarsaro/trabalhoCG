@@ -160,6 +160,7 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 		}
 	}
 
+	/*
 	for(int i = 0; i< bases.size(); i++){
 		aux = (Character*)bases[i];
 		if(aux->getTeam() != getTeam()){
@@ -171,7 +172,7 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
+	*/
 
 	attacking = false;
 	setTarget(NULL);
@@ -179,10 +180,20 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 
 void HumanoidCharacter::atkTarget(){
 	if( getCharacterLife() == 0 ) {
+		setTarget(NULL);
 		atkCicle = atkTime;
 		attacking = false;
 		return;
 	}
+	if(getTarget() !=NULL){
+		if( ((Character*)getTarget())->getCharacterLife() == 0 ){
+			setTarget(NULL);
+			atkCicle = atkTime;
+			attacking = false;
+			return;
+		}
+	}
+
     Character * aux;
     atkCicle--;
     if( atkCicle < 0 ) atkCicle = 0;
@@ -284,6 +295,7 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 			if( getName().compare((*aux).getName())  != 0) return true;
 		}
 	}
+	/*
 	Character baseC1;
     Character baseC2;
     baseC1.setPosition(-1000,0,-110);
@@ -305,6 +317,7 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 			if( getName().compare((*aux).getName())  != 0) return true;
 		}
 	}
+	*/
 	return false;
 
 }
