@@ -54,20 +54,6 @@ void gameController(){
 	GLdouble seconds = actualTime/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
 
-
-    /*
-    if(pause) {
-        glDisable(GL_COLOR_MATERIAL);
-		glDisable(GL_LIGHTING);  
-		glDisable(GL_LIGHT0);
-    }
-    else {
-		glEnable(GL_COLOR_MATERIAL);
-		glEnable(GL_LIGHTING);  
-		glEnable(GL_LIGHT0);
-		glEnable(GL_DEPTH_TEST);
-    }*/
-
 	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
     if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
 
@@ -200,7 +186,6 @@ void defineIlumination ( void ){
 
 void positionsObserver(void)
 {
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -223,11 +208,8 @@ void positionsObserver(void)
 	defineIlumination();
 }
 
-// Função usada para especificar o volume de visualização
 void SpecifiesVisualizationParameters( void ){
-    // Especifica sistema de coordenadas de projeção
     glMatrixMode(GL_PROJECTION);
-    // Inicializa sistema de coordenadas de projeção
     glLoadIdentity();
     // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
     gluPerspective(angle,fAspect,0.5,1000);
