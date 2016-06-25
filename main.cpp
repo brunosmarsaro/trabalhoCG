@@ -109,9 +109,6 @@ void endGameAnimation(){
 	focusZ += speedZCamera;
 }
 
-
-
-
 void gameController(){
 
 	//if Hero dies
@@ -169,7 +166,6 @@ void gameController(){
 		charactersBase2.setDef(999999);
 	}
 
-
 	//Rest of game
 	GLdouble seconds = (actualTime - beginTime)/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
@@ -179,7 +175,6 @@ void gameController(){
 
     base1.setLifeBar(charactersBase1.getLifeBar());
     base2.setLifeBar(charactersBase2.getLifeBar());
-
 
     //Delete dead soldiers
 	for(int i = 0; i < figurantTeam1.size() ;i++){
@@ -263,7 +258,6 @@ void gameController(){
 		timeFlag = true;
 	}
 }
-
 
 void defineIlumination ( void ){
     GLfloat luzDifusa[4];
@@ -1445,13 +1439,9 @@ void init(void)
 	rotX = 30;
 	rotY = 0;
 	obsZ = 200;
-    
 }
 
-
-
-
-void reshape(GLsizei w, GLsizei h){	
+void reshape(GLsizei w, GLsizei h){
 	windowsHeight = h;
     windowsWidth = w;
 	// Para previnir uma divisão por zero
@@ -1462,11 +1452,7 @@ void reshape(GLsizei w, GLsizei h){
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
-    //glViewport(0,0,w,h);
-    
-
 }
-
 
 float x3DMouse( int x, int y ){
 //Cálculo da posição do clique no eixo x
@@ -1520,8 +1506,6 @@ float x3DMouse( int x, int y ){
 		//return (foco do observador em x) + largX*(mouseXReal/windowsWidth);
 		return focusX + largX*(mouseXReal/windowsWidth);
 	}
-	
-
 }
 
 float y3DMouse( int x, int y ){
@@ -1543,12 +1527,8 @@ float y3DMouse( int x, int y ){
 
 		// return (foco do obsvervador em z) - (w2 + baseObs);
 		return focusZ -(w2 + baseObs);
-
 	}
-	
 }
-
-
 // Callback para gerenciar eventos do mouse
 void mouse(int button, int state, int x, int y){
 	if (button == GLUT_LEFT_BUTTON)
@@ -1594,10 +1574,10 @@ void SpecialKeys (int tecla, int x, int y){
             
 			break;
 		case GLUT_KEY_HOME:
-			obsZ++;
+			//obsZ++;
 			break;
 		case GLUT_KEY_END:
-			obsZ--;
+			//obsZ--;
 			break;
         default:
             break;
@@ -1609,12 +1589,6 @@ void SpecialKeys (int tecla, int x, int y){
 void keyboard(unsigned char key, int x, int y){
 	
     switch (key){
-    	case '1':
-    		break;
-    	case '2':
-    		break;
-		case 'b':
-			break;
 		case 27:
 			if(beginGame && !endGame) pause = !pause;
 			break;
@@ -1647,16 +1621,16 @@ void keyboard(unsigned char key, int x, int y){
             }
 			break;
         case 'w':
-            rotX++;
+            //rotX++;
             break;
         case 's':
-            rotX--;
+            //rotX--;
             break;
         case 'o':
-            obsZ++;
+            //obsZ++;
             break;
         case 'i':
-            obsZ--;
+            //obsZ--;
             break;
         case 'h':
         case 'H':
