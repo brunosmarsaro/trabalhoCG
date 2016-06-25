@@ -160,6 +160,7 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 		}
 	}
 
+	/*
 	for(int i = 0; i< bases.size(); i++){
 		aux = (Character*)bases[i];
 		if(aux->getTeam() != getTeam()){
@@ -171,53 +172,71 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
+	*/
 
 	attacking = false;
 	setTarget(NULL);
 }
 
 void HumanoidCharacter::atkTarget(){
-	if( getCharacterLife() == 0 ) {
-		atkCicle = atkTime;
-		attacking = false;
-		return;
-	}
-    Character * aux;
-    atkCicle--;
-    if( atkCicle < 0 ) atkCicle = 0;
-
-
-    if( atkCicle < 7 && getTarget() != NULL){
-    	aux = (Character*)getTarget();
-		float enemyDist;
-		float x = getPosition().getX();
-		float z = getPosition().getZ();
-		enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
-		if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
-			attacking = true;
-			attackingAnimation( 7, atkCicle );
+	try{
+		if( getCharacterLife() == 0 ) {
+			setTarget(NULL);
+			atkCicle = atkTime;
+			attacking = false;
+			return;
 		}
-    }
-    
-    if( atkCicle == 0 ){
-        if( getTarget() != NULL ){
-        	aux = (Character*)getTarget();
-        	if(attacking){
-        		int xp;
-                xp = toDamage(getTarget());
-                addExperience(xp);
-                attacking = false;
-                walkCicle = 0;
-                atkCicle = atkTime;
-                if(xp != 0){
-                	setTarget(NULL);
-                	stop();
-                	attackingAnimation( 0, 0 );
-                }
-        	}
-        }
-    }  
+		if(getTarget() !=NULL){
+			if( ((Character*)getTarget())->getCharacterLife() == 0 ){
+				setTarget(NULL);
+				atkCicle = atkTime;
+				attacking = false;
+				return;
+			}
+		}
+
+	    Character * aux;
+	    atkCicle--;
+	    if( atkCicle < 0 ) atkCicle = 0;
+
+
+	    if( atkCicle < 7 && getTarget() != NULL){
+	    	aux = (Character*)getTarget();
+			float enemyDist;
+			float x = getPosition().getX();
+			float z = getPosition().getZ();
+			enemyDist = sqrt( pow(( x - (*aux).getPosition().getX()),2)  +  pow( (z - (*aux).getPosition().getZ()) ,2) );
+			if( enemyDist < (getRangeAtk() + (*aux).getRadiusCharacterAproximation() )){
+				attacking = true;
+				attackingAnimation( 7, atkCicle );
+			}
+	    }
+	    
+	    if( atkCicle == 0 ){
+	        if( getTarget() != NULL ){
+	        	aux = (Character*)getTarget();
+	        	if(attacking){
+	        		int xp;
+	                xp = toDamage(getTarget());
+	                addExperience(xp);
+	                attacking = false;
+	                walkCicle = 0;
+	                atkCicle = atkTime;
+	                if(xp != 0){
+	                	setTarget(NULL);
+	                	stop();
+	                	attackingAnimation( 0, 0 );
+	                }
+	        	}
+	        }
+	    }  
+	}catch (int e){
+	
+	}
+
+
+
+	
 }
 
 void HumanoidCharacter::walkTo( float x, float z ){
@@ -284,6 +303,7 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 			if( getName().compare((*aux).getName())  != 0) return true;
 		}
 	}
+	/*
 	Character baseC1;
     Character baseC2;
     baseC1.setPosition(-1000,0,-110);
@@ -305,6 +325,7 @@ bool HumanoidCharacter::isThereSomethingHere( float x, float z ){
 			if( getName().compare((*aux).getName())  != 0) return true;
 		}
 	}
+	*/
 	return false;
 
 }

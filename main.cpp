@@ -18,6 +18,7 @@ HumanoidCharacter teste, teste2, teste3;
 Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
+HumanoidCharacter charactersBase1,charactersBase2;
 
 LifeBar level;
 GLuint heroTexID;
@@ -59,6 +60,9 @@ void gameController(){
 
 	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
     if (base2.isIn(teste2.getPosition())) teste2.heal(0.000005);
+
+    base1.setLifeBar(charactersBase1.getLifeBar());
+    base2.setLifeBar(charactersBase2.getLifeBar());
 
 
 	for(int i = 0; i < figurantTeam1.size() ;i++){
@@ -150,35 +154,44 @@ void gameController(){
 
 
 void defineIlumination ( void ){
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0}; 
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};          // "cor" 
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
+    GLfloat luzDifusa[4];
+    GLfloat luzEspecular[4];
+    GLfloat luzAmbiente[4];
+    if(!pause){
+        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.9;
+        luzDifusa[3] = 1.0;
+        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.5;
+        luzEspecular[3] = 1.0;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.15;
+        luzAmbiente[3] = 1.0;
+    }else{
+        luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.1;
+        luzDifusa[3] = 1.0;
+        luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.0;
+        luzEspecular[3] = 1.0;
+        luzAmbiente[0] = luzAmbiente[1] = luzAmbiente[2] = 0.03;
+        luzAmbiente[3] = 1.0;
+    }
+    
 	GLfloat posicaoLuz[4]={0.0, 1000, 1000, 1.0};
-	// Capacidade de brilho do material
 	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
 	GLint especMaterial = 60;
-	// Define a refletância do material 
+
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
 	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
-	// Ativa o uso da luz ambiente 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
-	// Define os parâmetros da luz de número 0
+	
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente); 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );  
-
+	
 }
 
-// Função usada para especificar a posição do observador virtual
 void positionsObserver(void)
 {
-	// Especifica sistema de coordenadas do modelo
 	glMatrixMode(GL_MODELVIEW);
-	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
-	// Especifica posição do observador e do alvo
 
 	if(observerFollows){
 		focusX = teste.getPosition().getX();
@@ -199,11 +212,8 @@ void positionsObserver(void)
 	defineIlumination();
 }
 
-// Função usada para especificar o volume de visualização
 void SpecifiesVisualizationParameters( void ){
-    // Especifica sistema de coordenadas de projeção
     glMatrixMode(GL_PROJECTION);
-    // Inicializa sistema de coordenadas de projeção
     glLoadIdentity();
     // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
     gluPerspective(angle,fAspect,0.5,1000);
@@ -221,7 +231,6 @@ void viewport1( void ){
         aux = (HumanoidCharacter*) (figurantTeam2[i]);
         (*aux).draw();
     }
-    
     glPushMatrix();
     glRotatef(180,0,1,0);
     glScalef(150,150,150);
@@ -241,6 +250,7 @@ void viewport1( void ){
     glPushMatrix();
     base2.draw();
     glPopMatrix();
+
 }
 
 void viewport2( void ){
@@ -299,8 +309,8 @@ void viewport2( void ){
                 glVertex3f(-200, 0, 0);
                 glEnd();
                 
-                glLineWidth( 5.0f );
-                glBegin(GL_LINE_LOOP);
+                if(sair) {glLineWidth( 5.0f ); glBegin(GL_LINE_LOOP);}
+                else {glBegin(GL_POLYGON);}
                 glVertex3f(25, -50, 0);
                 glVertex3f(25, -100,0);
                 glVertex3f(125, -100, 0);
@@ -702,7 +712,6 @@ void draw( void ){
     defineIlumination();
     SpecifiesVisualizationParameters();
     viewport1();
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
         glLoadIdentity();
@@ -726,7 +735,17 @@ void idle( void ){
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
 
-    if(!pause) {
+	if(pause){
+		if (difference >= 30) {
+			//Foco da câmera quando pausado
+            if (focusDecZ) focusZ -= 10;
+            if (focusIncZ) focusZ += 10;
+            if (focusDecX) focusX -= 10;
+            if (focusIncX) focusX += 10;
+            lastWalkAnimation = currentWalkAnimation;
+		}
+	}
+    else{
         gameController();
         if (difference >= 30) {
             tower1.controller();
@@ -744,15 +763,9 @@ void idle( void ){
                 aux = (HumanoidCharacter *) (figurantTeam2[i]);
                 (*aux).controller();
             }
-
             //Heróis
             teste.controller();
             teste2.controller();
-            
-            // cout << teste.getPosition().getX() << " " << teste.getPosition().getZ() << endl;
-            
-            
-
             //Bases
             base1.controller();
             base2.controller();
@@ -762,15 +775,11 @@ void idle( void ){
             if (focusIncZ) focusZ += 10;
             if (focusDecX) focusX -= 10;
             if (focusIncX) focusX += 10;
-            lastWalkAnimation = currentWalkAnimation;
-            if(teste.getTarget() !=NULL){
-                //Character *aux = (Character*)teste.getTarget();
-                //cout << (*aux).getName() << endl;
-            }
 
+            lastWalkAnimation = currentWalkAnimation;
         }
-        positionsObserver();
     }
+    positionsObserver();
     glutPostRedisplay();
 }
 
@@ -923,6 +932,20 @@ void init(void)
 	base1.setDef(30);
 	base1.setName("Base 1");
 
+    charactersBase1.setTeam(1);
+    charactersBase1.setPosition( -1000, 0, -110 );
+    charactersBase1.setRadiusCharacterAproximation(20.0);
+    charactersBase1.setSightRadius(100.0);
+    charactersBase1.setRangeAtk(100.0);
+    charactersBase1.setAI(false);
+    charactersBase1.setCharacterMaxLife(800);
+    charactersBase1.heal(1.0);
+    charactersBase1.setAtk(100);
+    charactersBase1.setDef(30);
+    charactersBase1.setWalkSpeed(0.0f);
+    charactersBase1.setName("Base 1");
+
+
 	rewind(objdiam);
 	rewind(objfence);
 	rewind(bmpfence);
@@ -942,6 +965,19 @@ void init(void)
 	base2.setAtk(100);
 	base2.setDef(30);
 	base2.setName("Base 2");
+
+    charactersBase2.setTeam(2);
+    charactersBase2.setPosition( 1000, 0, -110 );
+    charactersBase2.setRadiusCharacterAproximation(20.0);
+    charactersBase2.setSightRadius(100.0);
+    charactersBase2.setRangeAtk(100.0);
+    charactersBase2.setAI(false);
+    charactersBase2.setCharacterMaxLife(800);
+    charactersBase2.heal(1.0);
+    charactersBase2.setAtk(100);
+    charactersBase2.setDef(30);
+    charactersBase2.setWalkSpeed(0.0f);
+    charactersBase2.setName("Base 2");
 
 	fclose( objfence );
 	fclose( objtower );
@@ -995,6 +1031,11 @@ void init(void)
 	teste2.setName("Hero team 2");
 	teste2.stop();
 	teste2.setAI( false );
+
+    charactersGame.push_back(&teste);
+    charactersGame.push_back(&teste2);
+    charactersGame.push_back(&charactersBase1);
+    charactersGame.push_back(&charactersBase2);
     
     // Texturas para a draw::
     FILE *bmphero = fopen("Img/hero.bmp", "rb");
@@ -1236,7 +1277,7 @@ int main()
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
     glutInitWindowPosition(5,5);
 	glutInitWindowSize(1280,800);
-	glutCreateWindow("Hello MOBA");
+	glutCreateWindow("Monkey's War");
 	glutFullScreen(); 
 
 	glutDisplayFunc( draw );
@@ -1249,8 +1290,7 @@ int main()
 
 	glutIdleFunc( idle );
 
-	charactersGame.push_back(&teste);
-	charactersGame.push_back(&teste2);
+	
     
 	init();
 	glutMainLoop();

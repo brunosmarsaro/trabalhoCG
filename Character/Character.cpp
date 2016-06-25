@@ -313,6 +313,8 @@ void Character::setTargetFromSightRadius( ){
 		}
 	}
 
+    /*
+
     Character baseC1;
     Character baseC2;
     baseC1.setPosition(-1000,0,-110);
@@ -361,6 +363,7 @@ void Character::setTargetFromSightRadius( ){
         	//cout << "enemyName: " << enemyCloser->getName() << endl;
     	}
     }
+    */
 
     if(closerEnemyDist < sightRadius){
         setTarget(enemyCloser);

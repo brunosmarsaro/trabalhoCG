@@ -68,7 +68,7 @@ void Tower::draw( void ){
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	    glColor4f( r, g, b, 0.5 );
 	    for(i = 0; i < faces_d.size(); i++){
-	        glNormal3f(faces_d[i][0]*100, faces_d[i][1]*100, faces_d[i][2]*100);
+	        glNormal3f(faces_d[i][0]*15, faces_d[i][1]*15, faces_d[i][2]*15);
 	        glBegin(GL_TRIANGLES);
 	            glVertex3f( faces_d[i][3],faces_d[i][4], faces_d[i][5]);
 	            //glTexCoord2f( faces_d[i][6], faces_d[i][7]);

@@ -51,7 +51,7 @@ void Base::draw(){
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 glColor4f( r, g, b, 0.5 );
                 for(i = 0; i < faces.size(); i++){
-                    glNormal3f(faces[i][0]*50, faces[i][1]*50, faces[i][2]*50);
+                    glNormal3f(faces[i][0]*37, faces[i][1]*37, faces[i][2]*37);
                     glBegin(GL_TRIANGLES);
                         glVertex3f( faces[i][3],faces[i][4], faces[i][5]);
                         //glTexCoord2f( faces[i][6], faces[i][7]);
