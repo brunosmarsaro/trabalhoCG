@@ -23,6 +23,7 @@ GLdouble lastDeathPlayer1, lastDeathPlayerIA;
 bool player1Dead, iaPlayerDead;
 
 LifeBar level;
+GLuint logoTexID;
 GLuint heroTexID;
 GLuint iconTexID;
 GLuint woodTexID;
@@ -209,7 +210,7 @@ void gameController(){
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant1).setBodyColor( 0x21/255.0f, 0x96/255.0f, 0xF3/255.0f );
+				(*figurant1).setBodyColor( 0x3F/255.0f, 0x51/255.0f, 0xB5/255.0f);
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant1).setLegColor( 0.25, 0.25, 0.25 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
@@ -227,14 +228,14 @@ void gameController(){
 				(*figurant1).setWalkSpeed(1.0);
 				(*figurant1).stop();
 				stringstream sstm;
-				sstm << "figurantTeam1 " << i;
+				sstm << "Soldier " << i;
 				(*figurant1).setName(sstm.str());
 				figurantTeam1.push_back(figurant1);
 			}
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant2).setBodyColor( 0xF4/255.0f, 0x51/255.0f, 0x1E/255.0f );
+				(*figurant2).setBodyColor( 0xDD/255.0f, 0x2C/255.0f, 0);
 				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
 				(*figurant2).setLegColor( 0.25, 0.25, 0.25 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
@@ -252,7 +253,7 @@ void gameController(){
 				(*figurant2).setWalkSpeed(1.0);
 				(*figurant2).stop();
 				stringstream sstm;
-				sstm << "figurantTeam2 " << i;
+				sstm << "Soldado Inimigo";
 				(*figurant2).setName(sstm.str());
 				figurantTeam2.push_back(figurant2);
 			}
@@ -342,6 +343,14 @@ void SpecifiesVisualizationParameters( void ){
     positionsObserver();
 }
 
+void print(string text, int x, int y){
+    glRasterPos2f(x,y);
+    for(int i = 0; i <text.size(); i++){
+        glutBitmapCharacter(font_style, text[i]);
+    }
+    return;
+}
+
 void viewport1( void ){
     HumanoidCharacter * aux;
     for(int i = 0; i<figurantTeam1.size();i++ ){
@@ -376,15 +385,31 @@ void viewport1( void ){
 
 void menuInicial( void ){
     glPushMatrix();{
+        glPushMatrix();
+            glTranslatef(-windowsWidth/2.0 + 700, windowsHeight/2.0 - 190, 0);
+            glScalef(0.7, 0.7, 1);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture (GL_TEXTURE_2D, logoTexID);
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        
+            glBegin(GL_POLYGON);
+            glTexCoord2i(0,0); glVertex3f(0,0, 0);
+            glTexCoord2i(1,0); glVertex3f(700,0,0);
+            glTexCoord2i(1,1); glVertex3f(700,231,0);
+            glTexCoord2i(0,1); glVertex3f(0,231, 0);
+            glEnd();
+            glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+        
         string trabalho = "TRABALHO FINAL";
         glColor3f(1,1,1);
-        glRasterPos2f(130,200);
+        glRasterPos2f(130,180);
         for(int i = 0; i <trabalho.size(); i++){
             glutBitmapCharacter(font_style, trabalho[i]);
         }
         string materia  = "COMPUTACAO E REPRESENTACAO GRAFICA";
         glColor3f(1,1,1);
-        glRasterPos2f(-40,170);
+        glRasterPos2f(-40,150);
         for(int i = 0; i <materia.size(); i++){
             glutBitmapCharacter(font_style, materia[i]);
         }
@@ -394,15 +419,15 @@ void menuInicial( void ){
         string bruno = "Bruno Smarsaro Bazelato";
         
         glColor3f(1,1,1);
-        glRasterPos2f(-120,100);
+        glRasterPos2f(-120,80);
         for(int i = 0; i <prof.size(); i++){
             glutBitmapCharacter(font_style, prof[i]);
         }
-        glRasterPos2f(-120,70);
+        glRasterPos2f(-120,50);
         for(int i = 0; i <alunos.size(); i++){
             glutBitmapCharacter(font_style, alunos[i]);
         }
-        glRasterPos2f(-40,40);
+        glRasterPos2f(-40,20);
         for(int i = 0; i <bruno.size(); i++){
             glutBitmapCharacter(font_style, bruno[i]);
         }
@@ -416,7 +441,7 @@ void menuInicial( void ){
         lines.push_back("- H      -> Parar personagem");
         lines.push_back("- Botao direito do mouse -> Selecionar destino/alvo");
         
-        int posY = -240;
+        int posY = -260;
         glColor3f(1,1,1);
         for (int j = lines.size() - 1; j >= 0; j--){
             glRasterPos2f(-120,posY);
@@ -432,24 +457,24 @@ void menuInicial( void ){
         
         if(!sair){
             glColor3f(0,0,1);
-            glRasterPos2f(370,-320);
+            glRasterPos2f(370,-340);
             for(int i = 0; i <3; i++){
                 glutBitmapCharacter(font_style, ok[i]);
             }
             glColor3f(1,1,1);
-            glRasterPos2f(490,-320);
+            glRasterPos2f(490,-340);
             for(int i = 0; i <5; i++){
                 glutBitmapCharacter(font_style, fechar[i]);
             }
             
         }else{
             glColor3f(1,1,1);
-            glRasterPos2f(370,-320);
+            glRasterPos2f(370,-340);
             for(int i = 0; i <3; i++){
                 glutBitmapCharacter(font_style, ok[i]);
             }
             glColor3f(0,0,1);
-            glRasterPos2f(490,-320);
+            glRasterPos2f(490,-340);
             for(int i = 0; i <5; i++){
                 glutBitmapCharacter(font_style, fechar[i]);
             }
@@ -458,29 +483,29 @@ void menuInicial( void ){
         glColor3f(1,1,1);
         if(sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
-            glVertex3f(470, -290, 0);
-            glVertex3f(570, -290, 0);
-            glVertex3f(570, -340, 0);
-            glVertex3f(470, -340, 0);
+            glVertex3f(470, -310, 0);
+            glVertex3f(570, -310, 0);
+            glVertex3f(570, -360, 0);
+            glVertex3f(470, -360, 0);
         glEnd();
         
         glColor3f(1,1,1);
         if(!sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
-            glVertex3f(340, -290, 0);
-            glVertex3f(440, -290, 0);
-            glVertex3f(440, -340, 0);
-            glVertex3f(340, -340, 0);
+            glVertex3f(340, -310, 0);
+            glVertex3f(440, -310, 0);
+            glVertex3f(440, -360, 0);
+            glVertex3f(340, -360, 0);
         glEnd();
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glColor4f(0,0,1,0.5);
         glBegin(GL_POLYGON);
-            glVertex3f(-150,-370, 0);
-            glVertex3f(600,-370,0);
-            glVertex3f(600, 250,0);
-            glVertex3f(-150,250, 0);
+            glVertex3f(-150,-390, 0);
+            glVertex3f(600,-390,0);
+            glVertex3f(600, 230,0);
+            glVertex3f(-150,230, 0);
         glEnd();
         glDisable(GL_BLEND);
     }glPopMatrix();
@@ -528,10 +553,9 @@ void viewport2( void ){
                     for(int i = 0; i <4; i++){
                         glutBitmapCharacter(font_style, nao[i]);
                     }
-                    
-                }
-            
+                }            
             }glPopMatrix();
+
             
             glPushMatrix();{
                 glColor3f(1,1,1);
@@ -578,11 +602,32 @@ void viewport2( void ){
         }
         
     }glPopMatrix();
+        
+        
+        glPushMatrix();{
+            if(teste.getTarget() != NULL){
+            string targetName = ((Character* )teste.getTarget())->getName();
+            cout << targetName << endl;
+                print(targetName, 0,0);
+                
+            }
+            glPushMatrix();
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glColor4f(1,1,1,0.5);
+                glBegin(GL_POLYGON);
+                    glVertex3f(-150,-100, 0);
+                    glVertex3f(150,-100,0);
+                    glVertex3f(150, 100,0);
+                    glVertex3f(-150,100, 0);
+                glEnd();
+                glDisable(GL_BLEND);
+            glPopMatrix();
+        }glPopMatrix();
     
     glPushMatrix();{
         
         glTranslatef(windowsWidth/2 - 300, -windowsHeight/2.0 + 5, 0);
-        
         HumanoidCharacter * aux;
         for(int i = 0; i<figurantTeam1.size();i++ ){
             aux = (HumanoidCharacter*) (figurantTeam1[i]);
@@ -867,10 +912,23 @@ void viewport2( void ){
     glPopMatrix();
     
     glPushMatrix();{
-        glTranslatef(0, -windowsHeight/2.0 + 1, 0); // teste.getLifeBar().getHeight()
+
+    	
+
+        glTranslatef(0, -windowsHeight/2.0 + 1, -0.4); // teste.getLifeBar().getHeight()
         glScalef( 1.5, 1, 1);
         teste.setBarLifeRotate( 0, 180, 0 );
         teste.getLifeBar().draw();
+        /*
+        glRasterPos2f(-40,-windowsHeight/2.0 + 10);
+        stringstream sstm;
+        sstm << teste.getCharacterLife() << "/" << teste.getCharacterMaxLife();
+        for(int i = 0; i <sstm.str().size(); i++){
+            glutBitmapCharacter(font_style, sstm.str()[i]);
+        }
+        */
+
+        
     }
     glPopMatrix();
     
@@ -956,17 +1014,19 @@ void viewport2( void ){
     }
     else if(popUpEndGame){
     	glPushMatrix();{
-	        glRasterPos2f(-120,300);
 	        char msg[50];
-	        if(winner == 1) strcpy(msg,"VITORIA");
-	        else strcpy(msg,"PERDEU BABACA");
-
+	        if(winner == 1) {
+	        	glRasterPos2f(-55,300);
+	        	strcpy(msg,"VITORIA");
+	        }
+	        else {
+	        	glRasterPos2f(-100,300);
+	        	strcpy(msg,"PERDEU BABACA");
+	        }
 	        for(int i = 0; i <strlen(msg); i++){
 	            glutBitmapCharacter(font_style, msg[i]);
 	        }
-
-	        glRasterPos2f(-60,45);
-	   
+	        glRasterPos2f(-190,150);
 	        strcpy(msg,"PRESSIONE ENTER PARA FECHAR");
 	        for(int i = 0; i <strlen(msg); i++){
 	            glutBitmapCharacter(font_style, msg[i]);
@@ -1190,7 +1250,7 @@ void init(void)
 
 	tower3.setObj(objtower, objdiam);
 	tower3.setTex(bmptower);
-	tower3.setColor(1.0f,0.0f,0.0f);
+	tower3.setColor(0xF4/255.0f,0x51/255.0f,0x1E/255.0f);
 	tower3.setTeam(2);	
 	tower3.setRadiusCharacterAproximation(20.0);
 	tower3.setPosition(700, 0, -110);
@@ -1201,14 +1261,14 @@ void init(void)
 	tower3.heal(1.0);
 	tower3.setAtk(60);
 	tower3.setDef(30);
-	tower3.setName("Tower 3");
+	tower3.setName("Torre Inimiga");
 	rewind(objtower);
 	rewind(objdiam);
 	rewind(bmptower);
 
 	tower4.setObj(objtower, objdiam);
 	tower4.setTex(bmptower);
-	tower4.setColor(1.0f,0.0f,0.0f);
+	tower4.setColor(0xF4/255.0f,0x51/255.0f,0x1E/255.0f);
 	tower4.setTeam(2);
 	tower4.setRadiusCharacterAproximation(20.0);
 	tower4.setPosition(300, 0, -110);
@@ -1219,7 +1279,7 @@ void init(void)
 	tower4.heal(1.0);
 	tower4.setAtk(60);
 	tower4.setDef(30);
-	tower4.setName("Tower 4");
+	tower4.setName("Torre Inimiga");
 	rewind(objdiam);
 
 	towers.push_back(&tower1);
@@ -1267,7 +1327,7 @@ void init(void)
 	base2.setTeam(2);
 	base2.setPosition( 1000, 0, -110 );
 	base2.setOp(180);
-	base2.setColor(1.0f,0.0f,0.0f);
+	base2.setColor(0xF4/255.0f,0x51/255.0f,0x1E/255.0f);
 	base2.setRadiusCharacterAproximation(20.0);
 	base2.setSightRadius(100.0);
 	base2.setRangeAtk(100.0);
@@ -1276,7 +1336,7 @@ void init(void)
 	base2.heal(1.0);
 	base2.setAtk(60);
 	base2.setDef(30);
-	base2.setName("Base 2");
+	base2.setName("Base Inimiga");
 
     charactersBase2.setTeam(2);
     charactersBase2.setPosition( 1000, 0, -110 );
@@ -1289,7 +1349,7 @@ void init(void)
     charactersBase2.setAtk(100);
     charactersBase2.setDef(30);
     charactersBase2.setWalkSpeed(0.0f);
-    charactersBase2.setName("Base 2");
+    charactersBase2.setName("Base Inimiga");
 
 	fclose( objfence );
 	fclose( objtower );
@@ -1338,7 +1398,7 @@ void init(void)
 	teste2.setDef(20);
 	teste2.setSightRadius( 60.0 );
 	teste2.setWalkSpeed(1.2);
-	teste2.setName("Hero team 2");
+	teste2.setName("Heroi Inimigo");
 	teste2.stop();
 	teste2.setAI( false );
 
@@ -1355,6 +1415,10 @@ void init(void)
     FILE *bmpicon = fopen("Img/icons.bmp", "rb");
     Texture iconTex(bmpicon);
     iconTexID = iconTex.getTexID();
+    
+    FILE *bmplogo = fopen("Img/logo.bmp", "rb");
+    Texture logoTex(bmplogo);
+    logoTexID = logoTex.getTexID();
     
     rewind(bmpfence);
     Texture woodTex(bmpfence);
@@ -1551,6 +1615,10 @@ void keyboard(unsigned char key, int x, int y){
             break;
 		case 'a':
 			endGame = true;
+			winner = 2;
+			break;
+		case 'q':
+			endGame = true;
 			winner = 1;
 			break;
         case 'P':
@@ -1565,8 +1633,10 @@ void keyboard(unsigned char key, int x, int y){
             }
 			break;
         case 'w':
+            rotX++;
             break;
         case 's':
+            rotX--;
             break;
         case 'o':
             obsZ++;
@@ -1575,9 +1645,11 @@ void keyboard(unsigned char key, int x, int y){
             obsZ--;
             break;
         case 'h':
+        case 'H':
             teste.stop();
             break;
         case 'y':
+        case 'Y':
         	observerFollows = !observerFollows;
         	break;
         case 'e':
@@ -1646,8 +1718,6 @@ int main()
 
 	glutIdleFunc( idle );
 
-	
-    
 	init();
 	glutMainLoop();
 }

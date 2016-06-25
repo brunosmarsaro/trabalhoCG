@@ -3,9 +3,9 @@
 Base::~Base(){}
 
 Base::Base(){
-	r = 0.0;
-	g = 0.0;
-	b = 1.0;
+    r = 0x21/255.0f;
+    g = 0x96/255.0f;
+    b = 0xF3/255.0f;
 	th = 0;
 	projectile.exist = false;
 	projectile.passo = 2.0;
