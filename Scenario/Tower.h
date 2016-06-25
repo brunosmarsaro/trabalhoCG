@@ -31,9 +31,9 @@ class Tower : public Character{
 
 	public:
     	Tower(){
-			r = 0.0;
-			g = 0.0;
-			b = 1.0;
+            r = 0x21/255.0f;
+            g = 0x96/255.0f;
+            b = 0xF3/255.0f;
 			projectile.exist = false;
 			projectile.passo = 2.0;
 			projectile.radius = 3.5;

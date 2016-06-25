@@ -545,6 +545,7 @@ void HumanoidCharacter::draw(){
 			glTranslatef( getPosition().getX(), 1/(0.07) + scaleY*15.0 , getPosition().getZ() );
 			if(getName().compare(0,4,"Hero") == 0){
 				glScalef( 0.065, 0.10, 0.03 );
+                
 			}else
 				glScalef( 0.05 ,0.05 ,0.03 );
 			setBarLifeRotate( -45, 180, 0 );
