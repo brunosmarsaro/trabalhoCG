@@ -63,6 +63,7 @@ void gameController(){
 			auxFree = aux;
 			figurantTeam1.erase(figurantTeam1.begin() + i);
 			delete(auxFree);
+            free(auxFree);
 		}
 	}
 	for(int i = 0; i < figurantTeam2.size() ;i++){
@@ -71,13 +72,14 @@ void gameController(){
 			auxFree = aux;
 			figurantTeam2.erase(figurantTeam2.begin() + i);
 			delete(auxFree);
+            free(auxFree);
 		}
 	}
 
 	if((int)seconds%armyBornTime == 1) {
 
 		if(timeFlag == true){
-			//teste2.setAI( true );
+			teste2.setAI( true );
 			timeFlag = false;
 			minutes++;
 			
