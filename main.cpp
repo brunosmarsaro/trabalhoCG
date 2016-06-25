@@ -1537,7 +1537,7 @@ void mouse(int button, int state, int x, int y){
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
 			float dx,dz;
-			if(!beginGame && !endGame){
+			if(beginGame && !endGame){
 				dx = x3DMouse( x, y );
 				dz = y3DMouse( x, y );
 	            if(landscape.canIGoThere(dx, dz)) {
