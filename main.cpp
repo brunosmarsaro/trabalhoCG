@@ -6,7 +6,7 @@
 #include "Scenario/Base.cpp"
 
 #define armyBornTime 45
-#define quantSoldiersPerCicle 0
+#define quantSoldiersPerCicle 4
 
 int perspectiveID;
 
@@ -149,9 +149,9 @@ void gameController(){
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant1 = new HumanoidCharacter ();
 				(*figurant1).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant1).setBodyColor( 0.0, 0.0, 1.0 );
+				(*figurant1).setBodyColor( 0x21/255.0f, 0x96/255.0f, 0xF3/255.0f );
 				(*figurant1).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant1).setLegColor( 1.0, 0.0, 0.0 );
+				(*figurant1).setLegColor( 0.25, 0.25, 0.25 );
 				(*figurant1).setScale( 0.5, 0.5, 0.5 );
 				(*figurant1).setRotate( 0, 45, 0 );
 				(*figurant1).setPosition( -1000.0, 0, -130 + i*15 );
@@ -175,9 +175,9 @@ void gameController(){
 			for(int i = 0; i < quantSoldiersPerCicle ;i++){
 				HumanoidCharacter* figurant2 = new HumanoidCharacter ();
 				(*figurant2).setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant2).setBodyColor( 1.0, 0.0, 0.0 );
+				(*figurant2).setBodyColor( 0xF4/255.0f, 0x51/255.0f, 0x1E/255.0f );
 				(*figurant2).setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-				(*figurant2).setLegColor( 0.0, 0.0, 1.0 );
+				(*figurant2).setLegColor( 0.25, 0.25, 0.25 );
 				(*figurant2).setScale( 0.5, 0.5, 0.5 );
 				(*figurant2).setRotate( 0, 45, 0 );
 				(*figurant2).setPosition( 1000.0, 0, -130 + i*15 );
@@ -318,9 +318,87 @@ void viewport1( void ){
 
 void menuInicial( void ){
     glPushMatrix();{
+        string trabalho = "TRABALHO FINAL";
+        glColor3f(1,1,1);
+        glRasterPos2f(130,200);
+        for(int i = 0; i <trabalho.size(); i++){
+            glutBitmapCharacter(font_style, trabalho[i]);
+        }
+        string materia  = "COMPUTACAO E REPRESENTACAO GRAFICA";
+        glColor3f(1,1,1);
+        glRasterPos2f(-40,170);
+        for(int i = 0; i <materia.size(); i++){
+            glutBitmapCharacter(font_style, materia[i]);
+        }
+        
+        string prof = "Professor: Pedro Henrique Azevedo";
+        string alunos = "Alunos: Ayer Ribeiro de Souza Netto";
+        string bruno = "Bruno Smarsaro Bazelato";
         
         glColor3f(1,1,1);
-        if((menuI == 1) && (menuJ == 3)) {glBegin(GL_POLYGON);}
+        glRasterPos2f(-120,100);
+        for(int i = 0; i <prof.size(); i++){
+            glutBitmapCharacter(font_style, prof[i]);
+        }
+        glRasterPos2f(-120,70);
+        for(int i = 0; i <alunos.size(); i++){
+            glutBitmapCharacter(font_style, alunos[i]);
+        }
+        glRasterPos2f(-40,40);
+        for(int i = 0; i <bruno.size(); i++){
+            glutBitmapCharacter(font_style, bruno[i]);
+        }
+        
+        vector<string> lines;
+        lines.push_back("COMO JOGAR:");
+        lines.push_back(" ");
+        lines.push_back("- ESC -> Pausar");
+        lines.push_back("- P      -> Trocar perspectiva do jogo");
+        lines.push_back("- Y      -> Fixar/desfixar camera");
+        lines.push_back("- H      -> Parar personagem");
+        lines.push_back("- Botao direito do mouse -> Selecionar destino/alvo");
+        
+        int posY = -240;
+        glColor3f(1,1,1);
+        for (int j = lines.size() - 1; j >= 0; j--){
+            glRasterPos2f(-120,posY);
+            for(int i = 0; i < lines[j].size(); i++){
+                glutBitmapCharacter(font_style, lines[j][i]);
+            }
+            posY += 30;
+        }
+        
+        char ok[3];
+        strcpy(ok,"OK");
+        string fechar = "SAIR";
+        
+        if(!sair){
+            glColor3f(0,0,1);
+            glRasterPos2f(370,-320);
+            for(int i = 0; i <3; i++){
+                glutBitmapCharacter(font_style, ok[i]);
+            }
+            glColor3f(1,1,1);
+            glRasterPos2f(490,-320);
+            for(int i = 0; i <5; i++){
+                glutBitmapCharacter(font_style, fechar[i]);
+            }
+            
+        }else{
+            glColor3f(1,1,1);
+            glRasterPos2f(370,-320);
+            for(int i = 0; i <3; i++){
+                glutBitmapCharacter(font_style, ok[i]);
+            }
+            glColor3f(0,0,1);
+            glRasterPos2f(490,-320);
+            for(int i = 0; i <5; i++){
+                glutBitmapCharacter(font_style, fechar[i]);
+            }
+        }
+        
+        glColor3f(1,1,1);
+        if(sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
             glVertex3f(470, -290, 0);
             glVertex3f(570, -290, 0);
@@ -329,7 +407,7 @@ void menuInicial( void ){
         glEnd();
         
         glColor3f(1,1,1);
-        if((menuI == 0) && (menuJ == 3)) {glBegin(GL_POLYGON);}
+        if(!sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
             glVertex3f(340, -290, 0);
             glVertex3f(440, -290, 0);
@@ -348,7 +426,6 @@ void menuInicial( void ){
         glEnd();
         glDisable(GL_BLEND);
     }glPopMatrix();
-    
 }
 
 void viewport2( void ){
@@ -1101,9 +1178,9 @@ void init(void)
 	//Inicializa Heróis
 	//teste.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 	teste.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setBodyColor( 0.0, 0.0, 1.0 );
+	teste.setBodyColor( 0x21/255.0f, 0x96/255.0f, 0xF3/255.0f );
 	teste.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste.setLegColor( 0.0, 0.0, 1.0 );
+	teste.setLegColor( 0x3F/255.0f, 0x51/255.0f, 0xB5/255.0f);
 	teste.setScale( 0.5, 0.5, 0.5 );
 	teste.setRotate( 0, rotateY, 0 );
 	teste.setPosition( -1075, 0, -110 );
@@ -1122,9 +1199,9 @@ void init(void)
     
 	//teste2.setGame(charactersGame,figurantTeam1,figurantTeam2,towers);
 	teste2.setHeadColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste2.setBodyColor( 1.0, 0.0, 0.0 );
+    teste2.setBodyColor( 0xF4/255.0f, 0x51/255.0f, 0x1E/255.0f );
 	teste2.setArmColor( 244.0f/255.0f, 164.0f/255.0f, 96.0f/255.0f);
-	teste2.setLegColor( 1.0, 0.0, 0.0 );
+	teste2.setLegColor( 0xDD/255.0f, 0x2C/255.0f, 0);
 	teste2.setScale( 0.5, 0.5, 0.5 );
 	teste2.setRotate( 0, 45, 0 );
 	teste2.setPosition( 1075, 0.0, -110.0 );
@@ -1324,25 +1401,20 @@ void SpecialKeys (int tecla, int x, int y){
 		case GLUT_KEY_LEFT:	
             if(pause) sair = 1;
             if(!beginGame){
-                if (menuI > 0) menuI--;
+                sair = 0;
             }
 			break;
 		case GLUT_KEY_RIGHT:
             if(pause) sair = 0;
             if(!beginGame){
-                if (menuI < 5) menuI++;
-                if (menuJ == 3) menuI = 1;
+                sair  = 1;
             }
 			break;
 		case GLUT_KEY_UP:
-            if(!beginGame){
-                if (menuJ > 0) menuJ--;
-            }
+            
 			break;
 		case GLUT_KEY_DOWN:
-            if(!beginGame){
-                if (menuJ < 3) menuJ++;
-            }
+            
 			break;
 		case GLUT_KEY_HOME:
 			obsZ++;
@@ -1378,7 +1450,10 @@ void keyboard(unsigned char key, int x, int y){
 			if(beginGame) pause = !pause;
 			break;
         case 13:
-            beginGame = !beginGame;
+            if(!beginGame){
+                if(sair) exit(0);
+                beginGame = !beginGame;
+            }
             if(pause && sair) exit(0);
             else if(pause && !sair) pause = !pause;
 		case 'a':
