@@ -101,11 +101,11 @@ void gameController(){
 	if(base1.getCharacterLife() == 0){
 		endGame = true;
 		winner = 2;
-		endGame(1);
+		endGame();
 	}else if(base1.getCharacterLife() == 0){
 		endGame = true;
 		winner = 1;
-		endGame(2);
+		endGame();
 	}
 
 	GLdouble seconds = (actualTime - beginTime)/1000.0;
