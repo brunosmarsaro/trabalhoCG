@@ -319,7 +319,23 @@ void viewport1( void ){
 void menuInicial( void ){
     glPushMatrix();{
         
+        glColor3f(1,1,1);
+        if((menuI == 1) && (menuJ == 3)) {glBegin(GL_POLYGON);}
+        else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
+            glVertex3f(470, -290, 0);
+            glVertex3f(570, -290, 0);
+            glVertex3f(570, -340, 0);
+            glVertex3f(470, -340, 0);
+        glEnd();
         
+        glColor3f(1,1,1);
+        if((menuI == 0) && (menuJ == 3)) {glBegin(GL_POLYGON);}
+        else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
+            glVertex3f(340, -290, 0);
+            glVertex3f(440, -290, 0);
+            glVertex3f(440, -340, 0);
+            glVertex3f(340, -340, 0);
+        glEnd();
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
