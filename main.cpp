@@ -1,3 +1,17 @@
+////////////////////////////////////////
+/************Monkey's War**************/
+////////////////////////////////////////
+
+/*
+	Trabalho de Computação e representação gráfica
+
+	Programação orientada à Gambiarra (McGyverism)
+	Autores: 	Ayer Ribeiro de Souza Netto
+				Bruno Smarsaro Bazelato
+
+	Professor:	Pedro Henrique Azevedo
+*/
+
 #include "gLib.h"
 #include "game.h"
 #include "Heroes/HumanoidCharacter.cpp"
@@ -14,7 +28,7 @@ GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 GLdouble focusX, focusY, focusZ;
 
-HumanoidCharacter teste, teste2, teste3;
+HumanoidCharacter teste, teste2;
 Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
