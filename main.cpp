@@ -66,7 +66,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam1.erase(figurantTeam1.begin() + i);
-			delete(auxFree);
+			//delete(auxFree);
             free(auxFree);
 		}
 	}
@@ -75,7 +75,7 @@ void gameController(){
 		if( (*aux).getCharacterLife() == 0){
 			auxFree = aux;
 			figurantTeam2.erase(figurantTeam2.begin() + i);
-			delete(auxFree);
+			//delete(auxFree);
             free(auxFree);
 		}
 	}
