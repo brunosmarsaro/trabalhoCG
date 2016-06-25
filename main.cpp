@@ -49,13 +49,14 @@ long long minutes;
 
 bool timeFlag = true;
 bool pause = false;
+bool beginGame = false;
 
 void SpecifiesVisualizationParameters( void );
 
 GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 
 void gameController(){
-	GLdouble seconds = actualTime/1000.0;
+	GLdouble seconds = (actualTime - beginTime)/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
 
 	if (base1.isIn(teste.getPosition())) teste.heal(0.000005);
@@ -317,7 +318,8 @@ void viewport2( void ){
                 glVertex3f(125, -50, 0);
                 glEnd();
                 
-                glLineWidth( 5.0f );
+                if(!sair) {glLineWidth( 5.0f ); glBegin(GL_LINE_LOOP);}
+                else {glBegin(GL_POLYGON);}
                 glBegin(GL_LINE_LOOP);
                 glVertex3f(-25, -50, 0);
                 glVertex3f(-25, -100,0);
@@ -730,7 +732,10 @@ void draw( void ){
 
 
 void idle( void ){
-	actualTime = glutGet(GLUT_ELAPSED_TIME);
+    if(!beginGame) beginTime = glutGet(GLUT_ELAPSED_TIME);
+    else{
+    
+    actualTime = glutGet(GLUT_ELAPSED_TIME);
 	//Limitador de tempo
 	currentWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
 	difference = currentWalkAnimation - lastWalkAnimation;
@@ -779,6 +784,7 @@ void idle( void ){
             lastWalkAnimation = currentWalkAnimation;
         }
     }
+    }
     positionsObserver();
     glutPostRedisplay();
 }
@@ -807,7 +813,7 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
-	beginTime = glutGet(GLUT_ELAPSED_TIME);
+	
 	minutes = 0;
 	//dx = dy = 0;
 	lastWalkAnimation = glutGet(GLUT_ELAPSED_TIME);
@@ -1173,10 +1179,10 @@ void SpecialKeys (int tecla, int x, int y){
 			focusZ = teste.getPosition().getZ();
 			break;
 		case GLUT_KEY_LEFT:	
-            sair = 1;
+            if(pause) sair = 1;
 			break;
 		case GLUT_KEY_RIGHT:
-            sair = 0;
+            if(pause) sair = 0;
 			break;
 		case GLUT_KEY_UP:
 			rotX++;
