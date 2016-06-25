@@ -29,6 +29,8 @@ GLuint woodTexID;
 
 int sair = 0;
 bool enter = false;
+int menuI = 0;
+int menuJ = 0;
 
 float rotateY = 20;
 
@@ -1303,15 +1305,26 @@ void SpecialKeys (int tecla, int x, int y){
 			break;
 		case GLUT_KEY_LEFT:	
             if(pause) sair = 1;
+            if(!beginGame){
+                if (menuI > 0) menuI--;
+            }
 			break;
 		case GLUT_KEY_RIGHT:
             if(pause) sair = 0;
+            if(!beginGame){
+                if (menuI < 5) menuI++;
+                if (menuJ == 3) menuI = 1;
+            }
 			break;
 		case GLUT_KEY_UP:
-			rotX++;
+            if(!beginGame){
+                if (menuJ > 0) menuJ--;
+            }
 			break;
 		case GLUT_KEY_DOWN:
-			rotX--;
+            if(!beginGame){
+                if (menuJ < 3) menuJ++;
+            }
 			break;
 		case GLUT_KEY_HOME:
 			obsZ++;
