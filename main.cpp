@@ -51,6 +51,7 @@ GLdouble beginTime;
 GLdouble actualTime;
 long long minutes;
 
+bool popUpEndGame = false;
 bool exploding = false;
 bool timeFlag = true;
 bool pause = false;
@@ -99,11 +100,16 @@ void endGameAnimation(){
 	}else if(endGameAnimationCycle >40 && endGameAnimationCycle < 60){
 		whiteEndAlpha = 1.0f - (endGameAnimationCycle-40)/20.0f;
 	}else{
+		exploding = false;
 		whiteEndAlpha = 0.0f;
+		popUpEndGame = true;
 	}
 	focusX += speedXCamera;
 	focusZ += speedZCamera;
 }
+
+
+
 
 void gameController(){
 
@@ -262,7 +268,7 @@ void defineIlumination ( void ){
     GLfloat luzDifusa[4];
     GLfloat luzEspecular[4];
     GLfloat luzAmbiente[4];
-    if(!pause){
+    if(!pause || endGame){
         luzDifusa[0] = luzDifusa[1] = luzDifusa[2] = 0.9;
         luzDifusa[3] = 1.0;
         luzEspecular[0] = luzEspecular[1] = luzEspecular[2] = 0.5;
@@ -486,7 +492,6 @@ void viewport2( void ){
     
     glPushMatrix();{
         if (pause) {
-            
             glPushMatrix();{
                 glRasterPos2f(-60,45);
                 char msg[13];
@@ -526,8 +531,7 @@ void viewport2( void ){
                     
                 }
             
-            }
-            glPopMatrix();
+            }glPopMatrix();
             
             glPushMatrix();{
                 glColor3f(1,1,1);
@@ -948,9 +952,59 @@ void viewport2( void ){
             glEnd();
     	}glPopMatrix();
     	glDisable(GL_BLEND);
+
     }
+    else if(popUpEndGame){
+    	glPushMatrix();{
+	        glRasterPos2f(-120,300);
+	        char msg[50];
+	        if(winner == 1) strcpy(msg,"VITORIA");
+	        else strcpy(msg,"PERDEU BABACA");
 
+	        for(int i = 0; i <strlen(msg); i++){
+	            glutBitmapCharacter(font_style, msg[i]);
+	        }
 
+	        glRasterPos2f(-60,45);
+	   
+	        strcpy(msg,"PRESSIONE ENTER PARA FECHAR");
+	        for(int i = 0; i <strlen(msg); i++){
+	            glutBitmapCharacter(font_style, msg[i]);
+	        }
+	        /*
+	        char sim[4];
+	        strcpy(sim,"SIM");
+	        char nao[4];
+	        strcpy(nao,"NAO");
+	       
+	        if(sair){
+	            glColor3f(0,0,1);
+	            glRasterPos2f(-100,-80);
+	            for(int i = 0; i <4; i++){
+	                glutBitmapCharacter(font_style, sim[i]);
+	            }
+	            glColor3f(1,1,1);
+	            glRasterPos2f(50,-80);
+	            for(int i = 0; i <4; i++){
+	                glutBitmapCharacter(font_style, nao[i]);
+	            }
+	            
+	        }else{
+	            glColor3f(1,1,1);
+	            glRasterPos2f(-100,-80);
+	            for(int i = 0; i <4; i++){
+	                glutBitmapCharacter(font_style, sim[i]);
+	            }
+	            glColor3f(0,0,1);
+	            glRasterPos2f(50,-80);
+	            for(int i = 0; i <4; i++){
+	                glutBitmapCharacter(font_style, nao[i]);
+	            }
+	            
+	        }*/
+        }glPopMatrix();
+	
+    }
 }
 
 void draw( void ){
@@ -1110,7 +1164,7 @@ void init(void)
 	tower1.setAI(false);
 	tower1.setCharacterMaxLife(800);
 	tower1.heal(1.0);
-	tower1.setAtk(100);
+	tower1.setAtk(60);
 	tower1.setDef(30);
 	tower1.setName("Tower 1");
 	rewind(objtower);
@@ -1127,7 +1181,7 @@ void init(void)
 	tower2.setAI(false);
 	tower2.setCharacterMaxLife(800);
 	tower2.heal(1.0);
-	tower2.setAtk(100);
+	tower2.setAtk(60);
 	tower2.setDef(30);
 	tower2.setName("Tower 2");
 	rewind(objtower);
@@ -1145,7 +1199,7 @@ void init(void)
 	tower3.setAI(false);
 	tower3.setCharacterMaxLife(800);
 	tower3.heal(1.0);
-	tower3.setAtk(100);
+	tower3.setAtk(60);
 	tower3.setDef(30);
 	tower3.setName("Tower 3");
 	rewind(objtower);
@@ -1163,7 +1217,7 @@ void init(void)
 	tower4.setAI(false);
 	tower4.setCharacterMaxLife(800);
 	tower4.heal(1.0);
-	tower4.setAtk(100);
+	tower4.setAtk(60);
 	tower4.setDef(30);
 	tower4.setName("Tower 4");
 	rewind(objdiam);
@@ -1187,7 +1241,7 @@ void init(void)
 	base1.setAI(false);
 	base1.setCharacterMaxLife(800);
 	base1.heal(1.0);
-	base1.setAtk(100);
+	base1.setAtk(60);
 	base1.setDef(30);
 	base1.setName("Base 1");
 
@@ -1220,7 +1274,7 @@ void init(void)
 	base2.setAI(false);
 	base2.setCharacterMaxLife(800);
 	base2.heal(1.0);
-	base2.setAtk(100);
+	base2.setAtk(60);
 	base2.setDef(30);
 	base2.setName("Base 2");
 
@@ -1259,7 +1313,7 @@ void init(void)
 	teste.setTeam(1);
 	teste.setCharacterMaxLife(800);
 	teste.heal(1.0);
-	teste.setAtk(50);
+	teste.setAtk(40);
 	teste.setDef(20);
 	teste.setAI( false );
 	teste.setSightRadius( 60.0 );
@@ -1280,7 +1334,7 @@ void init(void)
 	teste2.heal(1.0);
 	teste2.setRangeAtk(12.0);
 	teste2.setTeam(2);
-	teste2.setAtk(50);
+	teste2.setAtk(40);
 	teste2.setDef(20);
 	teste2.setSightRadius( 60.0 );
 	teste2.setWalkSpeed(1.2);
@@ -1478,23 +1532,16 @@ void keyboard(unsigned char key, int x, int y){
 	
     switch (key){
     	case '1':
-    		if(beginGame) {
-    			perspectiveID = 1;
-    			rotX = 45;
-    		}
     		break;
     	case '2':
-    		if(beginGame) {
-    			perspectiveID = 2;
-    			rotX = 30;
-    		}
     		break;
 		case 'b':
 			break;
 		case 27:
-			if(beginGame) pause = !pause;
+			if(beginGame && !endGame) pause = !pause;
 			break;
         case 13:
+        	if(popUpEndGame) exit(0);
             if(!beginGame){
                 if(sair) exit(0);
                 beginGame = !beginGame;
@@ -1506,7 +1553,16 @@ void keyboard(unsigned char key, int x, int y){
 			endGame = true;
 			winner = 1;
 			break;
-		case 'd':
+        case 'P':
+		case 'p':
+            if(perspectiveID == 1 && beginGame) {
+                perspectiveID = 2;
+                rotX = 30;
+            }
+            else if(perspectiveID == 2 && beginGame) {
+                perspectiveID = 1;
+                rotX = 45;
+            }
 			break;
         case 'w':
             break;
@@ -1595,5 +1651,6 @@ int main()
 	init();
 	glutMainLoop();
 }
+
 
 
