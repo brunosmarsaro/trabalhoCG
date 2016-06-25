@@ -61,7 +61,7 @@ void SpecifiesVisualizationParameters( void );
 
 GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 
-void endGame(){
+void endGameAnimation(){
 	if (winner == 1){
 
 	}
@@ -101,11 +101,11 @@ void gameController(){
 	if(base1.getCharacterLife() == 0){
 		endGame = true;
 		winner = 2;
-		endGame();
+		endGameAnimation();
 	}else if(base1.getCharacterLife() == 0){
 		endGame = true;
 		winner = 1;
-		endGame();
+		endGameAnimation();
 	}
 
 	GLdouble seconds = (actualTime - beginTime)/1000.0;
