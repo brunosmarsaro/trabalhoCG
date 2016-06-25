@@ -33,36 +33,44 @@ void Base::draw(){
         drawProjectile();
     }
 
+    
+
     glPushMatrix();
         glTranslatef(getPosition().getX(), getPosition().getY(),getPosition().getZ());
         glPushMatrix();
             glTranslatef( 0.0 , 1/(0.07) + 1.0*(45.0) , 0.0 );
             glScalef( 0.05 ,0.07 ,0.03 );
             setBarLifeRotate( -45, 180, 0 );
-            getLifeBar().draw();
+            if(isVisible()){
+            	getLifeBar().draw();
+        	}
         glPopMatrix();
 
+        
         glPushMatrix();
             glRotatef(th, 0,1,0);
-            glPushMatrix();
-                glTranslatef(0,20,0);
-                glScalef(30,30,30);
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                glColor4f( r, g, b, 0.5 );
-                for(i = 0; i < faces.size(); i++){
-                    glNormal3f(faces[i][0]*37, faces[i][1]*37, faces[i][2]*37);
-                    glBegin(GL_TRIANGLES);
-                        glVertex3f( faces[i][3],faces[i][4], faces[i][5]);
-                        //glTexCoord2f( faces[i][6], faces[i][7]);
-                        glVertex3f( faces[i][8],faces[i][9], faces[i][10]);
-                        //glTexCoord2f( faces[i][11], faces[i][12]);
-                        glVertex3f( faces[i][13],faces[i][14], faces[i][15]);
-                        //glTexCoord2f( faces[i][16], faces[i][17]);
-                    glEnd();
-                }
-                glDisable(GL_BLEND);
-            glPopMatrix();
+            if(isVisible()){
+                glPushMatrix();
+                    glTranslatef(0,20,0);
+                    glScalef(30,30,30);
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glColor4f( r, g, b, 0.5 );
+                    for(i = 0; i < faces.size(); i++){
+                        glNormal3f(faces[i][0]*37, faces[i][1]*37, faces[i][2]*37);
+                        glBegin(GL_TRIANGLES);
+                            glVertex3f( faces[i][3],faces[i][4], faces[i][5]);
+                            //glTexCoord2f( faces[i][6], faces[i][7]);
+                            glVertex3f( faces[i][8],faces[i][9], faces[i][10]);
+                            //glTexCoord2f( faces[i][11], faces[i][12]);
+                            glVertex3f( faces[i][13],faces[i][14], faces[i][15]);
+                            //glTexCoord2f( faces[i][16], faces[i][17]);
+                        glEnd();
+                    }
+                    glDisable(GL_BLEND);
+                glPopMatrix();
+            }
+
             
             glPushMatrix();
                 glEnable(GL_TEXTURE_2D);
@@ -86,6 +94,7 @@ void Base::draw(){
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
+
 
 }
 
