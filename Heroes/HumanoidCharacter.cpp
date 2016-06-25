@@ -19,7 +19,7 @@ HumanoidCharacter::HumanoidCharacter(){
 	rightCalfPosition.setY( -18.5 );
 	rightCalfPosition.setZ( -0.5 );
 	atkCicle = atkTime;
-	characterYAngle = 20;
+	walking = false;
 }
 /*
 void HumanoidCharacter::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){
@@ -92,7 +92,6 @@ bool HumanoidCharacter::isEnemyNear(){
 bool HumanoidCharacter::selectionArea( void* enemy, float x, float z ){
 	/*
 	posx do inimigo + altura =>>>> limite superior
-
 	*/
 	Character * aux;
 	aux = ( Character* )enemy;
@@ -108,7 +107,6 @@ bool HumanoidCharacter::selectionArea( void* enemy, float x, float z ){
 		}
 	}
 	return false;
-
 }
 void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 	Character * aux;
@@ -124,7 +122,6 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
 	for(int i = 0; i< figurantTeam1.size(); i++){
 		aux = (Character*)figurantTeam1[i];
 		if(aux->getTeam() != getTeam()){
@@ -136,7 +133,6 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
 	for(int i = 0; i< figurantTeam2.size(); i++){
 		aux = (Character*)figurantTeam2[i];
 		if(aux->getTeam() != getTeam()){
@@ -148,7 +144,6 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
 	for(int i = 0; i< towers.size(); i++){
 		aux = (Character*)towers[i];
 		if(aux->getTeam() != getTeam()){
@@ -160,20 +155,6 @@ void HumanoidCharacter::setTargetFromClickedArea( float x, float z ){
 			}
 		}
 	}
-
-	/*
-	for(int i = 0; i< bases.size(); i++){
-		aux = (Character*)bases[i];
-		if(aux->getTeam() != getTeam()){
-			if( selectionArea( aux, x, z ) ){
-				if( (*aux).getCharacterLife() != 0 ){
-					setTarget(aux);
-					return;
-				}
-			}
-		}
-	}
-	*/
 
 	attacking = false;
 	setTarget(NULL);

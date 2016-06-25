@@ -33,7 +33,7 @@ bool enter = false;
 int menuI = 0;
 int menuJ = 0;
 
-float rotateY = 20;
+float rotateY;
 
 int windowsWidth, windowsHeight;
 
@@ -1108,7 +1108,6 @@ void idle( void ){
     if(!beginGame) {
         beginTime = glutGet(GLUT_ELAPSED_TIME);
         teste.setRotate(0,rotateY,0);
-
     }
     if(!endGame){
 	    actualTime = glutGet(GLUT_ELAPSED_TIME);
@@ -1558,12 +1557,15 @@ void mouse(int button, int state, int x, int y){
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {
 			float dx,dz;
-			dx = x3DMouse( x, y );
-			dz = y3DMouse( x, y );
-            if(landscape.canIGoThere(dx, dz)) {
-                teste.walkTo(dx, dz);
-                teste.setTargetFromClickedArea(dx, dz);
-            }
+			if(!beginGame && !endGame){
+				dx = x3DMouse( x, y );
+				dz = y3DMouse( x, y );
+	            if(landscape.canIGoThere(dx, dz)) {
+	                teste.walkTo(dx, dz);
+	                teste.setTargetFromClickedArea(dx, dz);
+	            }
+			}
+			
 		}
 	SpecifiesVisualizationParameters();
 	glutPostRedisplay();
