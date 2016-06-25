@@ -19,6 +19,7 @@ HumanoidCharacter::HumanoidCharacter(){
 	rightCalfPosition.setY( -18.5 );
 	rightCalfPosition.setZ( -0.5 );
 	atkCicle = atkTime;
+	characterYAngle = 20;
 }
 /*
 void HumanoidCharacter::setGame( vector<void*> &characters, vector<void*> &f1, vector<void*> &f2, vector<void*> &t ){

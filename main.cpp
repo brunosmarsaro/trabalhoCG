@@ -19,6 +19,8 @@ Scenario landscape;
 Tower tower1, tower2, tower3, tower4;
 Base base1, base2;
 HumanoidCharacter charactersBase1,charactersBase2;
+GLdouble lastDeathPlayer1, lastDeathPlayerIA;
+bool player1Dead, iaPlayerDead;
 
 LifeBar level;
 GLuint heroTexID;
@@ -50,12 +52,60 @@ long long minutes;
 bool timeFlag = true;
 bool pause = false;
 bool beginGame = false;
+bool endGame = false;
+int winner;
 
 void SpecifiesVisualizationParameters( void );
 
 GLvoid *font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 
+void endGame(){
+	if (winner == 1){
+
+	}
+	float speedCamera = 12;
+	
+}
+
 void gameController(){
+
+	//if Hero dies
+	if(teste.getCharacterLife() == 0 && !player1Dead){
+		player1Dead = true;
+		lastDeathPlayer1 = actualTime;
+		teste.stop();
+		teste.setTarget(NULL);
+	}
+	if(teste2.getCharacterLife() == 0 && !iaPlayerDead){
+		iaPlayerDead = true;
+		lastDeathPlayer1 = actualTime;
+		teste2.stop();
+		teste2.setTarget(NULL);
+	}
+
+
+	if(player1Dead && ((actualTime - lastDeathPlayer1) > 10000) ){
+		teste.setPosition( -1075, 0,-110 );
+		player1Dead = false;
+		teste.heal(1.0f);
+	}
+	if(iaPlayerDead && ((actualTime - lastDeathPlayerIA) > 10000) ){
+		teste2.setPosition( 1075, 0,-110 );
+		iaPlayerDead = false;
+		teste2.heal(1.0f);
+	}
+
+
+	if(base1.getCharacterLife() == 0){
+		endGame = true;
+		winner = 2;
+		endGame(1);
+	}else if(base1.getCharacterLife() == 0){
+		endGame = true;
+		winner = 1;
+		endGame(2);
+	}
+
 	GLdouble seconds = (actualTime - beginTime)/1000.0;
 	HumanoidCharacter *aux , *auxFree ;
 
@@ -848,6 +898,7 @@ double mouseOriginAngle( int x, int y ){
 // Inicialização
 void init(void)
 {
+	player1Dead = iaPlayerDead = false;
 	perspectiveID = 2;
 	rotX = 30;
 	beginTime = glutGet(GLUT_ELAPSED_TIME);
