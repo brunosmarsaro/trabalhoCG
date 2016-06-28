@@ -3,9 +3,9 @@
 ////////////////////////////////////////
 
 /*
-	Trabalho de Computação e representação gráfica
+	Trabalho de Computação e Representação Gráfica
 
-	Programação orientada à Gambiarra (McGyverism)
+	Programação Orientada à Gambiarra (McGyverism)
 	Autores: 	Ayer Ribeiro de Souza Netto
 				Bruno Smarsaro Bazelato
 
@@ -20,7 +20,7 @@
 #include "Scenario/Tower.cpp"
 #include "Scenario/Base.cpp"
 
-#define armyBornTime 45
+#define armyBornTime 30
 #define quantSoldiersPerCicle 4
 
 int perspectiveID;
@@ -348,7 +348,6 @@ void SpecifiesVisualizationParameters( void ){
     glLoadIdentity();
     // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
     gluPerspective(angle,fAspect,0.5,1000);
-    
     positionsObserver();
 }
 
@@ -395,8 +394,8 @@ void viewport1( void ){
 void menuInicial( void ){
     glPushMatrix();{
         glPushMatrix();
-            glTranslatef(-windowsWidth/2.0 + 700, windowsHeight/2.0 - 190, 0);
-            glScalef(0.7, 0.7, 1);
+            glTranslatef(-windowsWidth/2.0 + windowsWidth*0.48611111, windowsHeight/2.0 - windowsHeight*0.211111111, 0);
+            glScalef(windowsWidth*0.00048611, windowsHeight*0.000777777, 1);
             glEnable(GL_TEXTURE_2D);
             glBindTexture (GL_TEXTURE_2D, logoTexID);
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -412,13 +411,16 @@ void menuInicial( void ){
         
         string trabalho = "TRABALHO FINAL";
         glColor3f(1,1,1);
-        glRasterPos2f(130,180);
+		float posSX, posSY;
+		posSX = windowsWidth*0.0902777777;    //130
+		posSY = windowsHeight*0.2;            //180
+        glRasterPos2f(posSX,posSY);
         for(int i = 0; i <trabalho.size(); i++){
             glutBitmapCharacter(font_style, trabalho[i]);
         }
         string materia  = "COMPUTACAO E REPRESENTACAO GRAFICA";
         glColor3f(1,1,1);
-        glRasterPos2f(-40,150);
+        glRasterPos2f(posSX-170,posSY - 30);  // -40,150
         for(int i = 0; i <materia.size(); i++){
             glutBitmapCharacter(font_style, materia[i]);
         }
@@ -428,15 +430,19 @@ void menuInicial( void ){
         string bruno = "Bruno Smarsaro Bazelato";
         
         glColor3f(1,1,1);
-        glRasterPos2f(-120,80);
+
+		posSX = -windowsWidth*0.083333333;    //-120
+		posSY = windowsHeight*0.088888888;    // 80
+
+        glRasterPos2f(posSX,posSY);
         for(int i = 0; i <prof.size(); i++){
             glutBitmapCharacter(font_style, prof[i]);
         }
-        glRasterPos2f(-120,50);
+        glRasterPos2f(posSX,posSY-30); // -120,50
         for(int i = 0; i <alunos.size(); i++){
             glutBitmapCharacter(font_style, alunos[i]);
         }
-        glRasterPos2f(-40,20);
+        glRasterPos2f(posSX+80,posSY - 60); // -40,20
         for(int i = 0; i <bruno.size(); i++){
             glutBitmapCharacter(font_style, bruno[i]);
         }
@@ -450,10 +456,10 @@ void menuInicial( void ){
         lines.push_back("- H      -> Parar personagem");
         lines.push_back("- Botao direito do mouse -> Selecionar destino/alvo");
         
-        int posY = -260;
+        int posY = posSY-340;
         glColor3f(1,1,1);
         for (int j = lines.size() - 1; j >= 0; j--){
-            glRasterPos2f(-120,posY);
+            glRasterPos2f(posSX,posY);
             for(int i = 0; i < lines[j].size(); i++){
                 glutBitmapCharacter(font_style, lines[j][i]);
             }
@@ -464,47 +470,53 @@ void menuInicial( void ){
         strcpy(ok,"OK");
         string fechar = "SAIR";
         
+		posSX = windowsWidth*0.2569444444;    //  370
+		posSY = -windowsHeight*0.37777777;    // -340
+
         if(!sair){
             glColor3f(0,0,1);
-            glRasterPos2f(370,-340);
+            glRasterPos2f(posSX, posSY);  //370,-340
             for(int i = 0; i <3; i++){
                 glutBitmapCharacter(font_style, ok[i]);
             }
             glColor3f(1,1,1);
-            glRasterPos2f(490,-340);
+            glRasterPos2f(posSX+120,posSY);  //490,-340
             for(int i = 0; i <5; i++){
                 glutBitmapCharacter(font_style, fechar[i]);
             }
             
         }else{
             glColor3f(1,1,1);
-            glRasterPos2f(370,-340);
+            glRasterPos2f(posSX, posSY);  //370,-340
             for(int i = 0; i <3; i++){
                 glutBitmapCharacter(font_style, ok[i]);
             }
             glColor3f(0,0,1);
-            glRasterPos2f(490,-340);
+            glRasterPos2f(posSX+120,posSY);   //490,-340
             for(int i = 0; i <5; i++){
                 glutBitmapCharacter(font_style, fechar[i]);
             }
         }
+
+		posSX = windowsWidth*0.3263888888;    //  470
+		posSY = -windowsHeight*0.34444444;	  // -310	 
         
         glColor3f(1,1,1);
         if(sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
-            glVertex3f(470, -310, 0);
-            glVertex3f(570, -310, 0);
-            glVertex3f(570, -360, 0);
-            glVertex3f(470, -360, 0);
+            glVertex3f(posSX, posSY, 0);
+            glVertex3f(posSX + 100, posSY, 0);
+            glVertex3f(posSX + 100, posSY - 50, 0);
+            glVertex3f(posSX, posSY-50, 0);
         glEnd();
         
         glColor3f(1,1,1);
         if(!sair) {glBegin(GL_POLYGON);}
         else {glLineWidth( 6.0f ); glBegin(GL_LINE_LOOP);}
-            glVertex3f(340, -310, 0);
-            glVertex3f(440, -310, 0);
-            glVertex3f(440, -360, 0);
-            glVertex3f(340, -360, 0);
+            glVertex3f(posSX - 130, posSY, 0);
+            glVertex3f(posSX - 30 , posSY, 0);
+            glVertex3f(posSX - 30 , posSY-50, 0);
+            glVertex3f(posSX - 130, posSY-50, 0);
         glEnd();
         
         glEnable(GL_BLEND);
@@ -919,7 +931,7 @@ void viewport2( void ){
     glPushMatrix();{
         glColor3f(1,1,1);
         glTranslatef(-106,-windowsHeight/2.0 + teste.getLifeBar().getHeight(), 0);
-        glScalef(0.8,0.8,1);
+        glScalef(windowsWidth*0.00055555555,windowsHeight*0.00088888888888,1);
         glEnable(GL_TEXTURE_2D);
         glBindTexture (GL_TEXTURE_2D, iconTexID);
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -936,22 +948,10 @@ void viewport2( void ){
     
     glPushMatrix();{
 
-    	
-
         glTranslatef(0, -windowsHeight/2.0 + 1, -0.4); // teste.getLifeBar().getHeight()
-        glScalef( 1.5, 1, 1);
+        glScalef( windowsWidth*0.001041666666, windowsHeight*0.0011111111111, 1);
         teste.setBarLifeRotate( 0, 180, 0 );
-        teste.getLifeBar().draw();
-        /*
-        glRasterPos2f(-40,-windowsHeight/2.0 + 10);
-        stringstream sstm;
-        sstm << teste.getCharacterLife() << "/" << teste.getCharacterMaxLife();
-        for(int i = 0; i <sstm.str().size(); i++){
-            glutBitmapCharacter(font_style, sstm.str()[i]);
-        }
-        */
-
-        
+        teste.getLifeBar().draw();      
     }
     glPopMatrix();
     
@@ -1035,6 +1035,7 @@ void viewport2( void ){
     	glDisable(GL_BLEND);
 
     }
+
     else if(popUpEndGame){
     	glPushMatrix();{
 	        char msg[50];
@@ -1054,37 +1055,6 @@ void viewport2( void ){
 	        for(int i = 0; i <strlen(msg); i++){
 	            glutBitmapCharacter(font_style, msg[i]);
 	        }
-	        /*
-	        char sim[4];
-	        strcpy(sim,"SIM");
-	        char nao[4];
-	        strcpy(nao,"NAO");
-	       
-	        if(sair){
-	            glColor3f(0,0,1);
-	            glRasterPos2f(-100,-80);
-	            for(int i = 0; i <4; i++){
-	                glutBitmapCharacter(font_style, sim[i]);
-	            }
-	            glColor3f(1,1,1);
-	            glRasterPos2f(50,-80);
-	            for(int i = 0; i <4; i++){
-	                glutBitmapCharacter(font_style, nao[i]);
-	            }
-	            
-	        }else{
-	            glColor3f(1,1,1);
-	            glRasterPos2f(-100,-80);
-	            for(int i = 0; i <4; i++){
-	                glutBitmapCharacter(font_style, sim[i]);
-	            }
-	            glColor3f(0,0,1);
-	            glRasterPos2f(50,-80);
-	            for(int i = 0; i <4; i++){
-	                glutBitmapCharacter(font_style, nao[i]);
-	            }
-	            
-	        }*/
         }glPopMatrix();
 	
     }
@@ -1463,9 +1433,12 @@ void reshape(GLsizei w, GLsizei h){
     
 	// Especifica as dimensões da viewport
 	glViewport(0, 0, w, h);
+	//cout << w << " " << h << endl;
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	SpecifiesVisualizationParameters();
+	if(fAspect < 1.35) font_style = GLUT_BITMAP_HELVETICA_18;
+	else font_style = GLUT_BITMAP_TIMES_ROMAN_24;
 }
 
 float x3DMouse( int x, int y ){
@@ -1709,9 +1682,9 @@ int main()
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
     glutInitWindowPosition(5,5);
-	glutInitWindowSize(1280,800);
+	glutInitWindowSize(1280,800);   // Ayer 1280,800
 	glutCreateWindow("Monkey's War");
-	glutFullScreen(); 
+	//glutFullScreen(); 
 
 	glutDisplayFunc( draw );
 	glutSpecialFunc( SpecialKeys );
