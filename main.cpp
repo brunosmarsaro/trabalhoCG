@@ -20,7 +20,7 @@
 #include "Scenario/Tower.cpp"
 #include "Scenario/Base.cpp"
 
-#define armyBornTime 30
+#define armyBornTime 45
 #define quantSoldiersPerCicle 4
 
 int perspectiveID;
@@ -498,8 +498,8 @@ void menuInicial( void ){
             }
         }
 
-		posSX = windowsWidth*0.3263888888;    //  470
-		posSY = -windowsHeight*0.34444444;	  // -310	 
+		posSX = windowsWidth*0.2569444444 + 100;    //  470
+		posSY = -windowsHeight*0.37777777 + 30;	  // -310
         
         glColor3f(1,1,1);
         if(sair) {glBegin(GL_POLYGON);}
@@ -662,7 +662,9 @@ void viewport2( void ){
     
     glPushMatrix();{
         
-        glTranslatef(windowsWidth/2 - 300, -windowsHeight/2.0 + 5, 0);
+        glTranslatef(windowsWidth/2 - windowsWidth*0.20833333, -windowsHeight/2.0 + 5, 0);
+        glScalef(windowsWidth*0.0006944444, windowsHeight*0.001111111,1);
+        
         HumanoidCharacter * aux;
         for(int i = 0; i<figurantTeam1.size();i++ ){
             aux = (HumanoidCharacter*) (figurantTeam1[i]);
@@ -1044,8 +1046,8 @@ void viewport2( void ){
 	        	strcpy(msg,"VITORIA");
 	        }
 	        else {
-	        	glRasterPos2f(-100,300);
-	        	strcpy(msg,"PERDEU BABACA");
+	        	glRasterPos2f(-60,300);
+	        	strcpy(msg,"DERROTA");
 	        }
 	        for(int i = 0; i <strlen(msg); i++){
 	            glutBitmapCharacter(font_style, msg[i]);
@@ -1055,6 +1057,34 @@ void viewport2( void ){
 	        for(int i = 0; i <strlen(msg); i++){
 	            glutBitmapCharacter(font_style, msg[i]);
 	        }
+            
+            float posSX = -windowsWidth*0.1527777777;    //  220
+            float posSY = windowsHeight*0.13888888888;
+            
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glColor4f( 0.0f, 0.0f ,1.0f ,0.5 );
+            glPushMatrix();{
+                glBegin(GL_POLYGON);
+                glVertex3f( posSX , posSY, 0.0f ); // 220, 125
+                glVertex3f( posSX , posSY + 70, 0.0f ); // 220, 175
+                glVertex3f( posSX + 450, posSY + 70 ,0.0f );
+                glVertex3f( posSX + 450, posSY, 0.0f );
+                glEnd();
+            }glPopMatrix();
+            
+            posSX = -windowsWidth*0.0902777777;
+            posSY = windowsHeight*0.3;
+            
+            glPushMatrix();{
+                glBegin(GL_POLYGON);
+                glVertex3f( posSX , posSY, 0.0f );
+                glVertex3f( posSX , posSY + 70, 0.0f );
+                glVertex3f( posSX + 250, posSY + 70 ,0.0f );
+                glVertex3f( posSX + 250, posSY, 0.0f );
+                glEnd();
+            }glPopMatrix();
+            glDisable(GL_BLEND);
         }glPopMatrix();
 	
     }
@@ -1682,9 +1712,9 @@ int main()
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
     glutInitWindowPosition(5,5);
-	glutInitWindowSize(1280,800);   // Ayer 1280,800
+	glutInitWindowSize(1200,800);   // Ayer 1280,800
 	glutCreateWindow("Monkey's War");
-	//glutFullScreen(); 
+	//glutFullScreen();
 
 	glutDisplayFunc( draw );
 	glutSpecialFunc( SpecialKeys );

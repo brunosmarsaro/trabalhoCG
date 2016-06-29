@@ -213,7 +213,7 @@ void HumanoidCharacter::atkTarget(){
 	        }
 	    }  
 	}catch (int e){
-	
+        setTarget(NULL);
 	}
 
 
