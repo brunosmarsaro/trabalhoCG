@@ -1,11 +1,11 @@
-#Trabalho Final - Computação e Representação Gráfica
+# Trabalho Final - Computação e Representação Gráfica
 
-###Autores:
+### Autores:
 - [Ayer Ribeiro de Souza Netto](https://github.com/ayerrsn)
 
 - [Bruno Smarsaro Bazelato](https://github.com/brunosmarsaro)
 
-###O Jogo:
+### O Jogo:
 Monkey’s War, como é chamado, é um jogo estilo battle arena onde existem dois times, 
 sendo um controlado por jogador humano e o outro pela máquina. 
 De cada lado da arena fica instalado a respectiva base do jogador e as torres que a defendem. 
@@ -24,7 +24,7 @@ E, por último, no canto inferior direito aparece um mapa 2D do cenário inteiro
 sendo respectivamente o time controlado pelo jogador humano e pela máquina. 
 Os pontos brancos com bordas da cor do time representam os soldados e os pontos da cor do time e com borda preta representam os heróis. 
 
-###Bibliotecas e Ferramentas Utilizadas
+### Bibliotecas e Ferramentas Utilizadas
 
 Para a implementação do jogo, foi utilizada a biblioteca OpenGL (Open Graphics Library) que é uma API (Application Program Interface) 
 para renderização gráfica 2D e 3D. Disponível para diversos sistemas operacionais de forma gratuita. 
@@ -32,7 +32,7 @@ Assim, tal biblioteca é necessária para que o jogo funcione.
 
 A modelagem dos personagens e do cenário foi feita no Blender, um software open source de modelagem 3D.
 
-###Como Jogar?
+### Como Jogar?
 
 Os controles do jogo são feitos tanto por mouse quanto por teclado. Enquanto o primeiro é responsável pelo movimento do herói e da tela, o outro é utilizado para navegar dentre os menus do jogo e selecionar opções. 
 
