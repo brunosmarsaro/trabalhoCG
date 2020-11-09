@@ -1,7 +1,7 @@
 # Trabalho Final - Computação e Representação Gráfica
 
 ### Autores:
-- [Ayer Ribeiro de Souza Netto](https://github.com/ayerrsn)
+- [Ayer Ribeiro de Souza Netto](https://github.com/ayer-ribeiro)
 
 - [Bruno Smarsaro Bazelato](https://github.com/brunosmarsaro)
 
