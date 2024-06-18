@@ -39,3 +39,31 @@ Os controles do jogo são feitos tanto por mouse quanto por teclado. Enquanto o 
 Deste modo, clicando com o botão direito do mouse em algum lugar dentro da rota de batalha, o herói irá até o ponto determinado. Além do mais, seu alvo é definido da mesma maneira. Pressionando a tecla Y durante o jogo faz com que a câmera do jogo pare de seguir o herói e fique a disposição do jogador, podendo ser controlada então pelo movimento do mouse. Enquanto a tecla H faz o herói parar de andar e permanecer em sua atual posição.
 
 A tecla ESC faz o jogo pausar e aparece um menu para que o jogador decida se deseja voltar à partida ou encerrar o jogo. E finalmente, a tecla P troca a perspectiva do jogo, alternando entre duas perspectivas padrões. 
+
+### Etapas do desenvolvimento
+
+###### Barra de vida:
+
+A barra de vida está definida na classe [LifeBar]([url](https://github.com/ayer-ribeiro/monkeys-war-opengl-game/blob/master/Util/LifeBar.cpp)).
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/715e671e-9c2a-41ea-b325-0d4c5bcbe514
+
+###### Personagens:
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/b2dc0d15-90f3-491b-a6b1-f1bd37132d92
+
+###### Movimentação dos personagens:
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/58f09468-1db9-4bcf-a727-5eca3d9fa863
+
+###### Colisões
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/967db5b9-0dd0-42f0-952d-56d8c3cb18d8
+
+###### Controle de movimentação de personagem
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/1dc62e63-e01d-47e1-aa7b-eb5ffb3ec1fa
+
+###### Interação entre personagens
+
+https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/494e3441-f87a-4ddc-ab3b-1f138fb82c8b
