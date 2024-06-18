@@ -44,6 +44,8 @@ A tecla ESC faz o jogo pausar e aparece um menu para que o jogador decida se des
 
 ###### Barra de vida:
 
+A barra de vida está definida na classe [LifeBar]([url](https://github.com/ayer-ribeiro/monkeys-war-opengl-game/blob/master/Util/LifeBar.cpp)).
+
 https://github.com/ayer-ribeiro/monkeys-war-opengl-game/assets/24896635/715e671e-9c2a-41ea-b325-0d4c5bcbe514
 
 ###### Personagens:
